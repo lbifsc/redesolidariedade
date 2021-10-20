@@ -45,12 +45,9 @@ create table usuario (
     login varchar(45) unique not null,
     senha varchar(45) unique not null
 );
-create table lista (
-    id int primary key unique not null auto_increment
-);
-create table lista_itens (
+create table movimentos_itens (
     id int primary key unique not null auto_increment,
-    lista_id int not null,
+    movimentos_id int not null,
     itens_id int not null,
     quantidade int not null
 );
@@ -73,7 +70,6 @@ create table integranteFamilia (
 );
 create table movimentos (
     id int primary key unique not null auto_increment,
-    lista_id int not null,
     usuario_id int not null,
     familia_id int not null,
     dataMovimento date not null,
@@ -90,13 +86,13 @@ alter table itens
 add foreign key (categoria_id)
 references categoria(id);
 
-alter table lista_itens
+alter table movimentos_itens
 add foreign key (itens_id)
 references itens(id);
 
-alter table lista_itens
-add foreign key (lista_id)
-references lista(id);
+alter table movimentos_itens
+add foreign key (movimentos_id)
+references movimentos(id);
 
 alter table Log
 add foreign key (usuario_id)
@@ -113,10 +109,6 @@ references representante(id);
 alter table integranteFamilia
 add foreign key (familia_id)
 references familia(id);
-
-alter table movimentos
-add foreign key (lista_id)
-references lista(id);
 
 alter table movimentos
 add foreign key (usuario_id)
@@ -166,14 +158,9 @@ values
 (3,3,'queijo'),
 (4,4,'arroz');
 
-insert lista
-(id)
-values
-(1),
-(2);
 
-insert lista_itens
-(id, lista_id, itens_id, quantidade)
+insert movimentos_itens
+(id, movimentos_id, itens_id, quantidade)
 values
 (1, 1, 1, 3),
 (2, 1, 1, 1),
@@ -209,10 +196,10 @@ values
 (2,2,2,'user','user');
 
 insert movimentos
-(id, lista_id, usuario_id, familia_id, dataMovimento, horaMovimento, justificativa)
+(id,  usuario_id, familia_id, dataMovimento, horaMovimento, justificativa)
 values
-(1,1,2,1,'01-01-01','01:01:01','nenhuma'),
-(2,2,2,2,'02-02-02','02:02:02','nenhuma');
+(1,2,1,'01-01-01','01:01:01','nenhuma'),
+(2,2,2,'02-02-02','02:02:02','nenhuma');
 
 insert log 
 (id, usuario_id, logData, logHora, tabela, registro, operacao) 
