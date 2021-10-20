@@ -166,6 +166,12 @@ values
 (3,3,'queijo'),
 (4,4,'arroz');
 
+insert lista
+(id)
+values
+(1),
+(2);
+
 insert lista_itens
 (id, lista_id, itens_id, quantidade)
 values
