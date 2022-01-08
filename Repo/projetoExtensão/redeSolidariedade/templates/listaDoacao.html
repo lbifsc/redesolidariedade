@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <title>Cadastro de Doações</title>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-1 col-xs-1 col-sm-1"></div>
+            <div class="col-md-10 col-xs-10 col-sm-10">
+                <h3 class="round3" style="text-align:center;">Doações</h3>
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-xs-10 col-sm-10"></div>
+            <div class="col-md-2 col-xs-1 col-sm-1">
+                <br />
+                <a href="{% url 'Cadastro de Doações' %}">
+                    <button type="button" class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </a>
+            </div>
+        </div>
+        <br />
+        {% for movimentos in movimentos_list %}
+        <div class="row">
+            <div class="col-md-1 col-xs-1 col-sm-1"></div>
+            <div class="col-md-7 col-xs-7 col-sm-7">
+                <ul class="list-group">
+    
+                    <li class="list-group-item ">
+                        <a href="{% url 'Editar Doação' movimentos.pk %}"> {{ movimentos.pk }} </a> <span class="badge"></span>
+                    </li>
+                </ul>
+                <br>
+            </div>
+            <div class="col-md-1">
+                <a href="{% url 'Editar Doação' movimentos.pk %}">
+                    <button type="button" class="btn btn-info">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </button>
+                </a>
+            </div>
+            <div class="col-md-1">
+                <a href="{% url 'Excluir Doação' movimentos.pk %}">
+                    <button type="button" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </a>
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

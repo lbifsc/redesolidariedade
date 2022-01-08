@@ -1,0 +1,53 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport">
+
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" href="../static/css/login/login.css">
+
+	</head>
+	<body>
+	<section class="pedding-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class=" col-lg-5">
+					<div class="login-wrap padding-wrap">
+		      	
+		      		 <h3 class="text-center ">Rede de Soliedariedade</h3>
+						<form action="#" class="login-form">
+		      				<div class="form-group">
+		      					<input type="text" class="form-control " placeholder="Usuário" required>
+		      				</div>
+	            			<div class="form-group ">
+	              				<input type="password" class="form-control " placeholder="Senha" required>
+	            			</div>
+	            			<div class="form-group">
+	            				<button type="submit" class="form-control btn">Entrar</button>
+	            			</div>
+	            			<!-- <div class="form-group">
+	            				<div class="w-50">
+	            					<label class="checkbox-wrap">Lembre de Mim
+									  <input type="checkbox" checked>
+									  <span class="checkmark"></span>
+									</label> 
+								</div> 
+	            			</div> -->
+	          			</form>
+	       			 </div>
+						<div>        
+							<button onClick=window.location='http://127.0.0.1:8000/home/'>pular autentificação</button>
+						</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	</body>
+</html>
+
