@@ -184,6 +184,10 @@ class detalhesRepresentante(DetailView):
     model = Representante
     template_name ='detalhesRepresentante.html'
 
+class detalhesUsuario(DetailView):
+    model = Usuario
+    template_name ='detalhesUsuario.html'
+
 def home(request):
     return render(request, 'home.html')
 

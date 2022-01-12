@@ -1,55 +1,71 @@
 {% extends 'base.html' %}
+  {% block content %} {% block styles %} 
+  <link rel="stylesheet" href="../static/css/listas/listas.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  {% endblock %}
 
-{% block content %}
-    <title>Lista de Itens</title>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-1 col-xs-1 col-sm-1"></div>
-            <div class="col-md-10 col-xs-10 col-sm-10">
-                <h3 class="round3" style="text-align:center;">Itens</h3>
-            </div>
-            <div class="col-md-1 col-xs-1 col-sm-1"></div>
-        </div>
-        <div class="row">
-            <div class="col-md-10 col-xs-10 col-sm-10"></div>
-            <div class="col-md-2 col-xs-1 col-sm-1">
-                <br />
-                <a href="{% url 'Cadastro de Itens' %}">
-                    <button type="button" class="btn btn-success">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                </a>
-            </div>
-        </div>
-        <br />
-        {% for itens in itens_list %}
-        <div class="row">
-            <div class="col-md-1 col-xs-1 col-sm-1"></div>
-            <div class="col-md-7 col-xs-7 col-sm-7">
-                <ul class="list-group">
-    
-                    <li class="list-group-item ">
-                        <a href="{% url 'Editar Item' itens.pk %}"> {{ itens.descricao }} </a> <span class="badge"></span>
-                    </li>
-                </ul>
+  <div class="col">
+    <div class="table-wrapper" id="round">
+      <div class="table-title" id="round-top">
+          <div class="row mt-3">
+            <div class="col-sm-7">
+                <h2>Itens</h2>
                 <br>
+                <div class="search col">
+                  <input type="text" class="search form-control" placeholder="Digite o nome do item..">
+                  <button type="submit" id="find">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
             </div>
-            <div class="col-md-1">
-                <a href="{% url 'Editar Item' itens.pk %}">
-                    <button type="button" class="btn btn-info">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </button>
+
+            <div class="row btn-principal">
+                <div class="col-sm-5">
+                    <a href="{% url 'Cadastro de Itens' %}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Adicionar novo item</span></a>
+                </div>
+            </div>
+          </div>
+      </div>
+      <table class="table table-striped table-hover table-responsive-sm text-justify">
+        <thead>
+            <tr>
+              <th class="text-center">ID</th>
+              <th class="text-center">Descrição</th>
+              <th class="text-center">Categoria</th>
+              <th class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for itens in itens_list %}
+            <tr>
+              <td class="text-center"> {{ itens.pk }} </td>
+              <td class="text-center"> {{ itens.descricao }} </td>
+              <td class="text-center">{{ itens.categoria }}</td>
+              <td class="text-center icons-td">
+                <a href="{% url 'Editar Item' itens.pk %}" class="edit">
+                  <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
                 </a>
-            </div>
-            <div class="col-md-1">
-                <a href="{% url 'Excluir Item' itens.pk %}">
-                    <button type="button" class="btn btn-danger">
-                        <span class="glyphicon glyphicon-trash"></span>
-                    </button>
-                </a>
-            </div>
-            <div class="col-md-1 col-xs-1 col-sm-1"></div>
+                <a href="{% url 'Excluir Item' itens.pk %}" class="delete">
+                  <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
+                </a>               
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="clearfix">
+          <div class="hint-text">Vizualizando <b>5</b> de <b>100</b> Dados</div>
+          
+          <ul class="pagination">
+              <li class="page-item disabled"><a href="#">Anterior</a></li>
+              <li class="page-item active"><a href="#" class="page-link">1</a></li>
+              <li class="page-item"><a href="#" class="page-link">2</a></li>
+              <li class="page-item"><a href="#" class="page-link">3</a></li>
+              <li class="page-item"><a href="#" class="page-link">4</a></li>
+              <li class="page-item"><a href="#" class="page-link">5</a></li>
+              <li class="page-item"><a href="#" class="page-link">Proximo</a></li>
+          </ul>
         </div>
-        {% endfor %}
     </div>
+  </div>  
 {% endblock %}

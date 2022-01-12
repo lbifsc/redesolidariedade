@@ -27,6 +27,7 @@ urlpatterns = [
     path('detalhesEntidade/<int:pk>/', views.detalhesEntidade.as_view(), name='Detalhes Entidade'),
     path('detalhesFamilia/<int:pk>/', views.detalhesFamilia.as_view(), name='Detalhes Familia'),
     path('detalhesRepresentante/<int:pk>/', views.detalhesRepresentante.as_view(), name='Detalhes Representante'),
+    path('detalhesUsuario/<int:pk>/', views.detalhesUsuario.as_view(), name='Detalhes Usuario'),
     path('home/', views.home, name='Rede Solidariedade'),
     path('relatorioDoacao/', views.relatorioDoacao, name='Relatório de Doações'),
     path('relatorioEntidade/', views.relatorioEntidade, name='Relatório de Entidades'),
