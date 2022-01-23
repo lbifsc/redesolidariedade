@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+{% block styles %}
+{% load static %}
+      <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
+      <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
+      <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock %}
+
+<div class="container">
+    <div class="row"></div>
+    <br />
+    <div class="row">
+        <div class="col-md-2 col-xs-2 col-sm-2"></div>
+        <div class="col-md-10 col-xs-10 col-sm-10">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="alert alert-warning">
+                        Você quer mesmo deletar {{ object }}?
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-trash">Sim</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

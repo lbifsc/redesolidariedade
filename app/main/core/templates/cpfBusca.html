@@ -1,0 +1,31 @@
+
+{% extends 'base.html' %}
+{% block content %}{% block styles %}
+{% load static %}
+      <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
+      <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
+      <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock %}
+<div class="col">
+    <div class="table-wrapper" id="round">
+      <div class="table-title" id="round-top">
+          <div class="row">
+            <div class="col-sm-7">
+                <h2>Buscar CPF:</h2>
+            <div class="col-md-10 col-xs-10 col-sm-10">
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1"></div>
+            </div>
+         </div>
+        </div> 
+        <form method="post"> {% csrf_token %}
+            <div id="form_responsavel">
+                <div class="form-group col-xs-12">
+                    <input type="text" class="form-control" placeholder="Somente numeros" name="cpf" maxLength="11" minLength="11" required/>
+                </div>
+            <button type="submit" class="btn btn-primary btn-lg">Buscar</button>
+        </form>
+    </div> 
+</div>  
+{% endblock %}

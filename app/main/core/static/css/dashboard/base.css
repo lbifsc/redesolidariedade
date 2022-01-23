@@ -1,0 +1,133 @@
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+@media screen and (min-width: 1000px) {
+  .col-menu {
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .col-menu {
+    height: 446px;
+  }
+}
+
+.col-menu .logo-container {
+  padding: 1em 0;
+}
+
+@media screen and (min-width: 1400px), screen and (max-width: 1000px) {
+  .col-menu .logo-container a {
+    font-size: 34px;
+  }
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1400px) {
+  .col-menu .logo-container a {
+    font-size: 30px;
+  }
+}
+
+@media screen and (min-width: 1000px) and (max-width: 1280px) {
+  .col-menu .logo-container a {
+    font-size: 26px;
+  }
+}
+
+.col-menu .logo-container a {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: "Lobster", cursive;
+  text-decoration: none;
+  -webkit-transition: 100ms ease;
+  transition: 100ms ease;
+  line-height: 1;
+}
+
+.col-menu .nav-menu hr {
+  background-color: rgba(255, 255, 255, 0.15);
+  margin: 0;
+}
+
+.col-menu .nav-menu .nav-item {
+  width: 100%;
+  padding: 0.5em 0;
+  padding-right: 1em;
+  -webkit-transition: 80ms ease;
+  transition: 80ms ease;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.col-menu .nav-menu .nav-item:hover, .col-menu .nav-menu .nav-item:focus {
+  background: #22262a;
+}
+
+.col-menu .nav-menu .nav-item .nav-link {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.5);
+  -webkit-transition: 80ms ease;
+  transition: 80ms ease;
+}
+
+.col-menu .nav-menu .nav-item .nav-link div {
+  width: 22px;
+  height: 22px;
+  margin-right: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.col-menu .nav-menu .nav-item .nav-link div i {
+  font-size: 20px;
+}
+
+.col-menu .nav-menu .nav-item .nav-link:hover, .col-menu .nav-menu .nav-item .nav-link:focus {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.col-menu .nav-menu .nav-item .nav-link-active {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.col-menu .nav-menu .nav-item .icon-active {
+  display: block;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.col-menu .nav-menu .nav-item .icon-inactive {
+  display: none;
+  pointer-events: none;
+}
+
+.col-menu .nav-menu .nav-item-active {
+  background: #22262a;
+}
+
+.col-conteudo {
+  width: 100%;
+  height: 100%;
+  background: #22262a;
+}
+/*# sourceMappingURL=base.css.map */

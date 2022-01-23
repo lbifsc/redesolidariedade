@@ -1,0 +1,117 @@
+.count-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  @media screen and (max-width: 1400px) {
+    .count-item {
+      gap: 0.25em;
+    }
+  }
+  
+  @media screen and (min-width: 1401px) {
+    .count-item {
+      gap: 1.25em;
+    }
+  }
+  
+  .count-item .title {
+    text-align: center;
+  }
+  
+  @media screen and (max-width: 1400px) {
+    .count-item .title {
+      font-size: 22px;
+    }
+  }
+  
+  .count-item .percentage-holder {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    gap: 0.5em;
+  }
+  
+  @media screen and (max-width: 1400px) {
+    .count-item .percentage-holder {
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-box-pack: end;
+          -ms-flex-pack: end;
+              justify-content: end;
+      text-align: center;
+    }
+    .count-item .percentage-holder h4 {
+      font-size: 16px;
+    }
+  }
+  
+  @media screen and (min-width: 1401px) {
+    .count-item .percentage-holder {
+      -webkit-box-align: end;
+          -ms-flex-align: end;
+              align-items: end;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+    }
+    .count-item .percentage-holder h4 {
+      font-size: 20px;
+    }
+  }
+  
+  .count-item .info-holder {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: end;
+        -ms-flex-align: end;
+            align-items: flex-end;
+  }
+  
+  .count-item .info-holder .icon {
+    font-size: 24px;
+  }
+  
+  @media screen and (max-width: 1400px) {
+    .count-item .info-holder .icon {
+      font-size: 20px;
+    }
+  }
+  
+  .count-item .info-holder .counter {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: end;
+        -ms-flex-align: end;
+            align-items: flex-end;
+    font-size: 40px;
+    line-height: 25px;
+  }
+  
+  @media screen and (max-width: 1400px) {
+    .count-item .info-holder .counter {
+      font-size: 32px;
+    }
+  }
+
+  
+  /*# sourceMappingURL=dashboard.css.map */

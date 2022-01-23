@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+  {% block content %} {% block styles %} 
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
+  <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  {% endblock %}
+
+  <div class="col">
+    <div class="table-wrapper" id="round">
+      <div class="table-title" id="round-top">
+          <div class="row">
+            <div class="col-sm-7">
+                <h2>Doação: #{{ movimento.pk }}</h2>
+            <div class="col-md-10 col-xs-10 col-sm-10">
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1"></div>
+            </div>
+         </div>
+        </div> 
+        {% if movimento.justificativa %}
+        <br>
+        <h5>Justificativa: </h5>
+        <br>
+        <p>{{ movimento.justificativa }}</p>
+        <br>
+        {% endif %}
+        <table class="table table-striped table-hover table-responsive-sm text-justify">
+        <thead>
+          <tr>
+            <th class="text-center">Descrição</th>
+            <th class="text-center">Quantidade:</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in movimentosItens %}
+                    <tr>
+                      <th class="text-center">Item({{ forloop.counter }}): {{ item }}</th>
+                      <th class="text-center"> {{ item.quantidade }}</th>
+                    </tr>
+                    <br>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div> 
+</div>  
+{% endblock %}

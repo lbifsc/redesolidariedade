@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load bootstrap %}
+
+{% block content %}{% block styles %}
+{% load static %}
+      <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
+      <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
+      <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock %}
+
+<div class="col">
+    <div class="table-wrapper" id="round">
+      <div class="table-title" id="round-top">
+          <div class="row">
+            <div class="col-sm-7">
+                <h2>Realizar Doação</h2>
+            <div class="col-md-10 col-xs-10 col-sm-10">
+            </div>
+            <div class="col-md-1 col-xs-1 col-sm-1"></div>
+            </div>
+         </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{ formset.management_form }}
+
+                    <div class="row">
+                        <div class="col-sm-8">
+                          <legend style="border-bottom: 1px solid #e5e5e5;">Itens</legend>
+                          <div id="order" class="form-inline">
+                            {% for item_estoque_form in formset %}
+                              <div id="item-{{ forloop.counter0 }}" class="form-group" style="margin-top: 10px">
+                                {{ item_estoque_form|bootstrap }}
+                              </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                        <a class="btn pull-left" id="add-item"><i class="fa fa-plus"></i> Add Item</a>
+                    </div>
+                        
+                    <p> 
+
+
+                    </p>
+                    {{ forms|bootstrap }}
+                    <p> 
+
+
+                    </p>
+        
+                    <div class="form-inline buttons">
+                        <a href="{% url 'Cadastro de Doações' %}" class="btn btn-warning pull-right"><i class="fa fa-times"></i> Cancelar</a>
+                        <button class="btn btn-primary pull-right" value="Save"><i class="fa fa-floppy-o"></i> Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>   
+    </div> 
+</div>  
+
+
+         
+
+{% endblock content %}
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        $("#add-item").click(function(ev) {
+            ev.preventDefault();
+            var count = $('#order').children().length;
+            var tmplMarkup = $("#item-order").html();
+            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+            $("div#order").append(compiledTmpl);
+
+            // update form count
+            $('#id_item-TOTAL_FORMS').attr('value', count + 1);
+
+            // some animate to scroll to view our new form
+            $('html, body').animate({
+                scrollTop: $("#add-item").position().top-200
+            }, 800);
+        });
+    });
+</script>
+<script type="text/html" id="item-order">
+
+    <div id="item-__prefix__" class="form-group" style="margin-top: 10px">
+            {{ formset.empty_form|bootstrap }}
+    </div>
+</script>
+{% endblock scripts %}
