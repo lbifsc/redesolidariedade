@@ -69,10 +69,10 @@ venv.bak/
 .spyderproject
 .spyproject
 .ropeproject
-/site
 .mypy_cache/
 .dmypy.json
 dmypy.json
 .pyre/
 .pytype/
 cython_debug/
+/site
