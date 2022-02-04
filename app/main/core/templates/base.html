@@ -33,12 +33,15 @@
 
     <!-- Base CSS -->
     <link rel="stylesheet" href="../static/css/base/base.css" /> 
+
+    {% block style %}
+    {% endblock %}
   </head>
 
   <body>
     <div class="container-fluid h-100">
       <div class="row h-100">
-        <div class="col-lg-2 col-md-2 col-sm-12 p-0 bg-dark">
+        <div class="col-lg-2 col-md-12 col-sm-12 p-0 bg-dark">
           <div class="logo-container text-center">
             <a href="http://127.0.0.1:8000/home/"
               >Rede <br />
@@ -48,90 +51,93 @@
 
           <ul class="nav-menu">
             <hr />
-            <li class="nav-item nav-item">
-              <a class="nav-link nav-link-active" href="http://127.0.0.1:8000/home/">
+            <li class="nav-item nav-item" id="dashboard-item">
+              <a class="nav-link nav-link-active" id="dashboard-link" href="http://127.0.0.1:8000/home/">
                 <div>
-                  <i class="fas fa-tachometer-alt nav-link-active"></i>
+                  <i class="fas fa-tachometer-alt" id="dashboard-icon"></i>
                 </div>
                 Dashboard
               </a>
+              <i
+                class="fas fa-chevron-right icon-inactive"
+                id="dashboard-arrow-icon"></i>
             </li>
             <hr />
 
-            <li class="nav-item">
-              <a class="nav-link" href="http://127.0.0.1:8000/listaFamilia/">
+            <li class="nav-item" id="familias-item">
+              <a class="nav-link" id="familias-link" href="http://127.0.0.1:8000/listaFamilia/">
                 <div>
-                  <i class="fas fa-users"></i>
+                  <i class="fas fa-users" id="familias-icon"></i>
                 </div>
                 Famílias
               </a>
-              <i class="fas fa-chevron-right icon-inactive"></i>
+              <i class="fas fa-chevron-right icon-inactive" id="familias-arrow-icon"></i>
             </li>
             <hr />
 
-            <li class="nav-item">
-              <a class="nav-link" href="http://127.0.0.1:8000/cadastroIntegranteFamilia/">
+            <li class="nav-item" id="integrantes-item">
+              <a class="nav-link" id="integrantes-link" href="http://127.0.0.1:8000/cadastroIntegranteFamilia/">
                 <div>
-                  <i class="fas fa-users"></i>
+                  <i class="fas fa-users" id="integrantes-icon"></i>
                 </div>
                 Cadastro IntegranteFamilia
               </a>
-              <i class="fas fa-chevron-right icon-inactive"></i>
+              <i class="fas fa-chevron-right icon-inactive" id="integrantes-arrow-icon"></i>
             </li>
             <hr />
 
-            <li class="nav-item">
-              <a class="nav-link" href="http://127.0.0.1:8000/listaItem/">
+            <li class="nav-item" id="itens-item">
+              <a class="nav-link" id="itens-link" href="http://127.0.0.1:8000/listaItem/">
                 <div>
-                  <i class="fas fa-hand-holding-usd"></i>
+                  <i class="fas fa-hand-holding-usd" id="itens-icon"></i>
                 </div>
                 Itens
               </a>
-              <i class="fas fa-chevron-right icon-inactive"></i>
+              <i class="fas fa-chevron-right icon-inactive" id="itens-arrow-icon"></i>
             </li>
             <hr />
 
-            <li class="nav-item">
-              <a class="nav-link" href="http://127.0.0.1:8000/listaDoacao/">
+            <li class="nav-item" id="doacoes-item">
+              <a class="nav-link" id="doacoes-link" href="http://127.0.0.1:8000/listaDoacao/">
                 <div>
-                  <i class="fas fa-hand-holding-usd"></i>
+                  <i class="fas fa-hand-holding-usd" id="doacoes-icon"></i>
                 </div>
                 Doações
               </a>
-              <i class="fas fa-chevron-right icon-inactive"></i>
+              <i class="fas fa-chevron-right icon-inactive" id="doacoes-arrow-icon"></i>
             </li>
             <hr />
 
-            <li class="nav-item">
-              <a class="nav-link" href="http://127.0.0.1:8000/listaRepresentante/">
+            <li class="nav-item" id="representante-item">
+              <a class="nav-link" id="representante-link" href="http://127.0.0.1:8000/listaRepresentante/">
                 <div>
-                  <i class="fas fa-building"></i>
+                  <i class="fas fa-building" id="representante-icon"></i>
                 </div>
-                Representates
+                Representantes
               </a>
-              <i class="fas fa-chevron-right icon-inactive"></i>
+              <i class="fas fa-chevron-right icon-inactive" id="representante-arrow-icon"></i>
             </li>
             <hr />
 
-            <li class="nav-item">
-              <a class="nav-link" href="http://127.0.0.1:8000/cadastroEntidade/">
+            <li class="nav-item" id="entidades-item">
+              <a class="nav-link" id="entidades-link" href="http://127.0.0.1:8000/cadastroEntidade/">
                 <div>
-                  <i class="fas fa-building"></i>
+                  <i class="fas fa-building" id="entidades-icon"></i>
                 </div>
                 Cadastro Entidades
               </a>
-              <i class="fas fa-chevron-right icon-inactive"></i>
+              <i class="fas fa-chevron-right icon-inactive" id="entidades-arrow-icon"></i>
             </li>
             <hr />
 
-            <li class="nav-item">
-              <a class="nav-link" href="http://127.0.0.1:8000/listaUsuario/">
+            <li class="nav-item" id="usuario-item">
+              <a class="nav-link" id="usuario-link" href="http://127.0.0.1:8000/listaUsuario/">
                 <div>
-                  <i class="fas fa-user"></i>
+                  <i class="fas fa-user" id="usuario-icon"></i>
                 </div>
                 Usuário
               </a>
-              <i class="fas fa-chevron-right icon-inactive"></i>
+              <i class="fas fa-chevron-right icon-inactive" id="usuario-arrow-icon"></i>
             </li>
             <hr />
 
@@ -142,13 +148,12 @@
                 </div>
                 Sair
               </a>
-              <i class="fas fa-chevron-right icon-inactive"></i>
             </li>
             <hr />
           </ul>
         </div>
 
-        <div class="col bg-secondary">
+        <div class="col-lg-10 col-md-12 col-sm-12 bg-secondary">
           <div>
             {% block content %}
             {% endblock content %}
@@ -158,20 +163,145 @@
       </div>
     </div>
 
+    <script>
+      const currentLocation = window.location;
+      const width = window.screen.width;
+      let item;
+      let link; 
+      let icon;
+      let arrow;
+
+      if (currentLocation.toString().includes("listaFamilia")) {
+        item = document.querySelector("#familias-item");
+        link = document.querySelector("#familias-link");
+        icon = document.querySelector("#familias-icon");
+        arrow = document.querySelector("#familias-arrow-icon");
+
+        if (width > 1000) {
+          arrow.classList.remove("icon-inactive");
+          arrow.classList.add("icon-active");
+        }
+
+        item.classList.add("nav-item-active");
+        link.classList.add("nav-link-active");
+        icon.classList.add("icon-active");
+      } else if (currentLocation.toString().includes("cadastroIntegranteFamilia")) {
+        item = document.querySelector("#integrantes-item");
+        link = document.querySelector("#integrantes-link");
+        icon = document.querySelector("#integrantes-icon");
+        arrow = document.querySelector("#integrantes-arrow-icon");
+
+        if (width > 1000) {
+          arrow.classList.remove("icon-inactive");
+          arrow.classList.add("icon-active");
+        }
+
+        item.classList.add("nav-item-active");
+        link.classList.add("nav-link-active");
+        icon.classList.add("icon-active");
+      } else if (currentLocation.toString().includes("listaItem")) {
+        item = document.querySelector("#itens-item");
+        link = document.querySelector("#itens-link");
+        icon = document.querySelector("#itens-icon");
+        arrow = document.querySelector("#itens-arrow-icon");
+
+        if (width > 1000) {
+          arrow.classList.remove("icon-inactive");
+          arrow.classList.add("icon-active");
+        }
+
+        item.classList.add("nav-item-active");
+        link.classList.add("nav-link-active");
+        icon.classList.add("icon-active");
+      } else if (currentLocation.toString().includes("listaDoacao")) {
+        item = document.querySelector("#doacoes-item");
+        link = document.querySelector("#doacoes-link");
+        icon = document.querySelector("#doacoes-icon");
+        arrow = document.querySelector("#doacoes-arrow-icon");
+
+        if (width > 1000) {
+          arrow.classList.remove("icon-inactive");
+          arrow.classList.add("icon-active");
+        }
+
+        item.classList.add("nav-item-active");
+        link.classList.add("nav-link-active");
+        icon.classList.add("icon-active");
+      } else if (currentLocation.toString().includes("listaRepresentante")) {
+        item = document.querySelector("#representante-item");
+        link = document.querySelector("#representante-link");
+        icon = document.querySelector("#representante-icon");
+        arrow = document.querySelector("#representante-arrow-icon");
+
+        if (width > 1000) {
+          arrow.classList.remove("icon-inactive");
+          arrow.classList.add("icon-active");
+        }
+
+        item.classList.add("nav-item-active");
+        link.classList.add("nav-link-active");
+        icon.classList.add("icon-active");
+      } else if (currentLocation.toString().includes("cadastroEntidade")) {
+        item = document.querySelector("#entidades-item");
+        link = document.querySelector("#entidades-link");
+        icon = document.querySelector("#entidades-icon");
+        arrow = document.querySelector("#entidades-arrow-icon");
+
+        if (width > 1000) {
+          arrow.classList.remove("icon-inactive");
+          arrow.classList.add("icon-active");
+        }
+
+        item.classList.add("nav-item-active");
+        link.classList.add("nav-link-active");
+        icon.classList.add("icon-active");
+      } else if (currentLocation.toString().includes("listaUsuario")) {
+        item = document.querySelector("#usuario-item");
+        link = document.querySelector("#usuario-link");
+        icon = document.querySelector("#usuario-icon");
+        arrow = document.querySelector("#usuario-arrow-icon");
+
+        console.log();
+
+        if (width > 1000) {
+          arrow.classList.remove("icon-inactive");
+          arrow.classList.add("icon-active");
+        }
+
+        item.classList.add("nav-item-active");
+        link.classList.add("nav-link-active");
+        icon.classList.add("icon-active");
+      } else {
+        item = document.querySelector("#dashboard-item");
+        link = document.querySelector("#dashboard-link");
+        icon = document.querySelector("#dashboard-icon");
+        arrow = document.querySelector("#dashboard-arrow-icon");
+
+        if (width > 1000) {
+          arrow.classList.remove("icon-inactive");
+          arrow.classList.add("icon-active");
+        }
+
+        item.classList.add("nav-item-active");
+        link.classList.add("nav-link-active");
+        icon.classList.add("icon-active");
+      }
+    </script>
+
     <!-- Boostrap JS -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.js"
     ></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
     integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
     crossorigin="anonymous"
     ></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
     integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"
     ></script>
-    {% block scripts %}
-    {% endblock scripts %}
+    {% block script %}
+    {% endblock script %}
   </body>
 </html>

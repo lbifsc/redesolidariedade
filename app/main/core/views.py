@@ -4,6 +4,7 @@ from .models import *
 from .forms import *
 from django.views.generic import ListView, DetailView
 from django.views import generic
+from datetime import date, timedelta
 
 # Create your views here.
 
@@ -205,7 +206,82 @@ class detalhesUsuario(DetailView):
     template_name ='detalhesUsuario.html'
 
 def home(request):
-    return render(request, 'home.html')
+    users = Usuario.objects.all()
+    families = Familia.objects.all()
+    entities = Entidade.objects.all()
+    donations = MovimentosItem.objects.all()
+
+    end = date.today().replace(day=1) - timedelta(days=1)
+    start = date.today().replace(day=1) - timedelta(days=end.day)
+
+    today = date.today()
+    yesterday = date.today() - timedelta(days=1)
+    twodaysbefore = date.today() - timedelta(days=2)
+    threedaysbefore = date.today() - timedelta(days=3)
+    fourdaysbefore = date.today() - timedelta(days=4)
+    fivedaysbefore = date.today() - timedelta(days=5)
+    sixdaysbefore = date.today() - timedelta(days=6)
+    last_week = date.today() - timedelta(days=7)
+
+    chart_data = {
+      'users': { 
+        'today': users.filter(data_cadastro__contains=today).count(),
+        'yesterday': users.filter(data_cadastro__contains=yesterday).count(),
+        'twodaysbefore': users.filter(data_cadastro__contains=twodaysbefore).count(),
+        'threedaysbefore': users.filter(data_cadastro__contains=threedaysbefore).count(),
+        'fourdaysbefore': users.filter(data_cadastro__contains=fourdaysbefore).count(),
+        'fivedaysbefore': users.filter(data_cadastro__contains=fivedaysbefore).count(),
+        'sixdaysbefore': users.filter(data_cadastro__contains=sixdaysbefore).count(),
+        'last_week': users.filter(data_cadastro__contains=last_week).count(),
+      },
+
+      'families': {
+        'today': families.filter(data_cadastro__contains=today).count(),
+        'yesterday': families.filter(data_cadastro__contains=yesterday).count(),
+        'twodaysbefore': families.filter(data_cadastro__contains=twodaysbefore).count(),
+        'threedaysbefore': families.filter(data_cadastro__contains=threedaysbefore).count(),
+        'fourdaysbefore': families.filter(data_cadastro__contains=fourdaysbefore).count(),
+        'fivedaysbefore': families.filter(data_cadastro__contains=fivedaysbefore).count(),
+        'sixdaysbefore': families.filter(data_cadastro__contains=sixdaysbefore).count(),
+        'last_week': families.filter(data_cadastro__contains=last_week).count(),
+      },
+
+      'entities': {
+        'today': entities.filter(data_cadastro__contains=today).count(),
+        'yesterday': entities.filter(data_cadastro__contains=yesterday).count(),
+        'twodaysbefore': entities.filter(data_cadastro__contains=twodaysbefore).count(),
+        'threedaysbefore': entities.filter(data_cadastro__contains=threedaysbefore).count(),
+        'fourdaysbefore': entities.filter(data_cadastro__contains=fourdaysbefore).count(),
+        'fivedaysbefore': entities.filter(data_cadastro__contains=fivedaysbefore).count(),
+        'sixdaysbefore': entities.filter(data_cadastro__contains=sixdaysbefore).count(),
+        'last_week': entities.filter(data_cadastro__contains=last_week).count(),
+      },
+      
+      'donations': {
+        'today': donations.filter(data_cadastro__contains=today).count(),
+        'yesterday': donations.filter(data_cadastro__contains=yesterday).count(),
+        'twodaysbefore': donations.filter(data_cadastro__contains=twodaysbefore).count(),
+        'threedaysbefore': donations.filter(data_cadastro__contains=threedaysbefore).count(),
+        'fourdaysbefore': donations.filter(data_cadastro__contains=fourdaysbefore).count(),
+        'fivedaysbefore': donations.filter(data_cadastro__contains=fivedaysbefore).count(),
+        'sixdaysbefore': donations.filter(data_cadastro__contains=sixdaysbefore).count(),
+        'last_week': donations.filter(data_cadastro__contains=last_week).count(),
+      }
+    }
+    
+    context = {
+      'user_count': users.count,
+      'user_lastmonth:': users.filter(data_cadastro__range=[start, end]).count(),
+      'family_count': families.count,
+      'family_lastmonth': families.filter(data_cadastro__range=[start, end]).count(),
+      'entity_count': entities.count,
+      'entity_lastmonth': entities.filter(data_cadastro__range=[start, end]).count(),
+      'donation_count': donations.count,
+      'donation_lastmonth': donations.filter(data_cadastro__range=[start, end]).count(),
+      'chart_data': chart_data,
+    }
+
+    return render(request, 'home.html', context)
 
 def relatorioDoacao(request):
     return render(request, 'relatorioDoacao.html')

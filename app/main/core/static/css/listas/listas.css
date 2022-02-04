@@ -29,11 +29,12 @@ input[type="text"] {
   border: none;
   padding: 0.5em 1.25em;
   border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  color: rgb(223, 223, 223);
 }
 
 #find:hover {
   background-color: rgb(25, 25, 25);
-  color: rgb(223, 223, 223);
 }
 
 .table-wrapper {
@@ -52,12 +53,17 @@ input[type="text"] {
 
 .table-title {        
   padding-bottom: 15px;
-  background: rgb(77, 77, 77) !important;
+  background: #343a40 !important;
   color: #fff;
   padding: 20px 30px;
   margin: -20px -25px 10px;
   border-radius: 1px 1px 0 0;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.247);
+}
+
+.spacing {
+  display: flex;
+  gap: 7em;
 }
 
 .table-title h2 {
@@ -184,7 +190,8 @@ margin-right: 10px;
 }
 
 .btn-principal a {
-    margin-top: 53px;
+  margin-top: 61px;
+  display: flex;
 }
 
 b {

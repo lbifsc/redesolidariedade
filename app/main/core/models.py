@@ -23,6 +23,7 @@ class Entidade(models.Model):
     telefone = models.CharField(max_length=24, blank = True, null = True)
     email = models.EmailField(blank = True, null = True)
     endereco = models.CharField(max_length=96, blank = True, null = True)
+    data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 
     def __str__(self):
         return self.nome
@@ -33,6 +34,7 @@ class Representante(models.Model):
     cpf = models.CharField(max_length=24, blank = True, null = True)
     endereco = models.CharField(max_length=96, blank = True, null = True)
     obsercacao = models.TextField(max_length=96, blank = True, null = True)
+    data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 
     def __str__(self):
         return self.nome
@@ -42,6 +44,7 @@ class Usuario(models.Model):
     senha = models.CharField(max_length=100, blank = True, null = True)
     representante = models.ForeignKey(Representante, on_delete=models.CASCADE, blank = True, null = True)
     papel = models.CharField(choices=PAPEL_CHOICES, max_length=2, blank = True, null = True)
+    data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 
     def __str__(self):
         return self.usuario
@@ -50,6 +53,7 @@ class Familia(models.Model):
     nomeChefeFamilia = models.CharField(max_length=96, blank = True, null = True)
     cpfChefeFamilia = models.CharField(max_length=24, blank = True, null = True)
     enderecoChefeFamilia = models.CharField(max_length=96, blank = True, null = True)
+    data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 
     def __str__(self):
         return self.nomeChefeFamilia
@@ -58,6 +62,7 @@ class IntegranteFamilia(models.Model):
     Familia = models.ForeignKey(Familia, on_delete=models.CASCADE)
     nome = models.CharField(max_length=96, blank = True, null = True)
     cpf = models.CharField(max_length=24, blank = True, null = True)
+    data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 
     def __str__(self):
         return self.nome       
@@ -65,6 +70,7 @@ class IntegranteFamilia(models.Model):
 class Item(models.Model):
     descricao = models.CharField(max_length=100, blank = True, null = True)
     categoria = models.CharField(choices=CATEGORIA_CHOICES, max_length=50, blank = True, null = True)
+    data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 
     def __str__(self):
         return self.descricao
@@ -81,6 +87,7 @@ class MovimentosItem(models.Model):
     movimentos = models.ForeignKey(Movimentos, on_delete=models.CASCADE, blank = True, null = True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, blank = True, null = True)
     quantidade = models.PositiveIntegerField(default=1)
+    data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 
     def __str__(self):
         return self.item.descricao
