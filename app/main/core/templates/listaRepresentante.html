@@ -12,8 +12,8 @@
                 <h2>Representantes</h2>
                 <br>
                 <div class="search col">
-                  <input type="text" class="search form-control" placeholder="Digite o nome do entidade/representante..">
-                  <button type="submit" id="find">
+                  <input type="text" class="search form-control" placeholder="Digite o nome do entidade/representante.." disabled>
+                  <button type="submit" id="find" disabled>
                     <i class="fas fa-search"></i>
                   </button>
                 </div>
@@ -60,19 +60,6 @@
             {% endfor %}
           </tbody>
         </table>
-        <div class="clearfix">
-          <div class="hint-text">Vizualizando <b>5</b> de <b>100</b> Dados</div>
-          
-          <ul class="pagination">
-              <li class="page-item disabled"><a href="#">Anterior</a></li>
-              <li class="page-item active"><a href="#" class="page-link">1</a></li>
-              <li class="page-item"><a href="#" class="page-link">2</a></li>
-              <li class="page-item"><a href="#" class="page-link">3</a></li>
-              <li class="page-item"><a href="#" class="page-link">4</a></li>
-              <li class="page-item"><a href="#" class="page-link">5</a></li>
-              <li class="page-item"><a href="#" class="page-link">Proximo</a></li>
-          </ul>
-        </div>
     </div>
   </div>  
 {% endblock %}
