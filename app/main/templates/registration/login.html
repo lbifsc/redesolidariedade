@@ -10,7 +10,7 @@
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
-	<link rel="stylesheet" href="../static/css/login/login.css">
+	<link rel="stylesheet" href="{% static 'css/login/login.css' %}">
 
 	</head>
 	<body>
@@ -21,29 +21,30 @@
 					<div class="login-wrap padding-wrap">
 		      	
 		      		 <h3 class="text-center ">Rede de Soliedariedade</h3>
-						<form action="#" class="login-form">
+						<form method="post" action="{% url 'login' %}" class="login-form">
+							{% csrf_token %}
 		      				<div class="form-group">
-		      					<input type="text" class="form-control " placeholder="Usuário" required>
+								<table>
+									<tr>
+									  <td>{{ form.username.label_tag }}</td>
+									  <td>{{ form.username }}</td>
+									</tr>
+								  </table>
 		      				</div>
 	            			<div class="form-group ">
-	              				<input type="password" class="form-control " placeholder="Senha" required>
+								<table>
+									<tr>
+									  <td>{{ form.password.label_tag }}</td>
+									  <td>{{ form.password }}</td>
+									</tr>
+								  </table>
 	            			</div>
 	            			<div class="form-group">
-	            				<button type="submit" class="form-control btn">Entrar</button>
+								<input type="submit" class="form-control btn" value="Entrar" />
+								<input type="hidden" name="next" value="{{ next }}" />
 	            			</div>
-	            			<!-- <div class="form-group">
-	            				<div class="w-50">
-	            					<label class="checkbox-wrap">Lembre de Mim
-									  <input type="checkbox" checked>
-									  <span class="checkmark"></span>
-									</label> 
-								</div> 
-	            			</div> -->
 	          			</form>
 	       			 </div>
-						<div>        
-							<button onClick=window.location='http://127.0.0.1:8000/home/'>pular autentificação</button>
-						</div>
 				</div>
 			</div>
 		</div>

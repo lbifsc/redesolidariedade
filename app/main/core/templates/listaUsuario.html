@@ -40,12 +40,13 @@
             {% for usuarios in usuarios_list %}
             <tr>
               <td class="text-center">{{ usuarios.pk }} </td>
-              <td class="text-center">{{ usuarios.usuario }} </td>
-              <td class="text-center">{{ usuarios.papel }} </td>
+              <td class="text-center">{{ usuarios.username }} </td>
+              {% if usuarios.is_staff %}
+              <td class="text-center"> Administrador </td>
+              {% else %} 
+              <td class="text-center"> Representante </td>
+              {% endif %} 
               <td class="text-center icons-td">
-                <a href="{% url 'Editar Usuario' usuarios.pk %}" class="edit">
-                  <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
-                </a>
                 <a href="{% url 'Excluir Usuario' usuarios.pk %}" class="delete">
                   <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
                 </a>               

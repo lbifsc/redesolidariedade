@@ -77,6 +77,7 @@ class Item(models.Model):
 
 class Movimentos(models.Model):
     idFamilia = models.ForeignKey(Familia, on_delete=models.CASCADE, blank = True, null = True)
+    representante = models.ForeignKey(Representante, on_delete=models.CASCADE, blank = True, null = True)
     data = models.DateTimeField(auto_now_add=True, blank = True, null = True)
     justificativa = models.TextField(max_length=96, blank = True, null = True)
 

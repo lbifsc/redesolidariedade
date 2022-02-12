@@ -1,5 +1,6 @@
 from django import forms
-
+from django.contrib.auth.models import User 
+from django.contrib.auth.forms import UserCreationForm
 from .models import *
 
 class EntidadeForm(forms.ModelForm):
@@ -12,10 +13,12 @@ class RepresentanteForm(forms.ModelForm):
         model = Representante
         fields = "__all__"
 
-class UsuarioForm(forms.ModelForm):
+class UserForm(UserCreationForm):
+    email = forms.EmailField(max_length=96)
+
     class Meta:
-        model = Usuario
-        fields = "__all__"
+        model = User
+        fields = ['username', 'email', 'password1']
 
 class FamiliaForm(forms.ModelForm):
     class Meta:

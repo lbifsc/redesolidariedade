@@ -1,8 +1,10 @@
 from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
+from django.contrib.auth.models import User 
 from .models import *
 from .forms import *
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from django.views import generic
 from datetime import date, timedelta
 
@@ -61,15 +63,10 @@ def cadastroRepresentante(request):
 
     return render(request,'cadastro.html',{'form': form})
 
-def cadastroUsuario(request):
-    if request.method == 'POST':
-        form = UsuarioForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('Lista de Usuarios')
-    form = UsuarioForm()
-
-    return render(request,'cadastro.html',{'form': form})
+class CadastroUsuario(CreateView):
+    template_name = 'cadastro.html'
+    form_class = UserForm
+    success_url = reverse_lazy('Lista de Usuarios')
 
 def editarDoacao(request):
     return render(request, 'cadastro.html')
@@ -112,14 +109,6 @@ def editarRepresentante(request, pk, template_name='cadastro.html'):
     if form.is_valid():
         form.save()
         return redirect('Lista de Representantes')
-    return render(request, template_name, {'form':form})
-
-def editarUsuario(request, pk, template_name='cadastro.html'):
-    usuarios = get_object_or_404(Usuario, pk=pk)
-    form = UsuarioForm(request.POST or None, instance=usuarios)
-    if form.is_valid():
-        form.save()
-        return redirect('Lista de Usuarios')
     return render(request, template_name, {'form':form})
 
 def excluirDoacao(request, pk, template_name='confirm_delete.html'):
@@ -165,7 +154,7 @@ def excluirRepresentante(request, pk, template_name='confirm_delete.html'):
     return render(request, template_name, {'object':representante})
 
 def excluirUsuario(request, pk, template_name='confirm_delete.html'):
-    usuario = get_object_or_404(Usuario, pk=pk)
+    usuario = get_object_or_404(User, pk=pk)
     if request.method=='POST':
         usuario.delete()
         return redirect('Lista de Usuarios')
@@ -321,7 +310,7 @@ class listaUsuario(ListView):
     context_object_name = 'usuarios_list'
 
     def get_queryset(self):
-        return Usuario.objects.all() 
+        return User.objects.all() 
 
 class listaItem(ListView):
     template_name = 'listaItem.html'
@@ -329,9 +318,7 @@ class listaItem(ListView):
 
     def get_queryset(self):
         return Item.objects.all()  
-
-def login(request):
-    return render(request, 'login.html')    
+ 
 
 def checkForFamilyId(cpf):
     chefe = Familia.objects.filter(cpfChefeFamilia__exact=cpf)

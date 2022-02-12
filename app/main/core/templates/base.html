@@ -140,9 +140,9 @@
               <i class="fas fa-chevron-right icon-inactive" id="usuario-arrow-icon"></i>
             </li>
             <hr />
-
+            {% if user.is_authenticated %} 
             <li class="nav-item">
-              <a class="nav-link" href="http://127.0.0.1:8000/">
+              <a class="nav-link" href="{% url 'logout'%}">
                 <div>
                   <i class="fas fa-sign-out-alt"></i>
                 </div>
@@ -150,6 +150,17 @@
               </a>
             </li>
             <hr />
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login'%}?next={{request.path}}">
+                <div>
+                  <i class="fas fa-sign-out-alt"></i>
+                </div>
+                Entrar
+              </a>
+            </li>
+            <hr />
+            {% endif %} 
           </ul>
         </div>
 
