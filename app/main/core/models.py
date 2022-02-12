@@ -58,7 +58,7 @@ class Familia(models.Model):
         return self.nomeChefeFamilia
 
 class IntegranteFamilia(models.Model):
-    Familia = models.ForeignKey(Familia, on_delete=models.CASCADE)
+    familia = models.ForeignKey(Familia, on_delete=models.CASCADE)
     nome = models.CharField(max_length=96, blank = True, null = True)
     cpf = models.CharField(max_length=24, blank = True, null = True)
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')

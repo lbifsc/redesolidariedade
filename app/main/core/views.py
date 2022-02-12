@@ -343,7 +343,9 @@ def checkForFamilyId(cpf):
 
     for x in integrantesFamiliares:
         if x.cpf == cpf:
-            return x.pk
+            aux = x.familia
+            familiaAux = Familia.objects.get(aux)
+            return familiaAux.pk
 
     return "DONT_EXIST"
 
