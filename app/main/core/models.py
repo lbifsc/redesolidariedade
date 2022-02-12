@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Sum
 from django.shortcuts import reverse
-from types import NoneType
 
 PAPEL_CHOICES = (
     ('a', 'Admin'),
