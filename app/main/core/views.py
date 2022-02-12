@@ -22,22 +22,22 @@ def cadastroEntidade(request):
     return render(request,'cadastro.html',{'form': form})
 
 def cadastroFamilia(request):
+    form = FamiliaForm()
     if request.method == 'POST':
         form = FamiliaForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('Lista de Familias')
-    form = FamiliaForm()
 
     return render(request,'cadastro.html',{'form': form})
 
 def cadastroIntegranteFamilia(request):
+    form = IntegranteFamiliaForm()
     if request.method == 'POST':
         form = IntegranteFamiliaForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('Lista de Familias')
-    form = IntegranteFamiliaForm()
 
     return render(request,'cadastro.html',{'form': form})
 
@@ -190,7 +190,7 @@ class detalhesEntidade(DetailView):
 def detalhesFamilia(request, pk):
     template_name = 'detalhesFamilia.html'
     familia = Familia.objects.get(pk=pk)
-    integrantesFamilia = IntegranteFamilia.objects.get_queryset().filter(Familia=pk)
+    integrantesFamilia = IntegranteFamilia.objects.get_queryset().filter(familia=pk)
     context = {
         'familia': familia,
         'integrantesFamilia': integrantesFamilia,
@@ -334,18 +334,14 @@ def login(request):
     return render(request, 'login.html')    
 
 def checkForFamilyId(cpf):
-    familias = Familia.objects.all()
-    integrantesFamiliares = IntegranteFamilia.objects.all()
-
-    for x in familias:
-        if x.cpfChefeFamilia == cpf:
-            return x.pk
-
-    for x in integrantesFamiliares:
-        if x.cpf == cpf:
-            aux = x.familia
-            familiaAux = Familia.objects.get(aux)
-            return familiaAux.pk
+    chefe = Familia.objects.filter(cpfChefeFamilia__exact=cpf)
+    integrante = IntegranteFamilia.objects.filter(cpf__exact=cpf)
+    
+    if chefe:
+      return chefe.first().pk
+    
+    if integrante:
+      return integrante.first().familia.pk
 
     return "DONT_EXIST"
 

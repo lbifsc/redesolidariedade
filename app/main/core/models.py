@@ -1,4 +1,5 @@
 from django.db.models.fields import CharField, EmailField, TextField
+from django.core.validators import RegexValidator, MinLengthValidator
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.db import models
@@ -49,9 +50,9 @@ class Usuario(models.Model):
         return self.usuario
 
 class Familia(models.Model):
-    nomeChefeFamilia = models.CharField(max_length=96, blank = True, null = True)
-    cpfChefeFamilia = models.CharField(max_length=24, blank = True, null = True)
-    enderecoChefeFamilia = models.CharField(max_length=96, blank = True, null = True)
+    nomeChefeFamilia = models.CharField(max_length=96)
+    cpfChefeFamilia = models.CharField(max_length=11, validators=[MinLengthValidator(11, message='Digite 11 números')], help_text='Apenas numeros')
+    enderecoChefeFamilia = models.CharField(max_length=96)
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 
     def __str__(self):
@@ -59,8 +60,8 @@ class Familia(models.Model):
 
 class IntegranteFamilia(models.Model):
     familia = models.ForeignKey(Familia, on_delete=models.CASCADE)
-    nome = models.CharField(max_length=96, blank = True, null = True)
-    cpf = models.CharField(max_length=24, blank = True, null = True)
+    nome = models.CharField(max_length=96)
+    cpf = models.CharField(max_length=11, validators=[MinLengthValidator(11, message='Digite 11 números')], help_text='Apenas numeros')
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 
     def __str__(self):

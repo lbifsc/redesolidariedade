@@ -27,6 +27,16 @@
         <div class="form-group">
           {{ field.label_tag }}
           {% render_field field class="form-control" %}
+          {% if form.cpf.errors and field.name == "cpf" %}
+            {% for error in form.cpf.errors %}
+              <small class="text-danger">{{ error }}</small>
+            {% endfor %}
+          {% endif %}
+          {% if form.cpfChefeFamilia.errors and field.name == "cpfChefeFamilia" %}
+            {% for error in form.cpfChefeFamilia.errors %}
+              <small class="text-danger">{{ error }}</small>
+            {% endfor %}
+          {% endif %}
           {% if field.help_text %}
           <small class="form-text text-muted">{{ field.help_text }}</small>
           {% endif %}
