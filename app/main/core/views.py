@@ -7,6 +7,7 @@ from .forms import *
 from django.views.generic import ListView, DetailView, CreateView
 from django.views import generic
 from datetime import date, timedelta
+from django.contrib.auth.models import Group
 
 # Create your views here.
 
@@ -63,10 +64,16 @@ def cadastroRepresentante(request):
 
     return render(request,'cadastro.html',{'form': form})
 
-class CadastroUsuario(CreateView):
-    template_name = 'cadastro.html'
-    form_class = UserForm
-    success_url = reverse_lazy('Lista de Usuarios')
+def cadastroUsuario(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            created_user = form.save()
+            created_user.groups.add(Group.objects.get(name='user_common'))
+            return redirect('Lista de Usuarios')
+    form = UserForm()
+
+    return render(request,'cadastro.html',{'form': form})
 
 def editarDoacao(request):
     return render(request, 'cadastro.html')

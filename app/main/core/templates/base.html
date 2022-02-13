@@ -43,7 +43,7 @@
       <div class="row h-100">
         <div class="col-lg-2 col-md-12 col-sm-12 p-0 bg-dark">
           <div class="logo-container text-center">
-            <a href="http://127.0.0.1:8000/home/"
+            <a href="{% url 'Rede Solidariedade'%}"
               >Rede <br />
               Soliedariedade
             </a>
@@ -52,7 +52,7 @@
           <ul class="nav-menu">
             <hr />
             <li class="nav-item nav-item" id="dashboard-item">
-              <a class="nav-link nav-link-active" id="dashboard-link" href="http://127.0.0.1:8000/home/">
+              <a class="nav-link nav-link-active" id="dashboard-link" href="{% url 'Rede Solidariedade'%}">
                 <div>
                   <i class="fas fa-tachometer-alt" id="dashboard-icon"></i>
                 </div>
@@ -65,7 +65,7 @@
             <hr />
 
             <li class="nav-item" id="familias-item">
-              <a class="nav-link" id="familias-link" href="http://127.0.0.1:8000/listaFamilia/">
+              <a class="nav-link" id="familias-link" href="{% url 'Lista de Familias'%}"> 
                 <div>
                   <i class="fas fa-users" id="familias-icon"></i>
                 </div>
@@ -76,7 +76,7 @@
             <hr />
 
             <li class="nav-item" id="integrantes-item">
-              <a class="nav-link" id="integrantes-link" href="http://127.0.0.1:8000/cadastroIntegranteFamilia/">
+              <a class="nav-link" id="integrantes-link" href="{% url 'Cadastro de IntegranteFamilia'%}">
                 <div>
                   <i class="fas fa-users" id="integrantes-icon"></i>
                 </div>
@@ -87,7 +87,7 @@
             <hr />
 
             <li class="nav-item" id="itens-item">
-              <a class="nav-link" id="itens-link" href="http://127.0.0.1:8000/listaItem/">
+              <a class="nav-link" id="itens-link" href="{% url 'Lista de Itens'%}">
                 <div>
                   <i class="fas fa-hand-holding-usd" id="itens-icon"></i>
                 </div>
@@ -98,7 +98,7 @@
             <hr />
 
             <li class="nav-item" id="doacoes-item">
-              <a class="nav-link" id="doacoes-link" href="http://127.0.0.1:8000/listaDoacao/">
+              <a class="nav-link" id="doacoes-link" href="{% url 'Lista de Doações'%}">
                 <div>
                   <i class="fas fa-hand-holding-usd" id="doacoes-icon"></i>
                 </div>
@@ -109,7 +109,7 @@
             <hr />
 
             <li class="nav-item" id="representante-item">
-              <a class="nav-link" id="representante-link" href="http://127.0.0.1:8000/listaRepresentante/">
+              <a class="nav-link" id="representante-link" href="{% url 'Lista de Representantes'%}">
                 <div>
                   <i class="fas fa-building" id="representante-icon"></i>
                 </div>
@@ -120,7 +120,7 @@
             <hr />
 
             <li class="nav-item" id="entidades-item">
-              <a class="nav-link" id="entidades-link" href="http://127.0.0.1:8000/cadastroEntidade/">
+              <a class="nav-link" id="entidades-link" href="{% url 'Cadastro de Entidades'%}">
                 <div>
                   <i class="fas fa-building" id="entidades-icon"></i>
                 </div>
@@ -131,7 +131,7 @@
             <hr />
 
             <li class="nav-item" id="usuario-item">
-              <a class="nav-link" id="usuario-link" href="http://127.0.0.1:8000/listaUsuario/">
+              <a class="nav-link" id="usuario-link" href="{% url 'Lista de Usuarios'%}">
                 <div>
                   <i class="fas fa-user" id="usuario-icon"></i>
                 </div>
