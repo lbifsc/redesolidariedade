@@ -1,5 +1,6 @@
 
 {% extends 'base.html' %}
+{% load user_tags %}
 {% block content %} {% block styles %} 
 <link rel="stylesheet" href="../static/css/listas/listas.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -41,7 +42,7 @@
             <tr>
               <td class="text-center">{{ usuarios.pk }} </td>
               <td class="text-center">{{ usuarios.username }} </td>
-              {% if usuarios.is_staff %}
+              {% if usuarios|has_group:"user_admin" %}
               <td class="text-center"> Administrador </td>
               {% else %} 
               <td class="text-center"> Representante </td>
