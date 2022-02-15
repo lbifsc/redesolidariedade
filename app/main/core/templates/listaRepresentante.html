@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load user_tags %}
   {% block content %} {% block styles %} 
   <link rel="stylesheet" href="../static/css/listas/listas.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   {% endblock %}
-
+  {% if user.is_authenticated %}
   <div class="col">
     <div class="table-wrapper" id="round">
       <div class="table-title" id="round-top">
@@ -49,12 +50,14 @@
                     visibility
                   </span>
                 </a>
-                <a href="{% url 'Editar Representante' representantes.pk %}" class="edit" data-toggle="modal">
+                <a href="{% url 'Editar Representante' representantes.pk %}" class="edit">
                   <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
                 </a>
-                <a href="{% url 'Excluir Representante' representantes.pk %}" class="delete" data-toggle="modal">
+                {% if user|has_group:"user_admin" %}
+                <a href="{% url 'Excluir Representante' representantes.pk %}" class="delete">
                   <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
-                </a>               
+                </a>    
+                {% endif %}           
               </td>
             </tr>
             {% endfor %}
@@ -62,4 +65,5 @@
         </table>
     </div>
   </div>  
+  {% endif %}
 {% endblock %}

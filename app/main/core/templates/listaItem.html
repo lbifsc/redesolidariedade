@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load user_tags %}
   {% block content %} {% block styles %} 
   <link rel="stylesheet" href="../static/css/listas/listas.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   {% endblock %}
-
+  {% if user.is_authenticated %}
   <div class="col">
     <div class="table-wrapper" id="round">
       <div class="table-title" id="round-top">
@@ -45,9 +46,11 @@
                 <a href="{% url 'Editar Item' itens.pk %}" class="edit">
                   <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
                 </a>
+                {% if user|has_group:"user_admin" %}
                 <a href="{% url 'Excluir Item' itens.pk %}" class="delete">
                   <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
-                </a>               
+                </a>  
+                {% endif %}             
               </td>
             </tr>
             {% endfor %}
@@ -55,4 +58,5 @@
         </table>
     </div>
   </div>  
+  {% endif %}
 {% endblock %}

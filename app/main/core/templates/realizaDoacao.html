@@ -9,7 +9,7 @@
       <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 {% endblock %}
-
+{% if user.is_authenticated %}
 <div class="col">
     <div class="table-wrapper" id="round">
       <div class="table-title" id="round-top">
@@ -64,7 +64,7 @@
 
 
          
-
+{% endif %}
 {% endblock content %}
 {% block script %}
 <script>

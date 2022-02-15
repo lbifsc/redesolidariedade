@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %} {% load widget_tweaks %} {% block styles %}
+{% load user_tags %}
 {% load static %}
       <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
       <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
@@ -42,7 +43,7 @@
           {% endif %}
         </div>
         {% endfor %}
-        <p align="right"><button type="submit" class="btn btn-success">Salvar</button></p>
+        <p align="right">{% if user.is_authenticated %}<button type="submit" class="btn btn-success">Salvar</button>{% endif %}</p>
       </form>
     </div>
   </div>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../static/css/listas/listas.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   {% endblock %}
-
+  {% if user|has_group:"user_admin" %}
   <div class="col">
     <div class="table-wrapper" id="round">
       <div class="table-title" id="round-top">
@@ -48,9 +48,15 @@
               <td class="text-center"> Representante </td>
               {% endif %} 
               <td class="text-center icons-td">
+                {% if usuarios|has_group:"user_admin" %}
+                <a href="{% url 'Excluir Usuario' usuarios.pk %}" class="delete" data-toggle="modal">
+                  <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
+                </a>  
+                {% else %}  
                 <a href="{% url 'Excluir Usuario' usuarios.pk %}" class="delete">
                   <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
-                </a>               
+                </a>  
+                {% endif %}           
               </td>
             </tr>
             {% endfor %}
@@ -58,4 +64,5 @@
         </table>
     </div>
   </div>  
+  {% endif %}
 {% endblock %}
