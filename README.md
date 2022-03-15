@@ -20,11 +20,12 @@
 <h4 align="center">8. faça as migrations "python manage.py makemigrations"</h4>
 <h4 align="center">9. migre os dados "python manage.py migrate"</h4>
 <h4 align="center">10. crie um superuser "python manage.py createsuperuser"</h4>
-<h4 align="center">11. rode o app "python manage.py runserver"</h4>
-<h4 align="center">12. acesse a pagina admin</h4>
+<h4 align="center">10. Você deve gerar uma secretkey para o arquivo settings.py (https://djecrety.ir/), que por padrão vai estar vazia.
+<h4 align="center">12. rode o app "python manage.py runserver"</h4>
+<h4 align="center">13. acesse a pagina admin</h4>
 <a href='http://127.0.0.1:8000/admin' align="center">Admin</a>
-<h4 align="center">13. crie um grupo de usuario chamado "user_admin" com todas as permissoes</h4>
-<h4 align="center">14. crie um grupo de usuario chamado "user_common" sem nenhuma permissão</h4>
-<h4 align="center">15. atribua ao super user criado anteriormente o grupo "user_admin"</h4>
-<h4 align="center">16. acesse o site</h4>
+<h4 align="center">14. crie um grupo de usuario chamado "user_admin" com todas as permissoes</h4>
+<h4 align="center">15. crie um grupo de usuario chamado "user_common" sem nenhuma permissão</h4>
+<h4 align="center">16. atribua ao super user criado anteriormente o grupo "user_admin"</h4>
+<h4 align="center">17. acesse o site</h4>
 <a href='http://127.0.0.1:8000/' align="center">Localhost</a>
