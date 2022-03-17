@@ -8,6 +8,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.views import generic
 from datetime import date, timedelta
 from django.contrib.auth.models import Group
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -35,14 +36,30 @@ def cadastroFamilia(request):
     return render(request,'cadastro.html',{'form': form})
 
 def cadastroIntegranteFamilia(request):
-    form = IntegranteFamiliaForm()
     if request.method == 'POST':
-        form = IntegranteFamiliaForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('Lista de Familias')
+        novoIntegrante = IntegranteFamilia(
+            familia= Familia.objects.get(cpfChefeFamilia=request.POST.get('idFamilia')),
+            nome = request.POST.get('nomeIntegrante'),
+            cpf= request.POST.get('cpfIntegrante')
+        )
 
-    return render(request,'cadastro.html',{'form': form})
+        novoIntegrante.save()
+        return redirect('Lista de Familias')
+
+    return render(request,'cadastroIntegranteFamiliar.html')
+
+def searchFamiliaByCpf(request):
+    chefeFamiliaCpf = request.GET.get('cpf')
+    payload=[]
+
+    if chefeFamiliaCpf:
+        familias = Familia.objects.filter(cpfChefeFamilia__icontains=chefeFamiliaCpf)
+
+        for familia in familias:
+            payload.append(familia.cpfChefeFamilia)
+
+    return JsonResponse({'status': 200, 'data': payload})
+
 
 def cadastroItem(request):
     if request.method == 'POST':
@@ -56,13 +73,29 @@ def cadastroItem(request):
 
 def cadastroRepresentante(request):
     if request.method == 'POST':
-        form = RepresentanteForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('Lista de Representantes')
-    form = RepresentanteForm()
+        novoRepresentate = Representante(idEntidade = Entidade.objects.get(nome=request.POST.get('nomeEntidade')),
+            nome = request.POST.get('nomeRepresentante'),
+            cpf = request.POST.get('cpfRepresentate'),
+            endereco = request.POST.get('endereco'),
+            obsercacao = request.POST.get('observacao')
+        )
 
-    return render(request,'cadastro.html',{'form': form})
+        novoRepresentate.save()
+        return redirect('Lista de Representantes')
+
+    return render(request,'cadastroRepresentante.html')
+
+def searchEntidadeByName(request):
+    nomeEntidade = request.GET.get('nomeEntidade')
+    payload=[]
+
+    if nomeEntidade:
+        entidades = Entidade.objects.filter(nome__icontains=nomeEntidade)
+
+        for entidade in entidades:
+            payload.append(entidade.nome)
+
+    return JsonResponse({'status': 200, 'data': payload})
 
 def cadastroUsuario(request):
     if request.method == 'POST':

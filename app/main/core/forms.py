@@ -28,7 +28,7 @@ class FamiliaForm(forms.ModelForm):
 class IntegranteFamiliaForm(forms.ModelForm):
     class Meta:
         model = IntegranteFamilia
-        fields = "__all__"
+        fields = ["nome", "cpf"]
 
 class ItemForm(forms.ModelForm):
     class Meta:
