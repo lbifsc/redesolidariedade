@@ -37,5 +37,7 @@ urlpatterns = [
     path('listaUsuario/', views.listaUsuario.as_view(), name='Lista de Usuarios'), 
     path('listaItem/', views.listaItem.as_view(), name='Lista de Itens'),  
     path('searchFamiliaByCpf/', views.searchFamiliaByCpf, name='searchFamiliaByCpf'),  
-    path('searchEntidadeByName/', views.searchEntidadeByName, name='searchEntidadeByName'),   
+    path('searchEntidadeByName/', views.searchEntidadeByName, name='searchEntidadeByName'), 
+    path('searchItemByName/', views.searchItemByName, name='searchItemByName'),   
+    path('searchRepresentanteByName/', views.searchRepresentanteByName, name='searchRepresentanteByName'),   
 ]

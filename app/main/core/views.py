@@ -9,6 +9,7 @@ from django.views import generic
 from datetime import date, timedelta
 from django.contrib.auth.models import Group
 from django.http import JsonResponse
+import json
 
 # Create your views here.
 
@@ -384,28 +385,48 @@ def buscacpf(request):
     return render(request, 'cpfBusca.html')
 
 def movimentos(request, pk):
-    movimento_forms = Movimentos()
-    item_movimento_formset = inlineformset_factory(Movimentos, MovimentosItem, form=MovimentosItemForm, extra=0, can_delete=False, min_num=1, validate_min=True)
-
     if request.method == 'POST':
-        forms = MovimentosForm(request.POST, request.FILES, instance=movimento_forms, prefix='main')
-        formset = item_movimento_formset(request.POST, request.FILES, instance=movimento_forms, prefix='item')
+        newMovimentos = Movimentos(
+            idFamilia = Familia.objects.get(pk=pk),
+            representante = Representante.objects.get(nome=request.POST.get('nomeRepresentante')),
+            justificativa = request.POST.get('justificativa')
+        )
 
-        if forms.is_valid() and formset.is_valid():
-            forms = forms.save(commit=False)
-            forms.idFamilia = Familia.objects.get(pk=pk)
-            forms.save()
-            formset.save()
-            url = "../../detalhesDoacao/" + str(forms.pk)
-            return redirect(url)
+        newMovimentos.save()
 
+        for item in json.loads(request.POST.get('itens')):
+            newMovimentoItem = MovimentosItem(
+                movimentos = Movimentos.objects.get(pk=newMovimentos.pk),
+                item = Item.objects.get(descricao = item['item']),
+                quantidade = item['quantity']
+            )
+            newMovimentoItem.save()
+
+        url = "../../detalhesDoacao/" + str(newMovimentos.pk)
+        return redirect(url)
     else:
-        forms = MovimentosForm(instance=movimento_forms, prefix='main')
-        formset = item_movimento_formset(instance=movimento_forms, prefix='item')
+        return render(request, 'realizaDoacao.html')
 
-    context = {
-        'forms': forms,
-        'formset': formset,
-    }
+def searchItemByName(request):
+    nomeItem = request.GET.get('nomeItem')
+    payload=[]
 
-    return render(request, 'realizaDoacao.html', context)
+    if nomeItem:
+        itens = Item.objects.filter(descricao__icontains=nomeItem)
+
+        for item in itens:
+            payload.append(item.descricao)
+
+    return JsonResponse({'status': 200, 'data': payload})
+
+def searchRepresentanteByName(request):
+    nomeRepresentante = request.GET.get('nomeRepresentante')
+    payload=[]
+
+    if nomeRepresentante:
+        representantes = Representante.objects.filter(nome__icontains=nomeRepresentante)
+
+        for representante in representantes:
+            payload.append(representante.nome)
+
+    return JsonResponse({'status': 200, 'data': payload})
