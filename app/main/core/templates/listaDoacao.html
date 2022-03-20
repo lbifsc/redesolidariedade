@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% load user_tags %}
   {% block content %} {% block styles %} 
@@ -13,12 +12,14 @@
             <div class="col-sm-7">
                 <h2>Doações</h2>
                 <br>
+              <form action="" method="GET">
                 <div class="search col">
-                  <input type="text" class="search form-control" placeholder="Digite a data da doação.." disabled>
-                  <button type="submit" id="find" disabled>
+                  <input value="{{ request.GET.search }}" name="search" type="text" class="search form-control" placeholder="Search...">
+                  <button type="submit" id="find">
                     <i class="fas fa-search"></i>
                   </button>
                 </div>
+              </form>
             </div>
             {% if user.is_authenticated %}
             <div class="btn-principal">
@@ -63,5 +64,5 @@
           </tbody>
         </table>
     </div>
-  </div>  
+  </div>
 {% endblock %}

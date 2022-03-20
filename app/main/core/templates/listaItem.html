@@ -12,12 +12,14 @@
             <div class="col-sm-7">
                 <h2>Itens</h2>
                 <br>
+              <form action="" method="get">
                 <div class="search col">
-                  <input type="text" class="search form-control" placeholder="Digite o nome do item.." disabled>
-                  <button type="submit" id="find" disabled>
+                  <input value="{{ request.GET.search }}" name="search" type="text" class="search form-control" placeholder="Search...">
+                  <button type="submit" id="find">
                     <i class="fas fa-search"></i>
                   </button>
                 </div>
+              </form>
             </div>
 
             <div class="btn-principal">

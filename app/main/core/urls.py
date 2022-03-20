@@ -17,6 +17,7 @@ urlpatterns = [
     path('cadastroItem/', views.cadastroItem, name='Cadastro de Itens'),
     path('cadastroItem/edit/<int:pk>/', views.editarItem, name='Editar Item'),
     path('cadastroItem/delete/<int:pk>/', views.excluirItem, name='Excluir Item'),
+    path('cadastroCategoriaItem/', views.cadastroCategoriaItem, name = 'Cadastro Categoria Item'),
     path('cadastroRepresentante/', views.cadastroRepresentante, name='Cadastro de Representantes'),
     path('cadastroRepresentante/edit/<int:pk>/', views.editarRepresentante, name='Editar Representante'),
     path('cadastroRepresentante/delete/<int:pk>/', views.excluirRepresentante, name='Excluir Representante'),

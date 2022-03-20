@@ -8,20 +8,6 @@
 {% block content %}
   <div class="row h-100 d-flex justify-content-center p-3" style="gap: 
   0.5em; overflow-y: auto;">
-    <div class="col bg-dark p-3 count-item">
-      <h3 class="title">Usuários</h3>
-      <div class="percentage-holder">
-        <h4 class="" id="user-percentage"></h4>
-        <h4>em relação ao último mês.</h4>
-      </div>
-    
-
-      <div class="info-holder">
-        <i class="fas fa-user icon"></i>
-        <div class="counter" id="user-counter">
-        </div>
-      </div>
-    </div>
 
 
     <div class="col bg-dark p-3 count-item">
@@ -70,10 +56,6 @@
     </div>
 
     <div class="col-12 p-3 bg-dark d-flex justify-content-center align-items-center">
-      <canvas id="user-chart" height="80"></canvas>
-    </div>
-
-    <div class="col-12 p-3 bg-dark d-flex justify-content-center align-items-center">
       <canvas id="entity-chart" height="80"></canvas>
     </div>
 
@@ -93,8 +75,6 @@
 
   <!-- Counters -->
   <script>
-    const userCounter = document.querySelector("#user-counter")
-    const userPercentage = document.querySelector("#user-percentage")
     const entityCounter = document.querySelector("#entity-counter");
     const entityPercentage = document.querySelector("#entity-percentage")
     const familyCounter = document.querySelector("#family-counter");
@@ -122,12 +102,6 @@
     window.onload = () => {
       const start = 0;
 
-      const users = {
-        counter: userCounter,
-        end: "{{ user_count }}",
-        last_month: "{{ user_lastmonth }}",
-      }
-
       const entities = {
         counter: entityCounter,
         end: "{{ entity_count }}",
@@ -146,12 +120,10 @@
         last_month: "{{ donation_lastmonth }}",
       }
 
-      count(start, users.end, users.counter);
       count(start, entities.end, entities.counter);
       count(start, families.end, families.counter);
       count(start, donations.end, donations.counter);
 
-      userPercentage.innerHTML = getPercentage(userPercentage, users.last_month, users.end)
       entityPercentage.innerHTML = getPercentage(entityPercentage, entities.last_month, entities.end) 
       familyPercentage.innerHTML = getPercentage(familyPercentage, families.last_month, families.end) 
       donationPercentage.innerHTML = getPercentage(donationPercentage, donations.last_month, donations.end) 
@@ -160,7 +132,6 @@
 
   <!-- Charts -->
   <script>
-    const userCtx = document.querySelector("#user-chart").getContext("2d");
     const entityCtx = document.querySelector("#entity-chart").getContext("2d");
     const familyCtx = document.querySelector("#family-chart").getContext("2d");
     const donationCtx = document.querySelector("#donation-chart").getContext("2d");
@@ -175,45 +146,9 @@
 
     Chart.defaults.color = "#fff";
 
-    const gradient = userCtx.createLinearGradient(0,0,0, 400);
+    const gradient = entityCtx.createLinearGradient(0,0,0, 400);
     gradient.addColorStop(0, "rgb(86, 74, 192)");
     gradient.addColorStop(1, "rgba(77, 53, 165, 0.3)");
-
-    const userData = {
-      labels,
-      datasets: [{
-          data: ["{{ chart_data.users.today }}", "{{ chart_data.users.yesterday }}", "{{ chart_data.users.twodaysbefore }}", "{{ chart_data.users.threedaysbefore }}", "{{ chart_data.users.fourdaysbefore }}", "{{ chart_data.users.fivedaysbefore }}", "{{ chart_data.users.sixdaysbefore }}", "{{ chart_data.users.last_week }}"],
-          label: "Usuários cadastrados",
-          fill: true,
-          backgroundColor: gradient,
-          borderColor: "hsl(0, 0%, 70%)",
-          pointBackgroundColor: "hsl(0, 0%, 70%)",
-      }]
-    };
-
-    const userConfig = {
-      type: 'line',
-      data: userData,
-      options: {
-        radius: 5,
-        hitRadius: 30,
-        hoverRadius: 8,
-        responsive: true,
-        plugins: {
-            legend: {
-                labels: {
-                    font: {
-                        size: 14,
-                        weight: 600,
-                        family: "Nunito",
-                    }
-                }
-            }
-        },
-      },
-    };
-
-    const userChart = new Chart(userCtx, userConfig);
 
     const entityData = {
       labels,

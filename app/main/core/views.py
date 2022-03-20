@@ -8,6 +8,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.views import generic
 from datetime import date, timedelta
 from django.contrib.auth.models import Group
+from django.db.models import Q
 
 # Create your views here.
 
@@ -15,12 +16,12 @@ def cadastroDoacao(request):
     return render(request, 'cadastro.html')
 
 def cadastroEntidade(request):
+    form = EntidadeForm()
     if request.method == 'POST':
         form = EntidadeForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('Lista de Representantes')
-    form = EntidadeForm()
 
     return render(request,'cadastro.html',{'form': form})
 
@@ -44,34 +45,44 @@ def cadastroIntegranteFamilia(request):
 
     return render(request,'cadastro.html',{'form': form})
 
+def cadastroCategoriaItem(request):
+    form = CategoriaItem()
+    if request.method == 'POST':
+        form = CategoriaItem(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('Lista de Itens')
+
+    return render(request,'cadastro.html',{'form': form})    
+
 def cadastroItem(request):
+    form = ItemForm()
     if request.method == 'POST':
         form = ItemForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('Lista de Itens')
-    form = ItemForm()
 
     return render(request,'cadastro.html',{'form': form})
 
 def cadastroRepresentante(request):
+    form = RepresentanteForm()    
     if request.method == 'POST':
         form = RepresentanteForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('Lista de Representantes')
-    form = RepresentanteForm()
 
     return render(request,'cadastro.html',{'form': form})
 
 def cadastroUsuario(request):
+    form = UserForm()
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
             created_user = form.save()
             created_user.groups.add(Group.objects.get(name='user_common'))
             return redirect('Lista de Usuarios')
-    form = UserForm()
 
     return render(request,'cadastro.html',{'form': form})
 
@@ -197,12 +208,8 @@ class detalhesRepresentante(DetailView):
     model = Representante
     template_name ='detalhesRepresentante.html'
 
-class detalhesUsuario(DetailView):
-    model = Usuario
-    template_name ='detalhesUsuario.html'
 
 def home(request):
-    users = Usuario.objects.all()
     families = Familia.objects.all()
     entities = Entidade.objects.all()
     donations = MovimentosItem.objects.all()
@@ -220,16 +227,7 @@ def home(request):
     last_week = date.today() - timedelta(days=7)
 
     chart_data = {
-      'users': { 
-        'today': users.filter(data_cadastro__contains=today).count(),
-        'yesterday': users.filter(data_cadastro__contains=yesterday).count(),
-        'twodaysbefore': users.filter(data_cadastro__contains=twodaysbefore).count(),
-        'threedaysbefore': users.filter(data_cadastro__contains=threedaysbefore).count(),
-        'fourdaysbefore': users.filter(data_cadastro__contains=fourdaysbefore).count(),
-        'fivedaysbefore': users.filter(data_cadastro__contains=fivedaysbefore).count(),
-        'sixdaysbefore': users.filter(data_cadastro__contains=sixdaysbefore).count(),
-        'last_week': users.filter(data_cadastro__contains=last_week).count(),
-      },
+
 
       'families': {
         'today': families.filter(data_cadastro__contains=today).count(),
@@ -266,8 +264,6 @@ def home(request):
     }
     
     context = {
-      'user_count': users.count,
-      'user_lastmonth:': users.filter(data_cadastro__range=[start, end]).count(),
       'family_count': families.count,
       'family_lastmonth': families.filter(data_cadastro__range=[start, end]).count(),
       'entity_count': entities.count,
@@ -292,40 +288,84 @@ def relatorioUsuario(request):
     return render(request, 'relatorioUsuario.html')
 
 class listaDoacao(ListView):
-   template_name = 'listaDoacao.html'
-   context_object_name = 'movimentos_list'
+    model = Movimentos
+    template_name = 'listaDoacao.html'
+    context_object_name = 'movimentos_list'
 
-   def get_queryset(self):
-        return Movimentos.objects.all()
+    def get_queryset(self):
+        queryset = super(listaDoacao, self).get_queryset()
+        data = self.request.GET
+        search = data.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(idFamilia__nomeChefeFamilia__icontains=search)
+            )
+        return queryset
 
 class listaFamilia(ListView):
+    model = Familia
     template_name = 'listaFamilia.html'
     context_object_name = 'familias_list'
 
     def get_queryset(self):
-        return Familia.objects.all()  
+        queryset = super(listaFamilia, self).get_queryset()
+        data = self.request.GET
+        search = data.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(nomeChefeFamilia__icontains=search) |
+                Q(cpfChefeFamilia__icontains=search) |
+                Q(enderecoChefeFamilia__icontains=search)
+            )
+        return queryset
 
 class listaRepresentante(ListView):
+    model = Representante
     template_name = 'listaRepresentante.html'
     context_object_name = 'representantes_list'
 
     def get_queryset(self):
-        return Representante.objects.all()  
+        queryset = super(listaRepresentante, self).get_queryset()
+        data = self.request.GET
+        search = data.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(nome__icontains=search) |
+                Q(cpf__icontains=search) |
+                Q(endereco__icontains=search)
+            )
+        return queryset
 
 class listaUsuario(ListView):
+    model = User
     template_name = 'listaUsuario.html'
     context_object_name = 'usuarios_list'
 
     def get_queryset(self):
-        return User.objects.all() 
+        queryset = super(listaUsuario, self).get_queryset()
+        data = self.request.GET
+        search = data.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(username__icontains=search)
+            )
+        return queryset
 
 class listaItem(ListView):
+    model = Item
     template_name = 'listaItem.html'
     context_object_name = 'itens_list'
 
     def get_queryset(self):
-        return Item.objects.all()  
- 
+        queryset = super(listaItem, self).get_queryset()
+        data = self.request.GET
+        search = data.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(descricao__icontains=search) |
+                Q(categoria__icontains=search)
+            )
+        return queryset
 
 def checkForFamilyId(cpf):
     chefe = Familia.objects.filter(cpfChefeFamilia__exact=cpf)
