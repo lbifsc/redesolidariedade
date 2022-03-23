@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'bootstrapform',
     'cpf_field',
+    'django_cpf_cnpj',
     'core.apps.CoreConfig',
 ]
 

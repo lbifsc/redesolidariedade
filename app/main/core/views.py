@@ -9,6 +9,8 @@ from django.views import generic
 from datetime import date, timedelta
 from django.contrib.auth.models import Group
 from django.db.models import Q
+from django.http import JsonResponse
+import json
 
 # Create your views here.
 
@@ -36,22 +38,25 @@ def cadastroFamilia(request):
     return render(request,'cadastro.html',{'form': form})
 
 def cadastroIntegranteFamilia(request):
-    form = IntegranteFamiliaForm()
     if request.method == 'POST':
-        form = IntegranteFamiliaForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('Lista de Familias')
+        novoIntegrante = IntegranteFamilia(
+            familia= Familia.objects.get(cpfChefeFamilia=request.POST.get('idFamilia')),
+            nome = request.POST.get('nomeIntegrante'),
+            cpf= request.POST.get('cpfIntegrante')
+        )
 
-    return render(request,'cadastro.html',{'form': form})
+        novoIntegrante.save()
+        return redirect('Lista de Familias')
+
+    return render(request,'cadastroIntegranteFamiliar.html')
 
 def cadastroCategoriaItem(request):
-    form = CategoriaItem()
+    form = CategoriaItemForm()
     if request.method == 'POST':
-        form = CategoriaItem(request.POST)
+        form = CategoriaItemForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('Lista de Itens')
+            return redirect('Lista de Categorias')
 
     return render(request,'cadastro.html',{'form': form})    
 
@@ -66,14 +71,18 @@ def cadastroItem(request):
     return render(request,'cadastro.html',{'form': form})
 
 def cadastroRepresentante(request):
-    form = RepresentanteForm()    
     if request.method == 'POST':
-        form = RepresentanteForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('Lista de Representantes')
+        novoRepresentate = Representante(idEntidade = Entidade.objects.get(nome=request.POST.get('nomeEntidade')),
+            nome = request.POST.get('nomeRepresentante'),
+            cpf = request.POST.get('cpfRepresentate'),
+            endereco = request.POST.get('endereco'),
+            obsercacao = request.POST.get('observacao')
+        )
 
-    return render(request,'cadastro.html',{'form': form})
+        novoRepresentate.save()
+        return redirect('Lista de Representantes')
+
+    return render(request,'cadastroRepresentante.html')
 
 def cadastroUsuario(request):
     form = UserForm()
@@ -113,6 +122,14 @@ def editarIntegranteFamilia(request, pk, template_name='cadastro.html'):
         return redirect('Lista de Familias')
     return render(request, template_name, {'form':form})
 
+def editarCategoria(request, pk, template_name='cadastro.html'):
+    categoria = get_object_or_404(CategoriaItem, pk=pk)
+    form = CategoriaItemForm(request.POST or None, instance=categoria)
+    if form.is_valid():
+        form.save()
+        return redirect('Lista de Categorias')
+    return render(request, template_name, {'form':form})    
+
 def editarItem(request, pk, template_name='cadastro.html'):
     itens = get_object_or_404(Item, pk=pk)
     form = ItemForm(request.POST or None, instance=itens)
@@ -128,6 +145,13 @@ def editarRepresentante(request, pk, template_name='cadastro.html'):
         form.save()
         return redirect('Lista de Representantes')
     return render(request, template_name, {'form':form})
+
+def excluirCategoria(request, pk, template_name='confirm_delete.html'):
+    categoria = get_object_or_404(CategoriaItem, pk=pk)
+    if request.method=='POST':
+        categoria.delete()
+        return redirect('Lista de Categorias')
+    return render(request, template_name, {'object':categoria})    
 
 def excluirDoacao(request, pk, template_name='confirm_delete.html'):
     doacao = get_object_or_404(Movimentos, pk=pk)
@@ -212,7 +236,7 @@ class detalhesRepresentante(DetailView):
 def home(request):
     families = Familia.objects.all()
     entities = Entidade.objects.all()
-    donations = MovimentosItem.objects.all()
+    donations = Movimentos.objects.all()
 
     end = date.today().replace(day=1) - timedelta(days=1)
     start = date.today().replace(day=1) - timedelta(days=end.day)
@@ -252,14 +276,14 @@ def home(request):
       },
       
       'donations': {
-        'today': donations.filter(data_cadastro__contains=today).count(),
-        'yesterday': donations.filter(data_cadastro__contains=yesterday).count(),
-        'twodaysbefore': donations.filter(data_cadastro__contains=twodaysbefore).count(),
-        'threedaysbefore': donations.filter(data_cadastro__contains=threedaysbefore).count(),
-        'fourdaysbefore': donations.filter(data_cadastro__contains=fourdaysbefore).count(),
-        'fivedaysbefore': donations.filter(data_cadastro__contains=fivedaysbefore).count(),
-        'sixdaysbefore': donations.filter(data_cadastro__contains=sixdaysbefore).count(),
-        'last_week': donations.filter(data_cadastro__contains=last_week).count(),
+        'today': donations.filter(data__contains=today).count(),
+        'yesterday': donations.filter(data__contains=yesterday).count(),
+        'twodaysbefore': donations.filter(data__contains=twodaysbefore).count(),
+        'threedaysbefore': donations.filter(data__contains=threedaysbefore).count(),
+        'fourdaysbefore': donations.filter(data__contains=fourdaysbefore).count(),
+        'fivedaysbefore': donations.filter(data__contains=fivedaysbefore).count(),
+        'sixdaysbefore': donations.filter(data__contains=sixdaysbefore).count(),
+        'last_week': donations.filter(data__contains=last_week).count(),
       }
     }
     
@@ -269,7 +293,7 @@ def home(request):
       'entity_count': entities.count,
       'entity_lastmonth': entities.filter(data_cadastro__range=[start, end]).count(),
       'donation_count': donations.count,
-      'donation_lastmonth': donations.filter(data_cadastro__range=[start, end]).count(),
+      'donation_lastmonth': donations.filter(data__range=[start, end]).count(),
       'chart_data': chart_data,
     }
 
@@ -351,6 +375,21 @@ class listaUsuario(ListView):
             )
         return queryset
 
+class listaCategoriaItem(ListView):
+    model = CategoriaItem
+    template_name = 'listaCategoria.html'
+    context_object_name = 'categoriaItens_list'
+
+    def get_queryset(self):
+        queryset = super(listaCategoriaItem, self).get_queryset()
+        data = self.request.GET
+        search = data.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(descricao__icontains=search) 
+            )
+        return queryset        
+
 class listaItem(ListView):
     model = Item
     template_name = 'listaItem.html'
@@ -363,7 +402,7 @@ class listaItem(ListView):
         if search:
             queryset = queryset.filter(
                 Q(descricao__icontains=search) |
-                Q(categoria__icontains=search)
+                Q(categoria__descricao__icontains=search)
             )
         return queryset
 
@@ -391,28 +430,72 @@ def buscacpf(request):
     return render(request, 'cpfBusca.html')
 
 def movimentos(request, pk):
-    movimento_forms = Movimentos()
-    item_movimento_formset = inlineformset_factory(Movimentos, MovimentosItem, form=MovimentosItemForm, extra=0, can_delete=False, min_num=1, validate_min=True)
-
     if request.method == 'POST':
-        forms = MovimentosForm(request.POST, request.FILES, instance=movimento_forms, prefix='main')
-        formset = item_movimento_formset(request.POST, request.FILES, instance=movimento_forms, prefix='item')
+        newMovimentos = Movimentos(
+            idFamilia = Familia.objects.get(pk=pk),
+            representante = Representante.objects.get(nome=request.POST.get('nomeRepresentante')),
+            justificativa = request.POST.get('justificativa')
+        )
 
-        if forms.is_valid() and formset.is_valid():
-            forms = forms.save(commit=False)
-            forms.idFamilia = Familia.objects.get(pk=pk)
-            forms.save()
-            formset.save()
-            url = "../../detalhesDoacao/" + str(forms.pk)
-            return redirect(url)
+        newMovimentos.save()
 
+        for item in json.loads(request.POST.get('itens')):
+            newMovimentoItem = MovimentosItem(
+                movimentos = Movimentos.objects.get(pk=newMovimentos.pk),
+                item = Item.objects.get(descricao = item['item']),
+                quantidade = item['quantity']
+            )
+            newMovimentoItem.save()
+
+        url = "../../detalhesDoacao/" + str(newMovimentos.pk)
+        return redirect(url)
     else:
-        forms = MovimentosForm(instance=movimento_forms, prefix='main')
-        formset = item_movimento_formset(instance=movimento_forms, prefix='item')
+        return render(request, 'realizaDoacao.html')
 
-    context = {
-        'forms': forms,
-        'formset': formset,
-    }
+def searchFamiliaByCpf(request):
+    chefeFamiliaCpf = request.GET.get('cpf')
+    payload=[]
 
-    return render(request, 'realizaDoacao.html', context)
+    if chefeFamiliaCpf:
+        familias = Familia.objects.filter(cpfChefeFamilia__icontains=chefeFamiliaCpf)
+
+        for familia in familias:
+            payload.append(familia.cpfChefeFamilia)
+
+    return JsonResponse({'status': 200, 'data': payload})
+
+def searchEntidadeByName(request):
+    nomeEntidade = request.GET.get('nomeEntidade')
+    payload=[]
+
+    if nomeEntidade:
+        entidades = Entidade.objects.filter(nome__icontains=nomeEntidade)
+
+        for entidade in entidades:
+            payload.append(entidade.nome)
+
+    return JsonResponse({'status': 200, 'data': payload})
+
+def searchItemByName(request):
+    nomeItem = request.GET.get('nomeItem')
+    payload=[]
+
+    if nomeItem:
+        itens = Item.objects.filter(descricao__icontains=nomeItem)
+
+        for item in itens:
+            payload.append(item.descricao)
+
+    return JsonResponse({'status': 200, 'data': payload})
+
+def searchRepresentanteByName(request):
+    nomeRepresentante = request.GET.get('nomeRepresentante')
+    payload=[]
+
+    if nomeRepresentante:
+        representantes = Representante.objects.filter(nome__icontains=nomeRepresentante)
+
+        for representante in representantes:
+            payload.append(representante.nome)
+
+    return JsonResponse({'status': 200, 'data': payload})

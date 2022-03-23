@@ -1,95 +1,155 @@
 {% extends 'base.html' %}
-{% load widget_tweaks %}
-{% load bootstrap %}
-
-{% block content %}{% block styles %}
+{% block content %} {% load widget_tweaks %} {% block styles %}
+{% load user_tags %}
 {% load static %}
       <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
       <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
       <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
 {% endblock %}
-{% if user.is_authenticated %}
+
 <div class="col">
-    <div class="table-wrapper" id="round">
-      <div class="table-title" id="round-top">
-          <div class="row">
-            <div class="col-sm-7">
-                <h2>Realizar Doação</h2>
-            <div class="col-md-10 col-xs-10 col-sm-10">
-            </div>
-            <div class="col-md-1 col-xs-1 col-sm-1"></div>
-            </div>
-         </div>
+  <div class="table-wrapper" id="round">
+    <div class="table-title" id="round-top">
+      <div class="row">
+        <div class="col-sm-7">
+          <h2>Cadastro Doação:</h2>
+          <div class="col-md-1 col-xs-1 col-sm-1"></div>
         </div>
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    {{ formset.management_form }}
-
-                    <div class="row">
-                        <div class="col-sm-8">
-                          <legend style="border-bottom: 1px solid #e5e5e5;">Itens</legend>
-                          <div id="order" class="form-inline">
-                            {% for item_estoque_form in formset %}
-                              <div id="item-{{ forloop.counter0 }}" class="form-group" style="margin-top: 10px">
-                                {{ item_estoque_form|bootstrap }}
-                              </div>
-                            {% endfor %}
-                          </div>
-                        </div>
-                        <a class="btn pull-left" id="add-item"><i class="fa fa-plus"></i> Add Item</a>
-                    </div>
-                        
-                    <p> 
-
-
-                    </p>
-                    {{ forms|bootstrap }}
-                    <p> 
-
-
-                    </p>
-        
-                    <div class="form-inline buttons">
-                        <a href="{% url 'Cadastro de Doações' %}" class="btn btn-warning pull-right"><i class="fa fa-times"></i> Cancelar</a>
-                        <button class="btn btn-primary pull-right" value="Save"><i class="fa fa-floppy-o"></i> Salvar</button>
-                    </div>
-                </form>
-            </div>
-        </div>   
-    </div> 
-</div>  
-
-
-         
-{% endif %}
-{% endblock content %}
-{% block script %}
-<script>
-    $(document).ready(function(){
-        $("#add-item").click(function(ev) {
-            ev.preventDefault();
-            var count = $('#order').children().length;
-            var tmplMarkup = $("#item-order").html();
-            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-            $("div#order").append(compiledTmpl);
-
-            // update form count
-            $('#id_item-TOTAL_FORMS').attr('value', count + 1);
-
-            // some animate to scroll to view our new form
-            $('html, body').animate({
-                scrollTop: $("#add-item").position().top-200
-            }, 800);
-        });
-    });
-</script>
-<script type="text/html" id="item-order">
-
-    <div id="item-__prefix__" class="form-group" style="margin-top: 10px">
-            {{ formset.empty_form|bootstrap }}
+      </div>
     </div>
+    <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
+      <form method="post" id="form">
+        {% csrf_token %}
+        <label>Representante :</label>
+        <div id="autocompleteRepresentante" class="autocomplete">
+            <input class="autocomplete-input" name="nomeRepresentante" id="nomeRepresentante" type="text" required/>
+            <ul class="autocomplete-result-list"></ul>
+        </div>
+        <label>Justificativa :</label>
+        <input type="text" class="form-control" name="justificativa" id="justificativa" maxLength='250' minLength='5' required> </input>
+        
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <label>Item :</label>
+                <div id="autocompleteItem" class="autocomplete mb-3">
+                    <input class="autocomplete-input" name="item" id="item" type="text"/>
+                    <ul class="autocomplete-result-list"></ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+              <label>Quantidade</label> :</label>
+              <input class="form-control" type="number" name="quantidade" id="quantidade" style="width: 150px; height: 50px"/>
+            </div>
+            
+            <button onclick="itemControl(document.getElementById('item').value,document.getElementById('quantidade').value)" type="button" class="btn btn-primary mt-3 mb-3 ml-3" id="btn">Adicionar Item</button>
+            
+          </div>
+        </div> 
+        
+        <h5>Lista Doação :</h5>
+        <div>
+            <table class="table table-dark mt-3">
+                <thead>
+                  <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Quantidade</th>
+                  </tr>
+                </thead>
+                <tbody id="tableData">
+                </tbody>
+              </table>
+        </div>
+
+        <input type="hidden" name="itens" id="itens"></input>
+
+        <button type="submit" class="btn btn-success mt-3" id="btn">Salvar</button>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+<script>
+    new Autocomplete('#autocompleteRepresentante',{
+        search: input=> {
+            const url= `/searchRepresentanteByName/?nomeRepresentante=${input}`
+            return new Promise(resolve=>{
+                fetch(url)
+                .then(response => response.json())
+                .then(data=>{
+                    resolve(data.data)
+                })
+            })
+        }
+    })
+
+    new Autocomplete('#autocompleteItem',{
+        search: input=> {
+            const url= `/searchItemByName/?nomeItem=${input}`
+            return new Promise(resolve=>{
+                fetch(url)
+                .then(response => response.json())
+                .then(data=>{
+                    resolve(data.data)
+                })
+            })
+        }
+    })
+
+    let count = 0
+    let itensToBeSend=[]
+
+    function itemControl(item, quantidade){
+        if(item != "" && quantidade != "") {
+          let element = document.getElementById("tableData")
+          let tr = document.createElement("tr")
+          let tdName = document.createElement("td")
+          let tdQuantity = document.createElement("td")
+          let tdBtn = document.createElement("button")
+          tdBtn.innerHTML = "remover"
+          tdBtn.classList.add("btn-sm")
+          tdBtn.classList.add("btn-danger")
+          tdBtn.classList.add("ml-5")
+          tr.id = `tr${count}`
+          tdBtn.onclick = function() {
+            removeItem(tr.id, item)
+          }
+          tdQuantity.innerHTML= quantidade
+          tdName.innerHTML = item
+          tr.append(tdName)
+          tr.append(tdQuantity)
+          tr.append(tdBtn)
+
+          element.appendChild(tr)
+
+          itensToBeSend.push({'item': item, 'quantity': quantidade})
+
+          cleanFields()
+          count++
+          document.getElementById("itens").value = JSON.stringify(itensToBeSend)
+        }
+    }
+
+    function cleanFields(){
+      document.getElementById("item").value =""
+      document.getElementById("quantidade").value =""
+    }
+
+    function removeItem(idElement, itemName){
+      let element = document.getElementById("tableData")
+      element.removeChild(document.getElementById(idElement))
+     
+      itensToBeSend.forEach( (valor,indice) => {
+        if(valor['item'] === itemName){
+          itensToBeSend.splice(indice, 1)
+        }
+      })
+
+      count--
+      document.getElementById("itens").value = JSON.stringify(itensToBeSend)
+    }
+
 </script>
-{% endblock script %}
+{% endblock %}

@@ -57,12 +57,6 @@ class FamiliaForm(forms.ModelForm):
     def clean_cpfChefeFamilia(self):
         cpfChefeFamilia = self.cleaned_data['cpfChefeFamilia']
         cpfChefeFamilia = re.sub('[^0-9]', '', cpfChefeFamilia)
-        if (cpfChefeFamilia == ""):
-            return cpfChefeFamilia
-        if Familia.objects.filter(cpfChefeFamilia = cpfChefeFamilia).exists():
-            raise forms.ValidationError(_('CPF já cadastrado'))
-        if IntegranteFamilia.objects.filter(cpf = cpfChefeFamilia).exists():
-            raise forms.ValidationError(_('CPF já cadastrado'))
         return cpfChefeFamilia
 
     class Meta:
@@ -79,12 +73,6 @@ class IntegranteFamiliaForm(forms.ModelForm):
     def clean_cpf(self):
         cpf = self.cleaned_data['cpf']
         cpf = re.sub('[^0-9]', '', cpf)
-        if (cpf == ""):
-            return cpf
-        if Familia.objects.filter(cpfChefeFamilia = cpf).exists():
-            raise forms.ValidationError(_('CPF já cadastrado'))
-        if IntegranteFamilia.objects.filter(cpf = cpf).exists():
-            raise forms.ValidationError(_('CPF já cadastrado'))
         return cpf
 
     class Meta:
@@ -96,7 +84,7 @@ class IntegranteFamiliaForm(forms.ModelForm):
         }
         fields = "__all__"
 
-class CategoriaItem(forms.ModelForm):
+class CategoriaItemForm(forms.ModelForm):
     class Meta:
         model = CategoriaItem
         labels = {

@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models import Sum
 from django.shortcuts import reverse
 from cpf_field.models import CPFField
+from django_cpf_cnpj.fields import CNPJField
 
 PAPEL_CHOICES = (
     ('a', 'Admin'),
@@ -13,9 +14,9 @@ PAPEL_CHOICES = (
 )
 
 class Entidade(models.Model):
-    cnpj = models.CharField(max_length=14, validators=[RegexValidator(regex="^[0-9]+$", message='Digite apenas números', code='nomatch'), MinLengthValidator(14)], help_text='Digite o cnpj da entidade', primary_key=True)
-    nome = models.CharField(max_length=96)
+    cnpj = CNPJField('cnpj')
     telefone = models.CharField(max_length=24)
+    nome = models.CharField(max_length=96)
     email = models.EmailField('email')
     endereco = models.CharField(max_length=96)
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
