@@ -11,6 +11,7 @@ from django.contrib.auth.models import Group
 from django.db.models import Q
 from django.http import JsonResponse
 import json
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -315,6 +316,7 @@ class listaDoacao(ListView):
     model = Movimentos
     template_name = 'listaDoacao.html'
     context_object_name = 'movimentos_list'
+    paginate_by = 2
 
     def get_queryset(self):
         queryset = super(listaDoacao, self).get_queryset()
@@ -324,12 +326,13 @@ class listaDoacao(ListView):
             queryset = queryset.filter(
                 Q(idFamilia__nomeChefeFamilia__icontains=search)
             )
-        return queryset
+        return queryset        
 
 class listaFamilia(ListView):
     model = Familia
     template_name = 'listaFamilia.html'
     context_object_name = 'familias_list'
+    paginate_by = 2
 
     def get_queryset(self):
         queryset = super(listaFamilia, self).get_queryset()
@@ -347,6 +350,7 @@ class listaRepresentante(ListView):
     model = Representante
     template_name = 'listaRepresentante.html'
     context_object_name = 'representantes_list'
+    paginate_by = 2
 
     def get_queryset(self):
         queryset = super(listaRepresentante, self).get_queryset()
@@ -364,6 +368,7 @@ class listaUsuario(ListView):
     model = User
     template_name = 'listaUsuario.html'
     context_object_name = 'usuarios_list'
+    paginate_by = 2
 
     def get_queryset(self):
         queryset = super(listaUsuario, self).get_queryset()
@@ -379,6 +384,7 @@ class listaCategoriaItem(ListView):
     model = CategoriaItem
     template_name = 'listaCategoria.html'
     context_object_name = 'categoriaItens_list'
+    paginate_by = 2
 
     def get_queryset(self):
         queryset = super(listaCategoriaItem, self).get_queryset()
@@ -394,6 +400,7 @@ class listaItem(ListView):
     model = Item
     template_name = 'listaItem.html'
     context_object_name = 'itens_list'
+    paginate_by = 2
 
     def get_queryset(self):
         queryset = super(listaItem, self).get_queryset()
