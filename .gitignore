@@ -71,6 +71,7 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+.ds_store
 .pyre/
 .pytype/
 cython_debug/
