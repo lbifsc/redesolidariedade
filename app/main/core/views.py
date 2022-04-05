@@ -62,6 +62,19 @@ def searchFamiliaByCpf(request):
     return JsonResponse({'status': 200, 'data': payload})
 
 
+def searchFamiliaByCpfAndReturnTheName(request):
+    chefeFamiliaCpf = request.GET.get('cpf')
+    payload=[]
+
+    if chefeFamiliaCpf:
+        familias = Familia.objects.filter(cpfChefeFamilia=chefeFamiliaCpf)
+
+        for familia in familias:
+            payload.append(familia.nomeChefeFamilia)
+
+    return JsonResponse({'status': 200, 'data': payload})
+
+
 def cadastroItem(request):
     if request.method == 'POST':
         form = ItemForm(request.POST)

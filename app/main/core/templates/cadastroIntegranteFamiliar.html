@@ -14,30 +14,68 @@
     <div class="table-title" id="round-top">
       <div class="row">
         <div class="col-sm-7">
-          <h2>Cadastro:</h2>
+          <h2>Cadastro Integrante Familiar :</h2>
           <div class="col-md-1 col-xs-1 col-sm-1"></div>
         </div>
       </div>
     </div>
     <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
-      <form method="post">
+      <form method="post" id="familia">
         {% csrf_token %}
         <label>Familia :</label>
         <div id="autocomplete" class="autocomplete">
-            <input class="autocomplete-input" name="idFamilia" type="text" maxLength='11' minLength='11' required/>
+            <input class="autocomplete-input" name="idFamilia" onchange="loadFamily(this.value)" oninput="loadFamily(this.value)" id="familias" type="text" maxLength='11' minLength='11' required/>
             <ul class="autocomplete-result-list"></ul>
         </div>
-        <label>CPF :</label>
+        <p class="d-inline">Nome Chefe familiar :</p> <p class="d-inline" id="nomeChefeFamilia"></p> <br/>
+        <label class="mt-2">CPF :</label>
         <input type="text" class="form-control" name="cpfIntegrante" maxLength='11' minLength='11' required> </input>
         <label>Nome :</label>
         <input type="text" class="form-control" name="nomeIntegrante" maxLength='100' minLength='2' required> </input>
-        <button type="submit" class="btn btn-success mt-3">Salvar</button>
+        <button type="button" onclick="sendData()" class="btn btn-success mt-3">Salvar</button>
       </form>
     </div>
   </div>
 </div>
 <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
 <script>
+    let familias= []
+
+    function loadFamily(familaInput) {
+      const url= `/searchFamiliaByCpfAndReturnTheName/?cpf=${familaInput}`
+      let ret = new Promise(resolve=>{
+          fetch(url)
+          .then(response => response.json())
+          .then(data=>{
+              resolve(String(data.data))
+          })
+      })
+    
+      ret.then((val)=> {
+        if(val.length > 0 && val != "" & val != undefined) {
+          let hiddenField = document.getElementById("nomeChefeFamilia")
+          hiddenField.innerHTML = val
+        } else {
+          let hiddenField = document.getElementById("nomeChefeFamilia")
+          hiddenField.innerHTML = " Não encontrado!!!"
+        }
+      })
+    }
+
+    function sendData() {
+      let familiasUserInput = document.getElementById("familias")
+      let familiasUserInputValue = familiasUserInput.value
+
+      familias.forEach((value) =>{
+        if(String(value) == familiasUserInputValue){
+          document.forms.familia.submit()
+        }
+      })
+
+      familiasUserInput.classList.add("form-control")
+      familiasUserInput.classList.add("is-invalid")
+    }
+
     new Autocomplete('#autocomplete',{
         search: input=> {
             const url= `/searchFamiliaByCpf/?cpf=${input}`
@@ -45,6 +83,7 @@
                 fetch(url)
                 .then(response => response.json())
                 .then(data=>{
+                    familias.push((data.data))
                     resolve(data.data)
                 })
             })
