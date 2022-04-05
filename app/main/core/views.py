@@ -38,16 +38,28 @@ def cadastroFamilia(request):
 
 def cadastroIntegranteFamilia(request):
     if request.method == 'POST':
-        novoIntegrante = IntegranteFamilia(
-            familia= Familia.objects.get(cpfChefeFamilia=request.POST.get('idFamilia')),
-            nome = request.POST.get('nomeIntegrante'),
-            cpf= request.POST.get('cpfIntegrante')
-        )
+        cpf = IntegranteFamilia.objects.get(cpf=request.POST.get('cpfIntegrante'))
 
-        novoIntegrante.save()
-        return redirect('Lista de Familias')
+        if isValid(cpf) :
+            novoIntegrante = IntegranteFamilia(
+                familia= Familia.objects.get(cpfChefeFamilia=request.POST.get('idFamilia')),
+                nome = request.POST.get('nomeIntegrante'),
+                cpf= request.POST.get('cpfIntegrante')
+            )
+
+            novoIntegrante.save()
+            return redirect('Lista de Familias')
+        #else : ((CRIAR PAGINA DETALHES PARA INTEGRANTES FAMILIAR ))
+            # url = "../../detalhesIntegranteFamiliar/" + str(newMovimentos.pk)
+            #return redirect(url)
 
     return render(request,'cadastroIntegranteFamiliar.html')
+
+def isValid(cpf) :
+    if cpf != None:
+        return False
+    return True
+
 
 def searchFamiliaByCpf(request):
     chefeFamiliaCpf = request.GET.get('cpf')
