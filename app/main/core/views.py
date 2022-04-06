@@ -38,17 +38,28 @@ def cadastroFamilia(request):
 
     return render(request,'cadastro.html',{'form': form})
 
+def isValid(cpf) :
+    if cpf == None:
+        return True
+    return False
+
 def cadastroIntegranteFamilia(request):
     if request.method == 'POST':
-        novoIntegrante = IntegranteFamilia(
-            familia= Familia.objects.get(cpfChefeFamilia=request.POST.get('idFamilia')),
-            nome = request.POST.get('nomeIntegrante'),
-            cpf= request.POST.get('cpfIntegrante')
-        )
+        try: 
+            cpf = IntegranteFamilia.objects.get(cpf=str(re.sub('[^0-9]', '', request.POST.get('cpfIntegrante'))))
+        except:
+            cpf = None
 
-        novoIntegrante.save()
-        return redirect('Lista de Familias')
-
+        if isValid(cpf):
+            novoIntegrante = IntegranteFamilia(
+                familia= Familia.objects.get(nomeChefeFamilia=request.POST.get('idFamilia')),
+                nome = request.POST.get('nomeIntegrante'),
+                cpf = re.sub('[^0-9]', '', request.POST.get('cpfIntegrante'))
+            )
+            novoIntegrante.save()
+            return redirect('Lista de Familias')
+        else:
+            return redirect('Detalhes Familia', pk=cpf.familia.pk)
     return render(request,'cadastroIntegranteFamiliar.html')
 
 def cadastroCategoriaItem(request):
@@ -73,15 +84,23 @@ def cadastroItem(request):
 
 def cadastroRepresentante(request):
     if request.method == 'POST':
-        novoRepresentate = Representante(idEntidade = Entidade.objects.get(nome=request.POST.get('nomeEntidade')),
-            nome = request.POST.get('nomeRepresentante'),
-            cpf = request.POST.get('cpfRepresentate'),
-            endereco = request.POST.get('endereco'),
-            obsercacao = request.POST.get('observacao')
-        )
+        try: 
+            cpf = Representante.objects.get(cpf=str(re.sub('[^0-9]', '', request.POST.get('cpfRepresentante'))))
+        except:
+            cpf = None
 
-        novoRepresentate.save()
-        return redirect('Lista de Representantes')
+        if isValid(cpf):
+            novoRepresentate = Representante(idEntidade = Entidade.objects.get(nome=request.POST.get('nomeEntidade')),
+                nome = request.POST.get('nomeRepresentante'),
+                cpf = re.sub('[^0-9]', '', request.POST.get('cpfRepresentante')),
+                endereco = request.POST.get('endereco'),
+                observacao = request.POST.get('observacao')
+            )
+
+            novoRepresentate.save()
+            return redirect('Lista de Representantes')
+        else:
+           return redirect('Detalhes Representante', pk=cpf.pk) 
 
     return render(request,'cadastroRepresentante.html')
 
@@ -109,7 +128,7 @@ def editarEntidade(request, pk, template_name='cadastro.html'):
 
 def editarFamilia(request, pk, template_name='cadastro.html'):
     familias = get_object_or_404(Familia, pk=pk)
-    form = FamiliaForm(request.POST or None, instance=familias)
+    form = EditFamiliaForm(request.POST or None, instance=familias)
     if form.is_valid():
         form.save()
         return redirect('Lista de Familias')
@@ -141,7 +160,7 @@ def editarItem(request, pk, template_name='cadastro.html'):
 
 def editarRepresentante(request, pk, template_name='cadastro.html'):
     representantes = get_object_or_404(Representante, pk=pk)
-    form = RepresentanteForm(request.POST or None, instance=representantes)
+    form = EditRepresentanteForm(request.POST or None, instance=representantes)
     if form.is_valid():
         form.save()
         return redirect('Lista de Representantes')
@@ -459,15 +478,15 @@ def movimentos(request, pk):
     else:
         return render(request, 'realizaDoacao.html')
 
-def searchFamiliaByCpf(request):
-    chefeFamiliaCpf = request.GET.get('cpf')
+def searchFamiliaByName(request):
+    nome = request.GET.get('nomeChefeFamilia')
     payload=[]
 
-    if chefeFamiliaCpf:
-        familias = Familia.objects.filter(cpfChefeFamilia__icontains=chefeFamiliaCpf)
+    if nome:
+        familias = Familia.objects.filter(nomeChefeFamilia__icontains=nome)
 
         for familia in familias:
-            payload.append(familia.cpfChefeFamilia)
+            payload.append(familia.nomeChefeFamilia)
 
     return JsonResponse({'status': 200, 'data': payload})
 

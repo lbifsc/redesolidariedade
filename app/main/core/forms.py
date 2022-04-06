@@ -24,17 +24,19 @@ class EntidadeForm(forms.ModelForm):
         }
         fields = "__all__"
 
-class RepresentanteForm(forms.ModelForm):
+
+class EditRepresentanteForm(forms.ModelForm):
+
     class Meta:
         model = Representante
         labels = {
           "idEntidade": "Entidade",
           "nome": "Nome",
-          "cpf": "CPF",
           "endereco": "Endereço",
           "observacao": "Observação"
         }
         fields = "__all__"
+        exclude = ['cpf']
 
 class UserForm(UserCreationForm):
     email = forms.EmailField(max_length=96)
@@ -57,7 +59,22 @@ class FamiliaForm(forms.ModelForm):
     def clean_cpfChefeFamilia(self):
         cpfChefeFamilia = self.cleaned_data['cpfChefeFamilia']
         cpfChefeFamilia = re.sub('[^0-9]', '', cpfChefeFamilia)
+        if (cpfChefeFamilia == ""):
+            return cpfChefeFamilia
+        if Familia.objects.filter(cpfChefeFamilia = cpfChefeFamilia).exists():
+            raise forms.ValidationError(_('CPF em Uso!'))
         return cpfChefeFamilia
+
+    class Meta:
+        model = Familia
+        labels = {
+          "nomeChefeFamilia": "Nome",
+          "cpfChefeFamilia": "CPF",
+          "enderecoChefeFamilia": "Endereço",
+        }
+        fields = "__all__"
+
+class EditFamiliaForm(forms.ModelForm):
 
     class Meta:
         model = Familia
@@ -67,6 +84,8 @@ class FamiliaForm(forms.ModelForm):
           "enderecoChefeFamilia": "Endereço",
         }
         fields = "__all__"
+        exclude = ['cpfChefeFamilia']
+
 
 class IntegranteFamiliaForm(forms.ModelForm):
 

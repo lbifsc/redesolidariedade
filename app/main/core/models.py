@@ -1,3 +1,4 @@
+from enum import unique
 from django.core.validators import RegexValidator, MinLengthValidator
 from django.utils.translation import gettext as _
 from django.db.models.signals import post_save
@@ -59,8 +60,8 @@ class CategoriaItem(models.Model):
         return self.descricao
 
 class Item(models.Model):
-    descricao = models.CharField(max_length=100)
     categoria = models.ForeignKey(CategoriaItem, on_delete=models.CASCADE)
+    descricao = models.CharField(max_length=100)
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 
     def __str__(self):
