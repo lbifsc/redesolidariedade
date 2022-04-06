@@ -27,11 +27,11 @@
             <input class="autocomplete-input" name="idFamilia" onchange="loadFamily(this.value)" oninput="loadFamily(this.value)" id="familias" type="text" maxLength='11' minLength='11' required/>
             <ul class="autocomplete-result-list"></ul>
         </div>
-        <p class="d-inline">Nome Chefe familiar :</p> <p class="d-inline" id="nomeChefeFamilia"></p> <br/>
+        <p class="d-inline"><b>Nome Chefe familiar :</b></p> <p class="d-inline" id="nomeChefeFamilia"></p> <br/>
         <label class="mt-2">CPF :</label>
-        <input type="text" class="form-control" name="cpfIntegrante" maxLength='11' minLength='11' required> </input>
+        <input type="text" class="form-control" id="cpfIntegrante" name="cpfIntegrante" maxLength='11' minLength='11' required> </input>
         <label>Nome :</label>
-        <input type="text" class="form-control" name="nomeIntegrante" maxLength='100' minLength='2' required> </input>
+        <input type="text" class="form-control" id="nomeIntegrante" name="nomeIntegrante" maxLength='100' minLength='2' required> </input>
         <button type="button" onclick="sendData()" class="btn btn-success mt-3">Salvar</button>
       </form>
     </div>
@@ -66,14 +66,64 @@
       let familiasUserInput = document.getElementById("familias")
       let familiasUserInputValue = familiasUserInput.value
 
-      familias.forEach((value) =>{
-        if(String(value) == familiasUserInputValue){
-          document.forms.familia.submit()
+      if(validateInput()) {
+        if(familiasUserInputValue != "") {
+          familias.forEach((value) =>{
+            if(String(value) == familiasUserInputValue){
+              document.forms.familia.submit()
+            }
+          })
         }
-      })
 
-      familiasUserInput.classList.add("form-control")
-      familiasUserInput.classList.add("is-invalid")
+        familiasUserInput.classList.add("form-control")
+        familiasUserInput.classList.add("is-invalid")
+      }
+    }
+
+    function validateInput(){
+      //VALIDAÇÃO DE TODOS CAMPOS, POIS UTILIZANDO ONCLICK NO BOTAO ELE PULA AS TAGS REQUIRED DO HTML E SE MUDAR PARA O FORM ONSUBMIT ELE ENVIA PRIMEIRO 
+      //SEM CONSULTAR A FUNÇÃO
+      let nome = document.getElementById("nomeIntegrante")
+      let cpf = document.getElementById("cpfIntegrante")
+      let erroNome
+      let erroCpf 
+  
+      if(validaNome(nome.value)) {
+        nome.classList.add("form-control")
+        nome.classList.add("is-valid")
+        erroNome = false
+      } else {
+        erroNome = true
+        nome.classList.add("form-control")
+        nome.classList.add("is-invalid")
+      }
+
+      if(validaCpf(cpf.value)) {
+        cpf.classList.add("form-control")
+        cpf.classList.add("is-valid")
+        erroCpf = false
+      } else {
+        erroCpf = true
+        cpf.classList.add("form-control")
+        cpf.classList.add("is-invalid")
+      }
+
+      if(erroNome || erroCpf)
+        return false
+
+      return true
+    }
+
+    function validaNome(nome) {
+      if(nome.length > 5)
+        return true
+      return false
+    }
+
+    function validaCpf(cpf) {
+      if(cpf.length === 11) 
+        return true
+      return false
     }
 
     new Autocomplete('#autocomplete',{

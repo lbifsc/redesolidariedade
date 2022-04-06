@@ -38,7 +38,10 @@ def cadastroFamilia(request):
 
 def cadastroIntegranteFamilia(request):
     if request.method == 'POST':
-        cpf = IntegranteFamilia.objects.get(cpf=request.POST.get('cpfIntegrante'))
+        try:
+            cpf = IntegranteFamilia.objects.get(cpf=request.POST.get('cpfIntegrante'))
+        except:
+            cpf = None
 
         if isValid(cpf) :
             novoIntegrante = IntegranteFamilia(
@@ -99,11 +102,13 @@ def cadastroItem(request):
 
 def cadastroRepresentante(request):
     if request.method == 'POST':
+        #USUARIO LOGADO
+        print(request.user)
         novoRepresentate = Representante(idEntidade = Entidade.objects.get(nome=request.POST.get('nomeEntidade')),
             nome = request.POST.get('nomeRepresentante'),
-            cpf = request.POST.get('cpfRepresentate'),
-            endereco = request.POST.get('endereco'),
-            obsercacao = request.POST.get('observacao')
+            cpf = request.POST.get('cpfRepresentante'),
+            endereco = request.POST.get('endereco') if request.POST.get('endereco') != "" else "" ,
+            obsercacao = request.POST.get('observacao') if request.POST.get('observacao') != "" else ""
         )
 
         novoRepresentate.save()
@@ -430,7 +435,8 @@ def movimentos(request, pk):
         url = "../../detalhesDoacao/" + str(newMovimentos.pk)
         return redirect(url)
     else:
-        return render(request, 'realizaDoacao.html')
+        user = request.user
+        return render(request, 'realizaDoacao.html',{'user': user})
 
 def searchItemByName(request):
     nomeItem = request.GET.get('nomeItem')

@@ -22,11 +22,7 @@
     <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
       <form method="post" id="form">
         {% csrf_token %}
-        <label>Representante :</label>
-        <div id="autocompleteRepresentante" class="autocomplete">
-            <input class="autocomplete-input" name="nomeRepresentante" id="nomeRepresentante" type="text" required/>
-            <ul class="autocomplete-result-list"></ul>
-        </div>
+        <h5><b>Representante : {{user}}</b></h5> <br/>
         <label>Justificativa :</label>
         <input type="text" class="form-control" name="justificativa" id="justificativa" maxLength='250' minLength='5' required> </input>
         
