@@ -78,41 +78,49 @@
       if(validaNome(nome.value)) {
         nome.classList.add("form-control")
         nome.classList.add("is-valid")
+        nome.classList.remove("is-invalid")
         erroNome = false
       } else {
         erroNome = true
         nome.classList.add("form-control")
         nome.classList.add("is-invalid")
+        nome.classList.remove("is-valid")
       }
 
       if(validaCpf(cpf.value)) {
         cpf.classList.add("form-control")
         cpf.classList.add("is-valid")
+        cpf.classList.remove("is-invalid")
         erroCpf = false
       } else {
         erroCpf = true
         cpf.classList.add("form-control")
         cpf.classList.add("is-invalid")
+        cpf.classList.remove("is-valid")
       }
 
       if(validaEndereco(endereco.value)) {
         endereco.classList.add("form-control")
         endereco.classList.add("is-valid")
+        endereco.classList.remove("is-invalid")
         erroEndereco = false
       } else {
         erroEndereco = true
         endereco.classList.add("form-control")
         endereco.classList.add("is-invalid")
+        endereco.classList.remove("is-valid")
       }
 
       if(validaObservacao(observacao.value)) {
         observacao.classList.add("form-control")
         observacao.classList.add("is-valid")
+        observacao.classList.remove("is-invalid")
         erroObservacao = false
       } else {
         erroObservacao = true
         observacao.classList.add("form-control")
         observacao.classList.add("is-invalid")
+        observacao.classList.remove("is-valid")
       }
 
       if(erroNome || erroObservacao || erroCpf || erroEndereco)

@@ -72,7 +72,7 @@ def searchFamiliaByCpf(request):
         familias = Familia.objects.filter(cpfChefeFamilia__icontains=chefeFamiliaCpf)
 
         for familia in familias:
-            payload.append(familia.cpfChefeFamilia)
+            payload.append(familia.cpfChefeFamilia + " / " + familia.nomeChefeFamilia)
 
     return JsonResponse({'status': 200, 'data': payload})
 
@@ -418,7 +418,7 @@ def movimentos(request, pk):
     if request.method == 'POST':
         newMovimentos = Movimentos(
             idFamilia = Familia.objects.get(pk=pk),
-            representante = Representante.objects.get(nome=request.POST.get('nomeRepresentante')),
+            representante = Representante.objects.get(nome=request.user),
             justificativa = request.POST.get('justificativa')
         )
 

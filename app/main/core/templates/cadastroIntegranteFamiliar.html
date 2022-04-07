@@ -27,7 +27,7 @@
             <input class="autocomplete-input" name="idFamilia" onchange="loadFamily(this.value)" oninput="loadFamily(this.value)" id="familias" type="text" maxLength='11' minLength='11' required/>
             <ul class="autocomplete-result-list"></ul>
         </div>
-        <p class="d-inline"><b>Nome Chefe familiar :</b></p> <p class="d-inline" id="nomeChefeFamilia"></p> <br/>
+        <!--<p class="d-inline"><b>Nome Chefe familiar :</b></p> <p class="d-inline" id="nomeChefeFamilia"></p> <br/>-->
         <label class="mt-2">CPF :</label>
         <input type="text" class="form-control" id="cpfIntegrante" name="cpfIntegrante" maxLength='11' minLength='11' required> </input>
         <label>Nome :</label>
@@ -40,27 +40,28 @@
 <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
 <script>
     let familias= []
-
-    function loadFamily(familaInput) {
-      const url= `/searchFamiliaByCpfAndReturnTheName/?cpf=${familaInput}`
-      let ret = new Promise(resolve=>{
-          fetch(url)
-          .then(response => response.json())
-          .then(data=>{
-              resolve(String(data.data))
-          })
-      })
-    
-      ret.then((val)=> {
-        if(val.length > 0 && val != "" & val != undefined) {
-          let hiddenField = document.getElementById("nomeChefeFamilia")
-          hiddenField.innerHTML = val
-        } else {
-          let hiddenField = document.getElementById("nomeChefeFamilia")
-          hiddenField.innerHTML = " Não encontrado!!!"
-        }
-      })
-    }
+    /*
+      function loadFamily(familaInput) {
+        const url= `/searchFamiliaByCpfAndReturnTheName/?cpf=${familaInput}`
+        let ret = new Promise(resolve=>{
+            fetch(url)
+            .then(response => response.json())
+            .then(data=>{
+                resolve(String(data.data))
+            })
+        })
+      
+        ret.then((val)=> {
+          if(val.length > 0 && val != "" & val != undefined) {
+            let hiddenField = document.getElementById("nomeChefeFamilia")
+            hiddenField.innerHTML = val
+          } else {
+            let hiddenField = document.getElementById("nomeChefeFamilia")
+            hiddenField.innerHTML = " Não encontrado!!!"
+          }
+        })
+      }
+    */
 
     function sendData() {
       let familiasUserInput = document.getElementById("familias")
@@ -68,8 +69,10 @@
 
       if(validateInput()) {
         if(familiasUserInputValue != "") {
+          familiasUserInputValue = familiasUserInputValue.split("/")[0].trim()
           familias.forEach((value) =>{
-            if(String(value) == familiasUserInputValue){
+            if(String(value).split("/")[0].trim() == familiasUserInputValue){
+              document.getElementById("familias").value = familiasUserInputValue
               document.forms.familia.submit()
             }
           })
@@ -91,21 +94,25 @@
       if(validaNome(nome.value)) {
         nome.classList.add("form-control")
         nome.classList.add("is-valid")
+        nome.classList.remove("is-invalid")
         erroNome = false
       } else {
         erroNome = true
         nome.classList.add("form-control")
         nome.classList.add("is-invalid")
+        nome.classList.remove("is-valid")
       }
 
       if(validaCpf(cpf.value)) {
         cpf.classList.add("form-control")
         cpf.classList.add("is-valid")
+        cpf.classList.remove("is-invalid")
         erroCpf = false
       } else {
         erroCpf = true
         cpf.classList.add("form-control")
         cpf.classList.add("is-invalid")
+        cpf.classList.remove("is-valid")
       }
 
       if(erroNome || erroCpf)
