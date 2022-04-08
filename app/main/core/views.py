@@ -102,16 +102,22 @@ def cadastroItem(request):
 
 def cadastroRepresentante(request):
     if request.method == 'POST':
-        #USUARIO LOGADO
-        print(request.user)
-        novoRepresentate = Representante(idEntidade = Entidade.objects.get(nome=request.POST.get('nomeEntidade')),
+
+        novoRepresentante = Representante(idEntidade = Entidade.objects.get(nome=request.POST.get('nomeEntidade')),
             nome = request.POST.get('nomeRepresentante'),
             cpf = request.POST.get('cpfRepresentante'),
             endereco = request.POST.get('endereco') if request.POST.get('endereco') != "" else "" ,
             obsercacao = request.POST.get('observacao') if request.POST.get('observacao') != "" else ""
         )
+        novoRepresentante.save()
 
-        novoRepresentate.save()
+        relatedUser = User.objects.create_user(
+            username= novoRepresentante.nome,
+            email= novoRepresentante.nome,
+            password='NOVOUSUARIO'
+        )
+
+        relatedUser.save()
         return redirect('Lista de Representantes')
 
     return render(request,'cadastroRepresentante.html')
