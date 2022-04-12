@@ -11,6 +11,8 @@ from django.contrib.auth.models import Group
 from django.db.models import Q
 from django.http import JsonResponse
 import json
+from dateutil.parser import parse
+from datetime import timedelta
 from django.core.paginator import Paginator
 
 # Create your views here.
@@ -335,23 +337,41 @@ class listaDoacao(ListView):
     model = Movimentos
     template_name = 'listaDoacao.html'
     context_object_name = 'movimentos_list'
-    paginate_by = 2
+    paginate_by = 8
 
     def get_queryset(self):
+
         queryset = super(listaDoacao, self).get_queryset()
         data = self.request.GET
         search = data.get('search')
+
+        data_inicial = self.request.GET.get('data_inicial')
+        data_final = self.request.GET.get('data_final')
+
         if search:
+            if data_inicial and data_final:
+                queryset = queryset.filter(
+                    Q(idFamilia__nomeChefeFamilia__icontains=search)|
+                    Q(data__range=[data_inicial, data_final])
+                )
+            else:
+                queryset = queryset.filter(
+                    Q(idFamilia__nomeChefeFamilia__icontains=search)
+                )
+
+        if data_inicial and data_final:
+            data_final = parse(data_final) + timedelta(1)
             queryset = queryset.filter(
-                Q(idFamilia__nomeChefeFamilia__icontains=search)
+                data__range=[data_inicial, data_final]
             )
-        return queryset        
+
+        return queryset      
 
 class listaFamilia(ListView):
     model = Familia
     template_name = 'listaFamilia.html'
     context_object_name = 'familias_list'
-    paginate_by = 2
+    paginate_by = 8
 
     def get_queryset(self):
         queryset = super(listaFamilia, self).get_queryset()
@@ -360,8 +380,7 @@ class listaFamilia(ListView):
         if search:
             queryset = queryset.filter(
                 Q(nomeChefeFamilia__icontains=search) |
-                Q(cpfChefeFamilia__icontains=search) |
-                Q(enderecoChefeFamilia__icontains=search)
+                Q(cpfChefeFamilia__icontains=search) 
             )
         return queryset
 
@@ -369,7 +388,7 @@ class listaRepresentante(ListView):
     model = Representante
     template_name = 'listaRepresentante.html'
     context_object_name = 'representantes_list'
-    paginate_by = 2
+    paginate_by = 8
 
     def get_queryset(self):
         queryset = super(listaRepresentante, self).get_queryset()
@@ -378,8 +397,7 @@ class listaRepresentante(ListView):
         if search:
             queryset = queryset.filter(
                 Q(nome__icontains=search) |
-                Q(cpf__icontains=search) |
-                Q(endereco__icontains=search)
+                Q(cpf__icontains=search) 
             )
         return queryset
 
@@ -387,7 +405,7 @@ class listaUsuario(ListView):
     model = User
     template_name = 'listaUsuario.html'
     context_object_name = 'usuarios_list'
-    paginate_by = 2
+    paginate_by = 8
 
     def get_queryset(self):
         queryset = super(listaUsuario, self).get_queryset()
@@ -403,7 +421,7 @@ class listaCategoriaItem(ListView):
     model = CategoriaItem
     template_name = 'listaCategoria.html'
     context_object_name = 'categoriaItens_list'
-    paginate_by = 2
+    paginate_by = 8
 
     def get_queryset(self):
         queryset = super(listaCategoriaItem, self).get_queryset()
@@ -419,7 +437,7 @@ class listaItem(ListView):
     model = Item
     template_name = 'listaItem.html'
     context_object_name = 'itens_list'
-    paginate_by = 2
+    paginate_by = 8
 
     def get_queryset(self):
         queryset = super(listaItem, self).get_queryset()

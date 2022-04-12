@@ -2,6 +2,7 @@ django
 django-cpf-cnpj
 django-cpf
 django-bootstrap-form
+python-dateutil
 django-widget-tweaks
 python-dotenv
 whitenoise
