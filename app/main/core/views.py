@@ -47,32 +47,57 @@ def isValid(cpf) :
 
 def cadastroIntegranteFamilia(request):
     if request.method == 'POST':
-        try: 
-            cpf = IntegranteFamilia.objects.get(cpf=str(re.sub('[^0-9]', '', request.POST.get('cpfIntegrante'))))
+        try:
+            cpf = IntegranteFamilia.objects.get(cpf=request.POST.get('cpfIntegrante'))
         except:
             cpf = None
 
-        if isValid(cpf):
+        if isValid(cpf) :
             novoIntegrante = IntegranteFamilia(
-                familia= Familia.objects.get(nomeChefeFamilia=request.POST.get('idFamilia')),
+                familia= Familia.objects.get(cpfChefeFamilia=request.POST.get('idFamilia')),
                 nome = request.POST.get('nomeIntegrante'),
-                cpf = re.sub('[^0-9]', '', request.POST.get('cpfIntegrante'))
+                cpf= request.POST.get('cpfIntegrante')
             )
+
             novoIntegrante.save()
             return redirect('Lista de Familias')
-        else:
-            return redirect('Detalhes Familia', pk=cpf.familia.pk)
+        #else : ((CRIAR PAGINA DETALHES PARA INTEGRANTES FAMILIAR ))
+            # url = "../../detalhesIntegranteFamiliar/" + str(newMovimentos.pk)
+            #return redirect(url)
+
     return render(request,'cadastroIntegranteFamiliar.html')
 
-def cadastroCategoriaItem(request):
-    form = CategoriaItemForm()
-    if request.method == 'POST':
-        form = CategoriaItemForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('Lista de Categorias')
+def isValid(cpf) :
+    if cpf != None:
+        return False
+    return True
 
-    return render(request,'cadastro.html',{'form': form})    
+
+def searchFamiliaByCpf(request):
+    chefeFamiliaCpf = request.GET.get('cpf')
+    payload=[]
+
+    if chefeFamiliaCpf:
+        familias = Familia.objects.filter(cpfChefeFamilia__icontains=chefeFamiliaCpf)
+
+        for familia in familias:
+            payload.append(familia.cpfChefeFamilia + " / " + familia.nomeChefeFamilia)
+
+    return JsonResponse({'status': 200, 'data': payload})
+
+
+def searchFamiliaByCpfAndReturnTheName(request):
+    chefeFamiliaCpf = request.GET.get('cpf')
+    payload=[]
+
+    if chefeFamiliaCpf:
+        familias = Familia.objects.filter(cpfChefeFamilia=chefeFamiliaCpf)
+
+        for familia in familias:
+            payload.append(familia.nomeChefeFamilia)
+
+    return JsonResponse({'status': 200, 'data': payload})
+
 
 def cadastroItem(request):
     form = ItemForm()
@@ -86,25 +111,37 @@ def cadastroItem(request):
 
 def cadastroRepresentante(request):
     if request.method == 'POST':
-        try: 
-            cpf = Representante.objects.get(cpf=str(re.sub('[^0-9]', '', request.POST.get('cpfRepresentante'))))
-        except:
-            cpf = None
 
-        if isValid(cpf):
-            novoRepresentate = Representante(idEntidade = Entidade.objects.get(nome=request.POST.get('nomeEntidade')),
-                nome = request.POST.get('nomeRepresentante'),
-                cpf = re.sub('[^0-9]', '', request.POST.get('cpfRepresentante')),
-                endereco = request.POST.get('endereco'),
-                observacao = request.POST.get('observacao')
-            )
+        novoRepresentante = Representante(idEntidade = Entidade.objects.get(nome=request.POST.get('nomeEntidade')),
+            nome = request.POST.get('nomeRepresentante'),
+            cpf = request.POST.get('cpfRepresentante'),
+            endereco = request.POST.get('endereco') if request.POST.get('endereco') != "" else "" ,
+            obsercacao = request.POST.get('observacao') if request.POST.get('observacao') != "" else ""
+        )
+        novoRepresentante.save()
 
-            novoRepresentate.save()
-            return redirect('Lista de Representantes')
-        else:
-           return redirect('Detalhes Representante', pk=cpf.pk) 
+        relatedUser = User.objects.create_user(
+            username= novoRepresentante.nome,
+            email= novoRepresentante.nome,
+            password='NOVOUSUARIO'
+        )
+
+        relatedUser.save()
+        return redirect('Lista de Representantes')
 
     return render(request,'cadastroRepresentante.html')
+
+def searchEntidadeByName(request):
+    nomeEntidade = request.GET.get('nomeEntidade')
+    payload=[]
+
+    if nomeEntidade:
+        entidades = Entidade.objects.filter(nome__icontains=nomeEntidade)
+
+        for entidade in entidades:
+            payload.append(entidade.nome)
+
+    return JsonResponse({'status': 200, 'data': payload})
 
 def cadastroUsuario(request):
     form = UserForm()
@@ -477,7 +514,7 @@ def movimentos(request, pk):
     if request.method == 'POST':
         newMovimentos = Movimentos(
             idFamilia = Familia.objects.get(pk=pk),
-            representante = Representante.objects.get(nome=request.POST.get('nomeRepresentante')),
+            representante = Representante.objects.get(nome=request.user),
             justificativa = request.POST.get('justificativa')
         )
 
@@ -494,31 +531,8 @@ def movimentos(request, pk):
         url = "../../detalhesDoacao/" + str(newMovimentos.pk)
         return redirect(url)
     else:
-        return render(request, 'realizaDoacao.html')
-
-def searchFamiliaByName(request):
-    nome = request.GET.get('nomeChefeFamilia')
-    payload=[]
-
-    if nome:
-        familias = Familia.objects.filter(nomeChefeFamilia__icontains=nome)
-
-        for familia in familias:
-            payload.append(familia.nomeChefeFamilia)
-
-    return JsonResponse({'status': 200, 'data': payload})
-
-def searchEntidadeByName(request):
-    nomeEntidade = request.GET.get('nomeEntidade')
-    payload=[]
-
-    if nomeEntidade:
-        entidades = Entidade.objects.filter(nome__icontains=nomeEntidade)
-
-        for entidade in entidades:
-            payload.append(entidade.nome)
-
-    return JsonResponse({'status': 200, 'data': payload})
+        user = request.user
+        return render(request, 'realizaDoacao.html',{'user': user})
 
 def searchItemByName(request):
     nomeItem = request.GET.get('nomeItem')

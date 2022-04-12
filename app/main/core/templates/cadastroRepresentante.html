@@ -14,34 +14,145 @@
     <div class="table-title" id="round-top">
       <div class="row">
         <div class="col-sm-7">
-          <h2>Cadastro:</h2>
+          <h2>Cadastro Representante :</h2>
           <div class="col-md-1 col-xs-1 col-sm-1"></div>
         </div>
       </div>
     </div>
     <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
-      <form method="post" novalidate>
+      <form method="post" id="representante">
         {% csrf_token %}
         <label>Entidade :</label>
         <div id="autocomplete" class="autocomplete">
-            <input class="autocomplete-input" name="nomeEntidade" type="text" required/>
+            <input class="autocomplete-input" name="nomeEntidade" id="entidade" type="text" required/>
             <ul class="autocomplete-result-list"></ul>
         </div>
         <label>Nome :</label>
-        <input type="text" class="form-control" name="nomeRepresentante" maxLength='100' minLength='2' required> </input>
+        <input type="text" class="form-control" name="nomeRepresentante" id="nomeRepresentante" maxLength='100' minLength='2' required> </input>
         <label>CPF :</label>
-        <input type="text" class="form-control" name="cpfRepresentante" required> </input>
+        <input type="text" class="form-control" name="cpfRepresentante" id="cpfRepresentante" maxLength='11' minLength='11' required> </input>
         <label>Endereço :</label>
-        <input type="text" class="form-control" name="endereco" maxLength='100' minLength='2' required> </input>
+        <input type="text" class="form-control" name="endereco" id="endereco" maxLength='100' minLength='2' required> </input>
         <label>Observação :</label>
-        <input type="text" class="form-control" name="observacao" maxLength='250' minLength='2' required> </input>
-        <button type="submit" class="btn btn-success mt-3">Salvar</button>
+        <input type="text" class="form-control" name="observacao" id="observacao" maxLength='250' minLength='2' required> </input>
+        <button type="button" onclick="sendData()" class="btn btn-success mt-3">Salvar</button>
       </form>
     </div>
   </div>
 </div>
 <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
 <script>
+    let entidades = []
+
+    function sendData() {
+      let entidadeUserInput = document.getElementById("entidade")
+      let entidadeUserInputValue = entidadeUserInput.value
+
+      if(validateInput()) {
+        if(entidadeUserInputValue !== "") {
+          entidades.forEach((value) =>{
+            if(String(value) == entidadeUserInputValue) {
+              document.forms.representante.submit()
+            }
+          })
+        } 
+        
+        entidadeUserInput.classList.add("form-control")
+        entidadeUserInput.classList.add("is-invalid")
+        
+      }
+    }
+
+    function validateInput(){
+      //VALIDAÇÃO DE TODOS CAMPOS, POIS UTILIZANDO ONCLICK NO BOTAO ELE PULA AS TAGS REQUIRED DO HTML E SE MUDAR PARA O FORM ONSUBMIT ELE ENVIA PRIMEIRO 
+      //SEM CONSULTAR A FUNÇÃO
+      let nome = document.getElementById("nomeRepresentante")
+      let cpf = document.getElementById("cpfRepresentante")
+      let endereco = document.getElementById("endereco")
+      let observacao = document.getElementById("observacao")
+      let erroNome
+      let erroCpf 
+      let erroEndereco
+      let erroObservacao
+
+      if(validaNome(nome.value)) {
+        nome.classList.add("form-control")
+        nome.classList.add("is-valid")
+        nome.classList.remove("is-invalid")
+        erroNome = false
+      } else {
+        erroNome = true
+        nome.classList.add("form-control")
+        nome.classList.add("is-invalid")
+        nome.classList.remove("is-valid")
+      }
+
+      if(validaCpf(cpf.value)) {
+        cpf.classList.add("form-control")
+        cpf.classList.add("is-valid")
+        cpf.classList.remove("is-invalid")
+        erroCpf = false
+      } else {
+        erroCpf = true
+        cpf.classList.add("form-control")
+        cpf.classList.add("is-invalid")
+        cpf.classList.remove("is-valid")
+      }
+
+      if(validaEndereco(endereco.value)) {
+        endereco.classList.add("form-control")
+        endereco.classList.add("is-valid")
+        endereco.classList.remove("is-invalid")
+        erroEndereco = false
+      } else {
+        erroEndereco = true
+        endereco.classList.add("form-control")
+        endereco.classList.add("is-invalid")
+        endereco.classList.remove("is-valid")
+      }
+
+      if(validaObservacao(observacao.value)) {
+        observacao.classList.add("form-control")
+        observacao.classList.add("is-valid")
+        observacao.classList.remove("is-invalid")
+        erroObservacao = false
+      } else {
+        erroObservacao = true
+        observacao.classList.add("form-control")
+        observacao.classList.add("is-invalid")
+        observacao.classList.remove("is-valid")
+      }
+
+      if(erroNome || erroObservacao || erroCpf || erroEndereco)
+        return false
+
+      return true
+    }
+
+    function validaNome(nome) {
+      if(nome.length > 5)
+        return true
+      return false
+    }
+
+    function validaCpf(cpf) {
+      if(cpf.length === 11) 
+        return true
+      return false
+    }
+
+    function validaEndereco(endereco) {
+      if(endereco.length >= 0) 
+        return true
+      return false
+    }
+
+    function validaObservacao(observacao) {
+      if(observacao.length >= 0) 
+        return true
+      return false
+    }
+
     new Autocomplete('#autocomplete',{
         search: input=> {
             const url= `/searchEntidadeByName/?nomeEntidade=${input}`
@@ -49,10 +160,11 @@
                 fetch(url)
                 .then(response => response.json())
                 .then(data=>{
+                    entidades.push((data.data))
                     resolve(data.data)
                 })
             })
         }
     })
 </script>
-{% endblock %} 
+{% endblock %}
