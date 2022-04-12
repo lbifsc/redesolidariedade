@@ -96,7 +96,12 @@ class IntegranteFamiliaForm(forms.ModelForm):
 
     class Meta:
         model = IntegranteFamilia
-        fields = ["nome", "cpf"]
+        labels = {
+          "familia": "Família de",
+          "nome": "Nome",
+          "cpf": "CPF"
+        }
+        fields = "__all__"
 
 class CategoriaItemForm(forms.ModelForm):
     class Meta:
