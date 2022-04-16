@@ -2,10 +2,10 @@
 {% block content %} {% load widget_tweaks %} {% block styles %}
 {% load user_tags %}
 {% load static %}
-      <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
-      <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
-      <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
+<link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
+<link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 {% endblock %}
 
 <div class="col">
@@ -24,26 +24,40 @@
         {% for hidden_field in form.hidden_fields %}
         {{ hidden_field }}
         {% endfor %}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+          {% for error in form.non_field_errors %}
+          {{ error }}
+          {% endfor %}
+        </div>
+        {% endif %}
+
         {% for field in form.visible_fields %}
         <div class="form-group">
           {{ field.label_tag }}
+
+          {% if form.is_bound %}
+          {% if field.errors %}
+          {% render_field field class="form-control is-invalid" %}
+          {% for error in field.errors %}
+          <div class="invalid-feedback">
+            {{ error }}
+          </div>
+          {% endfor %}
+          {% else %}
+          {% render_field field class="form-control is-valid" %}
+          {% endif %}
+          {% else %}
           {% render_field field class="form-control" %}
-          {% if form.cpf.errors and field.name == "cpf" %}
-            {% for error in form.cpf.errors %}
-              <small class="text-danger">{{ error }}</small>
-            {% endfor %}
           {% endif %}
-          {% if form.cpfChefeFamilia.errors and field.name == "cpfChefeFamilia" %}
-            {% for error in form.cpfChefeFamilia.errors %}
-              <small class="text-danger">{{ error }}</small>
-            {% endfor %}
-          {% endif %}
+
           {% if field.help_text %}
           <small class="form-text text-muted">{{ field.help_text }}</small>
           {% endif %}
         </div>
         {% endfor %}
-        <p align="right">{% if user.is_authenticated %}<button type="submit" class="btn btn-success">Salvar</button>{% endif %}</p>
+        <p align="right"><button type="submit" class="btn btn-success">Salvar</button></p>
       </form>
     </div>
   </div>

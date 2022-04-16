@@ -12,18 +12,17 @@
             <div class="col-sm-7">
                 <h2>Famílias</h2>
                 <br>
+              <form action="" method="get">
                 <div class="search col">
-                  <input type="text" class="search form-control" placeholder="Digite o nome do chefe da família.." disabled>
-                  <button type="submit" id="find" disabled>
+                  <input value="{{ request.GET.search }}" name="search" type="text" class="search form-control" placeholder="Nome ou CPF do chefe de família">
+                  <button type="submit" id="find">
                     <i class="fas fa-search"></i>
                   </button>
                 </div>
+              </form>
             </div>
-
             <div class="btn-principal">
-                <div class="col-sm-5">
                     <a href="{% url 'Cadastro de Famílias' %}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Adicionar nova família</span></a>
-                </div>
             </div>
           </div>
       </div>
@@ -65,4 +64,5 @@
         </table>
   </div>  
   {% endif %}
+  {% include "includes/pagination.html" %}
 {% endblock %}

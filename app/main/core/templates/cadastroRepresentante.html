@@ -14,34 +14,35 @@
     <div class="table-title" id="round-top">
       <div class="row">
         <div class="col-sm-7">
-          <h2>Cadastro Representante :</h2>
+          <h2>Cadastro:</h2>
           <div class="col-md-1 col-xs-1 col-sm-1"></div>
         </div>
       </div>
     </div>
     <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
-      <form method="post" id="representante">
+      <form method="post" novalidate>
         {% csrf_token %}
         <label>Entidade :</label>
         <div id="autocomplete" class="autocomplete">
-            <input class="autocomplete-input" name="nomeEntidade" id="entidade" type="text" required/>
+            <input class="autocomplete-input" name="nomeEntidade" type="text" required/>
             <ul class="autocomplete-result-list"></ul>
         </div>
         <label>Nome :</label>
-        <input type="text" class="form-control" name="nomeRepresentante" id="nomeRepresentante" maxLength='100' minLength='2' required> </input>
+        <input type="text" class="form-control" name="nomeRepresentante" maxLength='100' minLength='2' required> </input>
         <label>CPF :</label>
-        <input type="text" class="form-control" name="cpfRepresentante" id="cpfRepresentante" maxLength='11' minLength='11' required> </input>
+        <input type="text" class="form-control" name="cpfRepresentante" required> </input>
         <label>Endereço :</label>
-        <input type="text" class="form-control" name="endereco" id="endereco" maxLength='100' minLength='2' required> </input>
+        <input type="text" class="form-control" name="endereco" maxLength='100' minLength='2' required> </input>
         <label>Observação :</label>
-        <input type="text" class="form-control" name="observacao" id="observacao" maxLength='250' minLength='2' required> </input>
-        <button type="button" onclick="sendData()" class="btn btn-success mt-3">Salvar</button>
+        <input type="text" class="form-control" name="observacao" maxLength='250' minLength='2' required> </input>
+        <button type="submit" class="btn btn-success mt-3">Salvar</button>
       </form>
     </div>
   </div>
 </div>
 <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
 <script>
+<<<<<<< HEAD
     let entidades = []
 
     function sendData() {
@@ -174,6 +175,8 @@
       return false
     }
 
+=======
+>>>>>>> ce0f34395a19857bb9c4687ff921f731ccebd812
     new Autocomplete('#autocomplete',{
         search: input=> {
             const url= `/searchEntidadeByName/?nomeEntidade=${input}`
@@ -181,11 +184,10 @@
                 fetch(url)
                 .then(response => response.json())
                 .then(data=>{
-                    entidades.push((data.data))
                     resolve(data.data)
                 })
             })
         }
     })
 </script>
-{% endblock %}
+{% endblock %} 

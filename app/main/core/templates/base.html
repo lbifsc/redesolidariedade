@@ -52,100 +52,57 @@
           
           <ul class="nav-menu">
             <hr />
-            <li class="nav-item nav-item" id="dashboard-item">
-              <a class="nav-link nav-link-active" id="dashboard-link" href="{% url 'Rede Solidariedade'%}">
-                <div>
-                  <i class="fas fa-tachometer-alt" id="dashboard-icon"></i>
-                </div>
-                Dashboard
-              </a>
-              <i
-                class="fas fa-chevron-right icon-inactive"
-                id="dashboard-arrow-icon"></i>
-            </li>
-            <hr />
-            
             {% if user.is_authenticated %} 
-            <li class="nav-item" id="familias-item">
-              <a class="nav-link" id="familias-link" href="{% url 'Lista de Familias'%}"> 
-                <div>
-                  <i class="fas fa-users" id="familias-icon"></i>
-                </div>
-                Famílias
-              </a>
-              <i class="fas fa-chevron-right icon-inactive" id="familias-arrow-icon"></i>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                aria-expanded="false"><div><i class="fa fa-address-book"></i></div>Familias</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'Cadastro de Famílias'%}">Cadastro de Famílias</a>
+                <a class="dropdown-item" href="{% url 'Cadastro de IntegranteFamilia'%}">Cadastro de Integrantes</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'Lista de Familias'%}">Lista de Famílias</a>
+              </div>
             </li>
             <hr />
-
-            <li class="nav-item" id="integrantes-item">
-              <a class="nav-link" id="integrantes-link" href="{% url 'Cadastro de IntegranteFamilia'%}">
-                <div>
-                  <i class="fas fa-users" id="integrantes-icon"></i>
-                </div>
-                Cadastro IntegranteFamilia
-              </a>
-              <i class="fas fa-chevron-right icon-inactive" id="integrantes-arrow-icon"></i>
-            </li>
-            <hr />
-
-            <li class="nav-item" id="itens-item">
-              <a class="nav-link" id="itens-link" href="{% url 'Lista de Itens'%}">
-                <div>
-                  <i class="fas fa-hand-holding-usd" id="itens-icon"></i>
-                </div>
-                Itens
-              </a>
-              <i class="fas fa-chevron-right icon-inactive" id="itens-arrow-icon"></i>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                aria-expanded="false"><div><i class="fa fa-shopping-basket"></i></div>Itens</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'Cadastro Categoria Item'%}">Cadastro de Categorias</a>
+                <a class="dropdown-item" href="{% url 'Cadastro de Itens'%}">Cadastro de Itens</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'Lista de Categorias'%}">Lista de Categorias</a>
+                <a class="dropdown-item" href="{% url 'Lista de Itens'%}">Lista de Itens</a>
+              </div>
             </li>
             <hr />
             {% endif %}
 
-            <li class="nav-item" id="doacoes-item">
-              <a class="nav-link" id="doacoes-link" href="{% url 'Lista de Doações'%}">
-                <div>
-                  <i class="fas fa-hand-holding-usd" id="doacoes-icon"></i>
-                </div>
-                Doações
-              </a>
-              <i class="fas fa-chevron-right icon-inactive" id="doacoes-arrow-icon"></i>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                aria-expanded="false"><div><i class="fa fa-heartbeat"></i></div>Doações</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'Cadastro de Doações'%}">Realizar Doação</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'Lista de Doações'%}">Lista de Doações</a>
+              </div>
             </li>
             <hr />
-
             {% if user|has_group:"user_admin" %}
-            <li class="nav-item" id="representante-item">
-              <a class="nav-link" id="representante-link" href="{% url 'Lista de Representantes'%}">
-                <div>
-                  <i class="fas fa-building" id="representante-icon"></i>
-                </div>
-                Representantes
-              </a>
-              <i class="fas fa-chevron-right icon-inactive" id="representante-arrow-icon"></i>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                aria-expanded="false"><div><i class="fa fa-smile-o"></i></div>Grupos</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'Cadastro de Representantes'%}">Cadastro de Representantes</a>
+                <a class="dropdown-item" href="{% url 'Cadastro de Entidades'%}">Cadastro de Entidades</a>
+                <a class="dropdown-item" href="{% url 'Cadastro de Usuários'%}">Cadastro de Usuarios</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'Lista de Representantes'%}">Lista de Representantes</a>
+                <a class="dropdown-item" href="{% url 'Lista de Usuarios'%}">Lista de Usuarios</a>
+              </div>
             </li>
             <hr />
-
-            <li class="nav-item" id="entidades-item">
-              <a class="nav-link" id="entidades-link" href="{% url 'Cadastro de Entidades'%}">
-                <div>
-                  <i class="fas fa-building" id="entidades-icon"></i>
-                </div>
-                Cadastro Entidades
-              </a>
-              <i class="fas fa-chevron-right icon-inactive" id="entidades-arrow-icon"></i>
-            </li>
-            <hr />
-
-            <li class="nav-item" id="usuario-item">
-              <a class="nav-link" id="usuario-link" href="{% url 'Lista de Usuarios'%}">
-                <div>
-                  <i class="fas fa-user" id="usuario-icon"></i>
-                </div>
-                Usuário
-              </a>
-              <i class="fas fa-chevron-right icon-inactive" id="usuario-arrow-icon"></i>
-            </li>
             {% endif %}
-
-            <hr />
             {% if user.is_authenticated %} 
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout'%}">
@@ -179,131 +136,6 @@
 
       </div>
     </div>
-
-    <script>
-      const currentLocation = window.location;
-      const width = window.screen.width;
-      let item;
-      let link; 
-      let icon;
-      let arrow;
-
-      if (currentLocation.toString().includes("listaFamilia")) {
-        item = document.querySelector("#familias-item");
-        link = document.querySelector("#familias-link");
-        icon = document.querySelector("#familias-icon");
-        arrow = document.querySelector("#familias-arrow-icon");
-
-        if (width > 1000) {
-          arrow.classList.remove("icon-inactive");
-          arrow.classList.add("icon-active");
-        }
-
-        item.classList.add("nav-item-active");
-        link.classList.add("nav-link-active");
-        icon.classList.add("icon-active");
-      } else if (currentLocation.toString().includes("cadastroIntegranteFamilia")) {
-        item = document.querySelector("#integrantes-item");
-        link = document.querySelector("#integrantes-link");
-        icon = document.querySelector("#integrantes-icon");
-        arrow = document.querySelector("#integrantes-arrow-icon");
-
-        if (width > 1000) {
-          arrow.classList.remove("icon-inactive");
-          arrow.classList.add("icon-active");
-        }
-
-        item.classList.add("nav-item-active");
-        link.classList.add("nav-link-active");
-        icon.classList.add("icon-active");
-      } else if (currentLocation.toString().includes("listaItem")) {
-        item = document.querySelector("#itens-item");
-        link = document.querySelector("#itens-link");
-        icon = document.querySelector("#itens-icon");
-        arrow = document.querySelector("#itens-arrow-icon");
-
-        if (width > 1000) {
-          arrow.classList.remove("icon-inactive");
-          arrow.classList.add("icon-active");
-        }
-
-        item.classList.add("nav-item-active");
-        link.classList.add("nav-link-active");
-        icon.classList.add("icon-active");
-      } else if (currentLocation.toString().includes("listaDoacao")) {
-        item = document.querySelector("#doacoes-item");
-        link = document.querySelector("#doacoes-link");
-        icon = document.querySelector("#doacoes-icon");
-        arrow = document.querySelector("#doacoes-arrow-icon");
-
-        if (width > 1000) {
-          arrow.classList.remove("icon-inactive");
-          arrow.classList.add("icon-active");
-        }
-
-        item.classList.add("nav-item-active");
-        link.classList.add("nav-link-active");
-        icon.classList.add("icon-active");
-      } else if (currentLocation.toString().includes("listaRepresentante")) {
-        item = document.querySelector("#representante-item");
-        link = document.querySelector("#representante-link");
-        icon = document.querySelector("#representante-icon");
-        arrow = document.querySelector("#representante-arrow-icon");
-
-        if (width > 1000) {
-          arrow.classList.remove("icon-inactive");
-          arrow.classList.add("icon-active");
-        }
-
-        item.classList.add("nav-item-active");
-        link.classList.add("nav-link-active");
-        icon.classList.add("icon-active");
-      } else if (currentLocation.toString().includes("cadastroEntidade")) {
-        item = document.querySelector("#entidades-item");
-        link = document.querySelector("#entidades-link");
-        icon = document.querySelector("#entidades-icon");
-        arrow = document.querySelector("#entidades-arrow-icon");
-
-        if (width > 1000) {
-          arrow.classList.remove("icon-inactive");
-          arrow.classList.add("icon-active");
-        }
-
-        item.classList.add("nav-item-active");
-        link.classList.add("nav-link-active");
-        icon.classList.add("icon-active");
-      } else if (currentLocation.toString().includes("listaUsuario")) {
-        item = document.querySelector("#usuario-item");
-        link = document.querySelector("#usuario-link");
-        icon = document.querySelector("#usuario-icon");
-        arrow = document.querySelector("#usuario-arrow-icon");
-
-        console.log();
-
-        if (width > 1000) {
-          arrow.classList.remove("icon-inactive");
-          arrow.classList.add("icon-active");
-        }
-
-        item.classList.add("nav-item-active");
-        link.classList.add("nav-link-active");
-        icon.classList.add("icon-active");
-      } else {
-        item = document.querySelector("#dashboard-item");
-        link = document.querySelector("#dashboard-link");
-        icon = document.querySelector("#dashboard-icon");
-        arrow = document.querySelector("#dashboard-arrow-icon");
-
-        if (width > 1000) {
-          arrow.classList.remove("icon-inactive");
-          arrow.classList.add("icon-active");
-        }
-
-        item.classList.add("nav-item-active");
-        link.classList.add("nav-link-active");
-        icon.classList.add("icon-active");
-      }
-    </script>
 
     <!-- Boostrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"

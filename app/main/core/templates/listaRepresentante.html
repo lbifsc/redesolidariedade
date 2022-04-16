@@ -12,18 +12,18 @@
             <div class="col-sm-7">
                 <h2>Representantes</h2>
                 <br>
+              <form action="" method="get">
                 <div class="search col">
-                  <input type="text" class="search form-control" placeholder="Digite o nome do entidade/representante.." disabled>
-                  <button type="submit" id="find" disabled>
+                  <input value="{{ request.GET.search }}" name="search" type="text" class="search form-control" placeholder="Nome ou CPF do representante">
+                  <button type="submit" id="find">
                     <i class="fas fa-search"></i>
                   </button>
                 </div>
+              </form>
             </div>
 
             <div class="btn-principal">
-                <div class="col-sm-5">
                     <a href="{% url 'Cadastro de Representantes' %}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Adicionar novo representante</span></a>
-                </div>
             </div>
           </div>
       </div>
@@ -66,4 +66,5 @@
     </div>
   </div>  
   {% endif %}
+  {% include "includes/pagination.html" %}
 {% endblock %}
