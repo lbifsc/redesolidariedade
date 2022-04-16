@@ -56,6 +56,11 @@ class UserForm(UserCreationForm):
 
 class FamiliaForm(forms.ModelForm):
 
+    def clean_nomeChefeFamilia(self):
+      nomeChefeFamilia = self.cleaned_data['nomeChefeFamilia']
+      nomeChefeFamilia = re.sub(' -- CPF:', '', nomeChefeFamilia)
+      return nomeChefeFamilia
+
     def clean_cpfChefeFamilia(self):
         cpfChefeFamilia = self.cleaned_data['cpfChefeFamilia']
         cpfChefeFamilia = re.sub('[^0-9]', '', cpfChefeFamilia)
@@ -73,6 +78,7 @@ class FamiliaForm(forms.ModelForm):
           "enderecoChefeFamilia": "Endereço",
         }
         fields = "__all__"
+
 
 class EditFamiliaForm(forms.ModelForm):
 

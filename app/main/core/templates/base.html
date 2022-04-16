@@ -82,7 +82,11 @@
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                 aria-expanded="false"><div><i class="fa fa-heartbeat"></i></div>Doações</a>
               <div class="dropdown-menu">
+                {% if user|has_group:"user_admin" %}
+                <a class="dropdown-item" href="#">Realizar Doação</a>
+                {% else %}
                 <a class="dropdown-item" href="{% url 'Cadastro de Doações'%}">Realizar Doação</a>
+                {% endif %}
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'Lista de Doações'%}">Lista de Doações</a>
               </div>

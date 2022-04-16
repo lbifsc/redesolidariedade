@@ -52,9 +52,11 @@ def cadastroIntegranteFamilia(request):
         except:
             cpf = None
 
-        if isValid(cpf):
+        if isValid(cpf): 
+            nomeChefeFamilia = request.POST.get('idFamilia')
+            nomeChefeFamilia = nomeChefeFamilia.split(' -- CPF:')
             novoIntegrante = IntegranteFamilia(
-                familia= Familia.objects.get(nomeChefeFamilia=request.POST.get('idFamilia')),
+                familia = Familia.objects.get(nomeChefeFamilia=nomeChefeFamilia[0]),
                 nome = request.POST.get('nomeIntegrante'),
                 cpf = re.sub('[^0-9]', '', request.POST.get('cpfIntegrante'))
             )
@@ -92,14 +94,24 @@ def cadastroRepresentante(request):
             cpf = None
 
         if isValid(cpf):
-            novoRepresentate = Representante(idEntidade = Entidade.objects.get(nome=request.POST.get('nomeEntidade')),
+            novoRepresentante = Representante(idEntidade = Entidade.objects.get(nome=request.POST.get('nomeEntidade')),
                 nome = request.POST.get('nomeRepresentante'),
                 cpf = re.sub('[^0-9]', '', request.POST.get('cpfRepresentante')),
                 endereco = request.POST.get('endereco'),
                 observacao = request.POST.get('observacao')
             )
 
-            novoRepresentate.save()
+            novoRepresentante.save()
+
+            relatedUser = User.objects.create_user(
+            username= novoRepresentante.nome,
+            email= novoRepresentante.nome,
+            password='NOVOUSUARIO'
+            )
+
+            relatedUser.save()
+            relatedUser.groups.add(Group.objects.get(name='user_common'))
+
             return redirect('Lista de Representantes')
         else:
            return redirect('Detalhes Representante', pk=cpf.pk) 
@@ -477,7 +489,7 @@ def movimentos(request, pk):
     if request.method == 'POST':
         newMovimentos = Movimentos(
             idFamilia = Familia.objects.get(pk=pk),
-            representante = Representante.objects.get(nome=request.POST.get('nomeRepresentante')),
+            representante = Representante.objects.get(nome=request.user),
             justificativa = request.POST.get('justificativa')
         )
 
@@ -494,19 +506,23 @@ def movimentos(request, pk):
         url = "../../detalhesDoacao/" + str(newMovimentos.pk)
         return redirect(url)
     else:
-        return render(request, 'realizaDoacao.html')
+        user = request.user
+        return render(request, 'realizaDoacao.html',{'user': user})
 
 def searchFamiliaByName(request):
     nome = request.GET.get('nomeChefeFamilia')
     payload=[]
 
     if nome:
-        familias = Familia.objects.filter(nomeChefeFamilia__icontains=nome)
+        familias = Familia.objects.filter(
+                Q(nomeChefeFamilia__icontains=nome) |
+                Q(cpfChefeFamilia__icontains=nome) 
+            )
 
         for familia in familias:
-            payload.append(familia.nomeChefeFamilia)
+            payload.append(familia.nomeChefeFamilia + ' -- CPF:' + familia.cpfChefeFamilia)
 
-    return JsonResponse({'status': 200, 'data': payload})
+    return JsonResponse({'status': 200, 'data': payload}) 
 
 def searchEntidadeByName(request):
     nomeEntidade = request.GET.get('nomeEntidade')

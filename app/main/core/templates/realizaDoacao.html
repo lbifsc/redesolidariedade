@@ -22,13 +22,9 @@
     <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
       <form method="post" id="form">
         {% csrf_token %}
-        <label>Representante :</label>
-        <div id="autocompleteRepresentante" class="autocomplete">
-            <input class="autocomplete-input" name="nomeRepresentante" id="nomeRepresentante" type="text" required/>
-            <ul class="autocomplete-result-list"></ul>
-        </div>
+        <h5><b>Representante : {{user}}</b></h5> <br/>
         <label>Justificativa :</label>
-        <input type="text" class="form-control" name="justificativa" id="justificativa" maxLength='250' minLength='5' required> </input>
+        <input type="text" class="form-control" name="justificativa" id="justificativa" maxLength='250' minLength='5'> </input>
         
         <div class="container">
           <div class="row">
@@ -65,13 +61,14 @@
 
         <input type="hidden" name="itens" id="itens"></input>
 
-        <button type="submit" class="btn btn-success mt-3" id="btn">Salvar</button>
+        <button type="button" onclick="sendData()" class="btn btn-success mt-3" id="btn">Salvar</button>
       </form>
     </div>
   </div>
 </div>
 <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
 <script>
+  /*
     new Autocomplete('#autocompleteRepresentante',{
         search: input=> {
             const url= `/searchRepresentanteByName/?nomeRepresentante=${input}`
@@ -85,6 +82,19 @@
         }
     })
 
+  */  
+    function sendData() {
+      let itens = document.getElementById("itens").value
+
+      if(itens == "") {
+        alert("A doação deve possuir no minimo um item!!!")
+      } else {
+        document.forms.form.submit()
+      }
+    }
+
+    let itensInMemory =[]
+    
     new Autocomplete('#autocompleteItem',{
         search: input=> {
             const url= `/searchItemByName/?nomeItem=${input}`
@@ -92,6 +102,7 @@
                 fetch(url)
                 .then(response => response.json())
                 .then(data=>{
+                    itensInMemory.push((data.data))
                     resolve(data.data)
                 })
             })
@@ -102,7 +113,9 @@
     let itensToBeSend=[]
 
     function itemControl(item, quantidade){
-        if(item != "" && quantidade != "") {
+        itensInMemory= itensInMemory.flat(3)
+ 
+        if(item != "" && quantidade != "" && isValidItem(String(item))) {
           let element = document.getElementById("tableData")
           let tr = document.createElement("tr")
           let tdName = document.createElement("td")
@@ -130,6 +143,20 @@
           count++
           document.getElementById("itens").value = JSON.stringify(itensToBeSend)
         }
+    }
+
+    function isValidItem(item) {
+      if(itensInMemory.indexOf(String(item)) !== -1){
+        document.getElementById("item").classList.add("form-control")
+        document.getElementById("item").classList.add("is-valid")
+        document.getElementById("item").classList.remove("is-invalid")
+        return true
+      } else {
+        document.getElementById("item").classList.add("form-control")
+        document.getElementById("item").classList.add("is-invalid")
+        document.getElementById("item").classList.remove("is-valid")
+        return false
+      }
     }
 
     function cleanFields(){
