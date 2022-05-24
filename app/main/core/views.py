@@ -14,22 +14,26 @@ import json
 from dateutil.parser import parse
 from datetime import timedelta
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
 def cadastroDoacao(request):
     return render(request, 'cadastro.html')
 
+@login_required
 def cadastroEntidade(request):
     form = EntidadeForm()
     if request.method == 'POST':
         form = EntidadeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('Lista de Representantes')
+            return redirect('Lista de Entidades')
 
     return render(request,'cadastro.html',{'form': form})
 
+@login_required
 def cadastroFamilia(request):
     form = FamiliaForm()
     if request.method == 'POST':
@@ -45,6 +49,7 @@ def isValid(cpf) :
         return True
     return False
 
+@login_required
 def cadastroIntegranteFamilia(request):
     if request.method == 'POST':
         try: 
@@ -66,6 +71,7 @@ def cadastroIntegranteFamilia(request):
             return redirect('Detalhes Familia', pk=cpf.familia.pk)
     return render(request,'cadastroIntegranteFamiliar.html')
 
+@login_required
 def cadastroCategoriaItem(request):
     form = CategoriaItemForm()
     if request.method == 'POST':
@@ -76,6 +82,7 @@ def cadastroCategoriaItem(request):
 
     return render(request,'cadastro.html',{'form': form})    
 
+@login_required
 def cadastroItem(request):
     form = ItemForm()
     if request.method == 'POST':
@@ -86,6 +93,7 @@ def cadastroItem(request):
 
     return render(request,'cadastro.html',{'form': form})
 
+@login_required
 def cadastroRepresentante(request):
     if request.method == 'POST':
         try: 
@@ -118,6 +126,7 @@ def cadastroRepresentante(request):
 
     return render(request,'cadastroRepresentante.html')
 
+@login_required
 def cadastroUsuario(request):
     form = UserForm()
     if request.method == 'POST':
@@ -137,7 +146,7 @@ def editarEntidade(request, pk, template_name='cadastro.html'):
     form = EntidadeForm(request.POST or None, instance=entidades)
     if form.is_valid():
         form.save()
-        return redirect('Lista de Representantes')
+        return redirect('Lista de Entidades')
     return render(request, template_name, {'form':form})
 
 def editarFamilia(request, pk, template_name='cadastro.html'):
@@ -180,28 +189,28 @@ def editarRepresentante(request, pk, template_name='cadastro.html'):
         return redirect('Lista de Representantes')
     return render(request, template_name, {'form':form})
 
-def excluirCategoria(request, pk, template_name='confirm_delete.html'):
+def excluirCategoria(request, pk, template_name='confirm_delete_cascade.html'):
     categoria = get_object_or_404(CategoriaItem, pk=pk)
     if request.method=='POST':
         categoria.delete()
         return redirect('Lista de Categorias')
     return render(request, template_name, {'object':categoria})    
 
-def excluirDoacao(request, pk, template_name='confirm_delete.html'):
+def excluirDoacao(request, pk, template_name='confirm_delete_cascade.html'):
     doacao = get_object_or_404(Movimentos, pk=pk)
     if request.method=='POST':
         doacao.delete()
         return redirect('Lista de Doações')
     return render(request, template_name, {'object':doacao})
 
-def excluirEntidade(request, pk, template_name='confirm_delete.html'):
+def excluirEntidade(request, pk, template_name='confirm_delete_cascade.html'):
     entidade = get_object_or_404(Entidade, pk=pk)
     if request.method=='POST':
         entidade.delete()
-        return redirect('Lista de Representantes')
+        return redirect('Lista de Entidades')
     return render(request, template_name, {'object':entidade})
 
-def excluirFamilia(request, pk, template_name='confirm_delete.html'):
+def excluirFamilia(request, pk, template_name='confirm_delete_cascade.html'):
     familia = get_object_or_404(Familia, pk=pk)
     if request.method=='POST':
         familia.delete()
@@ -236,7 +245,7 @@ def excluirUsuario(request, pk, template_name='confirm_delete.html'):
         return redirect('Lista de Usuarios')
     return render(request, template_name, {'object':usuario})
 
-
+@login_required
 def detalhesDoacao(request, pk):
     template_name = 'detalhesDoacao.html'
     movimento = Movimentos.objects.get(pk=pk)
@@ -247,11 +256,11 @@ def detalhesDoacao(request, pk):
     }
     return render(request, template_name, context)     
 
-class detalhesEntidade(DetailView):
+class detalhesEntidade(LoginRequiredMixin, DetailView):
     model = Entidade
     template_name ='detalhesEntidade.html'
 
-
+@login_required
 def detalhesFamilia(request, pk):
     template_name = 'detalhesFamilia.html'
     familia = Familia.objects.get(pk=pk)
@@ -262,7 +271,7 @@ def detalhesFamilia(request, pk):
     }
     return render(request, template_name, context)    
 
-class detalhesRepresentante(DetailView):
+class detalhesRepresentante(LoginRequiredMixin, DetailView):
     model = Representante
     template_name ='detalhesRepresentante.html'
 
@@ -333,19 +342,23 @@ def home(request):
 
     return render(request, 'home.html', context)
 
+@login_required
 def relatorioDoacao(request):
     return render(request, 'relatorioDoacao.html')
 
+@login_required
 def relatorioEntidade(request):
     return render(request, 'relatorioEntidade.html')
 
+@login_required
 def relatorioFamilia(request):
     return render(request, 'relatorioFamilia.html')
 
+@login_required
 def relatorioUsuario(request):
     return render(request, 'relatorioUsuario.html')
 
-class listaDoacao(ListView):
+class listaDoacao(LoginRequiredMixin, ListView):
     model = Movimentos
     template_name = 'listaDoacao.html'
     context_object_name = 'movimentos_list'
@@ -379,7 +392,7 @@ class listaDoacao(ListView):
 
         return queryset      
 
-class listaFamilia(ListView):
+class listaFamilia(LoginRequiredMixin, ListView):
     model = Familia
     template_name = 'listaFamilia.html'
     context_object_name = 'familias_list'
@@ -396,7 +409,7 @@ class listaFamilia(ListView):
             )
         return queryset
 
-class listaRepresentante(ListView):
+class listaRepresentante(LoginRequiredMixin, ListView):
     model = Representante
     template_name = 'listaRepresentante.html'
     context_object_name = 'representantes_list'
@@ -413,7 +426,7 @@ class listaRepresentante(ListView):
             )
         return queryset
 
-class listaUsuario(ListView):
+class listaUsuario(LoginRequiredMixin, ListView):
     model = User
     template_name = 'listaUsuario.html'
     context_object_name = 'usuarios_list'
@@ -429,7 +442,40 @@ class listaUsuario(ListView):
             )
         return queryset
 
-class listaCategoriaItem(ListView):
+class listaEntidades(LoginRequiredMixin, ListView):
+    model = Entidade
+    template_name = 'listaEntidades.html'
+    context_object_name = 'entidades_list'
+    paginate_by = 8
+
+    def get_queryset(self):
+        queryset = super(listaEntidades, self).get_queryset()
+        data = self.request.GET
+        search = data.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(nome__icontains=search)
+            )
+        return queryset
+
+
+class listaCategoriaItem(LoginRequiredMixin, ListView):
+    model = Entidade
+    template_name = 'listaEntidades.html'
+    context_object_name = 'entidades_list'
+    paginate_by = 8
+
+    def get_queryset(self):
+        queryset = super(listaEntidades, self).get_queryset()
+        data = self.request.GET
+        search = data.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(nome__icontains=search)
+            )
+        return queryset
+
+class listaItem(LoginRequiredMixin, ListView):
     model = CategoriaItem
     template_name = 'listaCategoria.html'
     context_object_name = 'categoriaItens_list'
@@ -445,23 +491,6 @@ class listaCategoriaItem(ListView):
             )
         return queryset        
 
-class listaItem(ListView):
-    model = Item
-    template_name = 'listaItem.html'
-    context_object_name = 'itens_list'
-    paginate_by = 8
-
-    def get_queryset(self):
-        queryset = super(listaItem, self).get_queryset()
-        data = self.request.GET
-        search = data.get('search')
-        if search:
-            queryset = queryset.filter(
-                Q(descricao__icontains=search) |
-                Q(categoria__descricao__icontains=search)
-            )
-        return queryset
-
 def checkForFamilyId(cpf):
     chefe = Familia.objects.filter(cpfChefeFamilia__exact=cpf)
     integrante = IntegranteFamilia.objects.filter(cpf__exact=cpf)
@@ -474,6 +503,8 @@ def checkForFamilyId(cpf):
 
     return "DONT_EXIST"
 
+
+@login_required()
 def buscacpf(request):
     if request.method == 'POST':
         cpf = request.POST["cpf"]
@@ -485,6 +516,7 @@ def buscacpf(request):
             return render(request, 'cpfErro.html')
     return render(request, 'cpfBusca.html')
 
+@login_required()
 def movimentos(request, pk):
     if request.method == 'POST':
         newMovimentos = Movimentos(
@@ -520,7 +552,7 @@ def searchFamiliaByName(request):
             )
 
         for familia in familias:
-            payload.append(familia.nomeChefeFamilia + ' -- CPF:' + familia.cpfChefeFamilia)
+            payload.append(familia.nomeChefeFamilia + ' -- CPF:' + str(familia.cpfChefeFamilia))
 
     return JsonResponse({'status': 200, 'data': payload}) 
 

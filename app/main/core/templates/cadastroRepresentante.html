@@ -30,7 +30,7 @@
         <label>Nome :</label>
         <input type="text" class="form-control" name="nomeRepresentante" id="nomeRepresentante" maxLength='100' minLength='2' required> </input>
         <label>CPF :</label>
-        <input type="text" class="form-control" name="cpfRepresentante" id="cpfRepresentante" minLength='11' required> </input>
+        <input type="text" class="form-control" name="cpfRepresentante" id="cpfRepresentante" minLength='11' maxlength="11" oninput="clearInput(this)" required> </input>
         <label>Endereço :</label>
         <input type="text" class="form-control" name="endereco" id="endereco" maxLength='100' minLength='2' required> </input>
         <label>Observação :</label>
@@ -61,6 +61,19 @@
         entidadeUserInput.classList.add("is-invalid")
         
       }
+    }
+
+    window.onload = () => {
+      const cpfInput = document.getElementById("cpfRepresentante");
+
+      if (cpfInput) 
+        cpfInput.addEventListener("paste", () => {
+          clearInput(cpfInput);
+        });
+    }
+    
+    const clearInput = (input) => {
+        input.value = input.value.replace(/\D+/g, '');
     }
 
     function validateInput(){

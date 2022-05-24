@@ -8,11 +8,36 @@
   {% endblock %}
   {% if user.is_authenticated %}
   <div class="col">
+    <div id="teste" hidden>
+      <h1>Recibo</h1>
+      <h5>Eu {{ movimento.recebedor }}, portador do cpf {{movimento.idFamilia.cpfChefeFamilia}} atesto que recebi os seguintes itens:</h3>
+      <table class="table table-bordered table-striped text-justify mb-4">
+        <thead>
+          <tr>
+            <th class="text-center">Descrição</th>
+            <th class="text-center">Quantidade</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in movimentosItens %}
+                    <tr>
+                      <th class="text-center">{{ item }}</th>
+                      <th class="text-center">{{ item.quantidade }}</th>
+                    </tr>
+                    <br>
+        {% endfor %}
+        </tbody>
+      </table>
+      <h3>____________________________________________</h3>
+      <h5>Assinatura do recebedor</h3>
+    </div>
     <div class="table-wrapper" id="round">
       <div class="table-title" id="round-top">
           <div class="row">
             <div class="col-sm-7">
                 <h2>Doação: #{{ movimento.pk }}</h2>
+                <br>
+                <input type="button" class="btn-primary p-1 rounded" style="cursor: pointer;" value="Imprimir Recibo" onclick="printDiv()"> 
             <div class="col-md-10 col-xs-10 col-sm-10">
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1"></div>
@@ -48,4 +73,23 @@
     </div> 
 </div>  
 {% endif %}
+{% block script %}
+<script>
+  function printDiv() {
+      var divContents = document.getElementById("teste").innerHTML;
+      var a = window.open('', '', 'height=500, width=500');
+      a.document.write('<html>');
+      a.document.write('<head>');
+      a.document.write("<link rel=\"stylesheet\" href=\"../../static/css/bootstrap/bootstrap.css\" type=\"text/css\" media=\"all\"/>");
+      a.document.write('</head>');
+      a.document.write('<body>');
+      a.document.write(divContents);
+      a.document.write('</body>');
+      a.document.write('</html>');
+      a.document.close();
+
+      setTimeout(function(){a.print();},1000);
+  }
+</script>
+{% endblock %}
 {% endblock %}

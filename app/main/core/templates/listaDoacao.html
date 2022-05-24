@@ -53,12 +53,14 @@
                     </form>
                 </div>
                 {% if user.is_authenticated %}
+                {% if user|has_group:"user_common" %}
                 <div class="btn-principal">
                     <div class="col-sm-5">
                         <a href="{% url 'Cadastro de Doações' %}" class="btn btn-success"><i class="material-icons">&#xE147;</i>
                             <span>Adicionar nova doação</span></a>
                     </div>
                 </div>
+                {% endif %}
                 {% endif %}
             </div>
         </div>

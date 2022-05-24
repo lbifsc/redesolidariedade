@@ -33,13 +33,17 @@
         <label>Nome :</label>
         <input type="text" class="form-control" id="nomeIntegrante" name="nomeIntegrante" maxLength='100' minLength='2' required> </input>
         <button type="button" onclick="sendData()" class="btn btn-success mt-3">Salvar</button>
+        <button type="button" class="btn btn-warning mt-3">Limpar</button>
       </form>
     </div>
   </div>
 </div>
 <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+
 <script>
-    let familias= []
+    let familias= [];
+    let familiasUserInput = document.getElementById("familias");
+    let selectedFamily = "";
     /*
       function loadFamily(familaInput) {
         const url= `/searchFamiliaByCpfAndReturnTheName/?cpf=${familaInput}`
@@ -64,15 +68,14 @@
     */
 
     function sendData() {
-      let familiasUserInput = document.getElementById("familias")
-      let familiasUserInputValue = familiasUserInput.value
-
       if(validateInput()) {
-        if(familiasUserInputValue != "") {
-          familiasUserInputValue = familiasUserInputValue.split("/")[0].trim()
+        if(selectedFamily != "") {
+          selectedFamily = selectedFamily.split("/")[0].trim()
+
           familias.forEach((value) =>{
-            if(String(value).split("/")[0].trim() == familiasUserInputValue){
-              document.getElementById("familias").value = familiasUserInputValue
+            if(String(value).split("/")[0].trim() == selectedFamily){
+              familiasUserInput.value = selectedFamily
+              familiasUserInput.disabled = false;
               document.forms.familia.submit()
             }
           })
@@ -165,7 +168,17 @@
                     resolve(data.data)
                 })
             })
-        }
+        },
+
+        onSubmit: (result) => {
+          const inputFamilia = document.querySelector("#familias")
+
+          selectedFamily = result;
+
+          inputFamilia.disabled = true;
+        } 
     })
+
+    
 </script>
 {% endblock %}

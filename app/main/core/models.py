@@ -6,8 +6,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Sum
 from django.shortcuts import reverse
-from cpf_field.models import CPFField
-from django_cpf_cnpj.fields import CNPJField
+from django_cpf_cnpj.fields import CNPJField, CPFField
 
 PAPEL_CHOICES = (
     ('a', 'Admin'),
@@ -15,7 +14,7 @@ PAPEL_CHOICES = (
 )
 
 class Entidade(models.Model):
-    cnpj = CNPJField('cnpj')
+    cnpj = CNPJField(masked=False)
     telefone = models.CharField(max_length=24)
     nome = models.CharField(max_length=96)
     email = models.EmailField('email')
@@ -28,7 +27,7 @@ class Entidade(models.Model):
 class Representante(models.Model):
     idEntidade = models.ForeignKey(Entidade, on_delete=models.CASCADE, blank = True, null = True)
     nome = models.CharField(max_length=96)
-    cpf = CPFField('cpf')
+    cpf = CPFField(masked=False)
     endereco = models.CharField(max_length=96)
     observacao = models.TextField(max_length=96, blank = True, null = True)
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
@@ -38,7 +37,7 @@ class Representante(models.Model):
 
 class Familia(models.Model):
     nomeChefeFamilia = models.CharField(max_length=96)
-    cpfChefeFamilia = CPFField('cpf')
+    cpfChefeFamilia = CPFField(masked=False)
     enderecoChefeFamilia = models.CharField(max_length=96)
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 
@@ -48,7 +47,7 @@ class Familia(models.Model):
 class IntegranteFamilia(models.Model):
     familia = models.ForeignKey(Familia, on_delete=models.CASCADE)
     nome = models.CharField(max_length=96)
-    cpf = CPFField('cpf')
+    cpf = CPFField(masked=False)
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 
     def __str__(self):

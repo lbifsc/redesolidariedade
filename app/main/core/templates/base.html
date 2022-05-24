@@ -52,7 +52,7 @@
           
           <ul class="nav-menu">
             <hr />
-            {% if user.is_authenticated %} 
+            {% if user.is_authenticated %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                 aria-expanded="false"><div><i class="fa fa-address-book"></i></div>Familias</a>
@@ -76,8 +76,6 @@
               </div>
             </li>
             <hr />
-            {% endif %}
-
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                 aria-expanded="false"><div><i class="fa fa-heartbeat"></i></div>Doações</a>
@@ -92,6 +90,7 @@
               </div>
             </li>
             <hr />
+          {% endif %}
             {% if user|has_group:"user_admin" %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
@@ -103,6 +102,7 @@
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'Lista de Representantes'%}">Lista de Representantes</a>
                 <a class="dropdown-item" href="{% url 'Lista de Usuarios'%}">Lista de Usuarios</a>
+                <a class="dropdown-item" href="{% url 'Lista de Entidades'%}">Lista de Entidades</a>
               </div>
             </li>
             <hr />

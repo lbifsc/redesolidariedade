@@ -62,4 +62,40 @@
     </div>
   </div>
 </div>
+
+<script>
+  window.onload = () => {
+    const cpfInput = document.getElementById("id_cpfChefeFamilia");
+    const cnpjInput = document.getElementById("id_cnpj");
+
+    if (cpfInput) {
+      cpfInput.setAttribute("maxLength", 11);
+
+      cpfInput.addEventListener("input", () => {
+        clearInput(cpfInput);
+      });
+
+      cpfInput.addEventListener("paste", () => {
+        clearInput(cpfInput);
+      });
+    }
+
+    if (cnpjInput) {
+      cnpjInput.setAttribute("maxLength", 14);
+
+      cnpjInput.addEventListener("input", () => {
+        clearInput(cnpjInput);
+      }); 
+
+      cnpjInput.addEventListener("paste", () => {
+        clearInput(cnpjInput);
+      }); 
+    }
+  }
+    
+  const clearInput = (input) => {
+      input.value = input.value.replace(/\D+/g, '');
+  }
+  
+</script>
 {% endblock %}
