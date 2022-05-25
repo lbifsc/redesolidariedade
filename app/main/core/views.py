@@ -1,7 +1,7 @@
 from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import User
 from .models import *
 from .forms import *
 from django.views.generic import ListView, DetailView, CreateView
@@ -11,9 +11,11 @@ from django.contrib.auth.models import Group
 from django.db.models import Q
 from django.http import JsonResponse
 import json
-from dateutil.parser import parse
-from datetime import timedelta
+import re
 from django.core.paginator import Paginator
+from django.contrib.auth.password_validation import *
+from django.contrib import messages
+from dateutil.parser import parse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -52,12 +54,12 @@ def isValid(cpf) :
 @login_required
 def cadastroIntegranteFamilia(request):
     if request.method == 'POST':
-        try: 
+        try:
             cpf = IntegranteFamilia.objects.get(cpf=str(re.sub('[^0-9]', '', request.POST.get('cpfIntegrante'))))
         except:
             cpf = None
 
-        if isValid(cpf): 
+        if isValid(cpf):
             nomeChefeFamilia = request.POST.get('idFamilia')
             nomeChefeFamilia = nomeChefeFamilia.split(' -- CPF:')
             novoIntegrante = IntegranteFamilia(
@@ -80,7 +82,7 @@ def cadastroCategoriaItem(request):
             form.save()
             return redirect('Lista de Categorias')
 
-    return render(request,'cadastro.html',{'form': form})    
+    return render(request,'cadastro.html',{'form': form})
 
 @login_required
 def cadastroItem(request):
@@ -96,7 +98,7 @@ def cadastroItem(request):
 @login_required
 def cadastroRepresentante(request):
     if request.method == 'POST':
-        try: 
+        try:
             cpf = Representante.objects.get(cpf=str(re.sub('[^0-9]', '', request.POST.get('cpfRepresentante'))))
         except:
             cpf = None
@@ -122,7 +124,7 @@ def cadastroRepresentante(request):
 
             return redirect('Lista de Representantes')
         else:
-           return redirect('Detalhes Representante', pk=cpf.pk) 
+           return redirect('Detalhes Representante', pk=cpf.pk)
 
     return render(request,'cadastroRepresentante.html')
 
@@ -133,10 +135,26 @@ def cadastroUsuario(request):
         form = UserForm(request.POST)
         if form.is_valid():
             created_user = form.save()
+            grupo, foiCriado = Group.objects.get_or_create(name='primeirologin')
+            created_user.groups.add(grupo)
             created_user.groups.add(Group.objects.get(name='user_common'))
             return redirect('Lista de Usuarios')
 
     return render(request,'cadastro.html',{'form': form})
+
+def alterarSenha(request):
+    try:
+        if request.method == 'POST':
+            if validate_password(request.POST.get('new_password2'), None, None) is None:
+                user = request.user
+                user.set_password(request.POST.get('new_password2'))
+                # Após a primeira alteração de senha, retira o usuário do grupo "primeiroLogin"
+                grupoPrimeiroLogin = Group.objects.get(name='primeirologin')
+                user.groups.remove(grupoPrimeiroLogin)
+                return render('../../accounts/reset/done/')
+    except ValidationError as excecao:
+        messages.warning(request, excecao.messages[0])
+        return redirect(request.META['HTTP_REFERER'])
 
 def editarDoacao(request):
     return render(request, 'cadastro.html')
@@ -171,7 +189,7 @@ def editarCategoria(request, pk, template_name='cadastro.html'):
     if form.is_valid():
         form.save()
         return redirect('Lista de Categorias')
-    return render(request, template_name, {'form':form})    
+    return render(request, template_name, {'form':form})
 
 def editarItem(request, pk, template_name='cadastro.html'):
     itens = get_object_or_404(Item, pk=pk)
@@ -194,7 +212,7 @@ def excluirCategoria(request, pk, template_name='confirm_delete_cascade.html'):
     if request.method=='POST':
         categoria.delete()
         return redirect('Lista de Categorias')
-    return render(request, template_name, {'object':categoria})    
+    return render(request, template_name, {'object':categoria})
 
 def excluirDoacao(request, pk, template_name='confirm_delete_cascade.html'):
     doacao = get_object_or_404(Movimentos, pk=pk)
@@ -254,7 +272,7 @@ def detalhesDoacao(request, pk):
         'movimento': movimento,
         'movimentosItens': movimentosItens,
     }
-    return render(request, template_name, context)     
+    return render(request, template_name, context)
 
 class detalhesEntidade(LoginRequiredMixin, DetailView):
     model = Entidade
@@ -269,7 +287,7 @@ def detalhesFamilia(request, pk):
         'familia': familia,
         'integrantesFamilia': integrantesFamilia,
     }
-    return render(request, template_name, context)    
+    return render(request, template_name, context)
 
 class detalhesRepresentante(LoginRequiredMixin, DetailView):
     model = Representante
@@ -317,7 +335,7 @@ def home(request):
         'sixdaysbefore': entities.filter(data_cadastro__contains=sixdaysbefore).count(),
         'last_week': entities.filter(data_cadastro__contains=last_week).count(),
       },
-      
+
       'donations': {
         'today': donations.filter(data__contains=today).count(),
         'yesterday': donations.filter(data__contains=yesterday).count(),
@@ -329,7 +347,7 @@ def home(request):
         'last_week': donations.filter(data__contains=last_week).count(),
       }
     }
-    
+
     context = {
       'family_count': families.count,
       'family_lastmonth': families.filter(data_cadastro__range=[start, end]).count(),
@@ -390,7 +408,7 @@ class listaDoacao(LoginRequiredMixin, ListView):
                 data__range=[data_inicial, data_final]
             )
 
-        return queryset      
+        return queryset
 
 class listaFamilia(LoginRequiredMixin, ListView):
     model = Familia
@@ -405,7 +423,7 @@ class listaFamilia(LoginRequiredMixin, ListView):
         if search:
             queryset = queryset.filter(
                 Q(nomeChefeFamilia__icontains=search) |
-                Q(cpfChefeFamilia__icontains=search) 
+                Q(cpfChefeFamilia__icontains=search)
             )
         return queryset
 
@@ -422,7 +440,7 @@ class listaRepresentante(LoginRequiredMixin, ListView):
         if search:
             queryset = queryset.filter(
                 Q(nome__icontains=search) |
-                Q(cpf__icontains=search) 
+                Q(cpf__icontains=search)
             )
         return queryset
 
@@ -487,17 +505,17 @@ class listaItem(LoginRequiredMixin, ListView):
         search = data.get('search')
         if search:
             queryset = queryset.filter(
-                Q(descricao__icontains=search) 
+                Q(descricao__icontains=search)
             )
-        return queryset        
+        return queryset
 
 def checkForFamilyId(cpf):
     chefe = Familia.objects.filter(cpfChefeFamilia__exact=cpf)
     integrante = IntegranteFamilia.objects.filter(cpf__exact=cpf)
-    
+
     if chefe:
       return chefe.first().pk
-    
+
     if integrante:
       return integrante.first().familia.pk
 
@@ -548,13 +566,13 @@ def searchFamiliaByName(request):
     if nome:
         familias = Familia.objects.filter(
                 Q(nomeChefeFamilia__icontains=nome) |
-                Q(cpfChefeFamilia__icontains=nome) 
+                Q(cpfChefeFamilia__icontains=nome)
             )
 
         for familia in familias:
             payload.append(familia.nomeChefeFamilia + ' -- CPF:' + str(familia.cpfChefeFamilia))
 
-    return JsonResponse({'status': 200, 'data': payload}) 
+    return JsonResponse({'status': 200, 'data': payload})
 
 def searchEntidadeByName(request):
     nomeEntidade = request.GET.get('nomeEntidade')
