@@ -120,6 +120,8 @@ def cadastroRepresentante(request):
             )
 
             relatedUser.save()
+            grupo, foiCriado = Group.objects.get_or_create(name='primeirologin')
+            relatedUser.groups.add(grupo)
             relatedUser.groups.add(Group.objects.get(name='user_common'))
 
             return redirect('Lista de Representantes')
@@ -476,24 +478,7 @@ class listaEntidades(LoginRequiredMixin, ListView):
             )
         return queryset
 
-
 class listaCategoriaItem(LoginRequiredMixin, ListView):
-    model = Entidade
-    template_name = 'listaEntidades.html'
-    context_object_name = 'entidades_list'
-    paginate_by = 8
-
-    def get_queryset(self):
-        queryset = super(listaEntidades, self).get_queryset()
-        data = self.request.GET
-        search = data.get('search')
-        if search:
-            queryset = queryset.filter(
-                Q(nome__icontains=search)
-            )
-        return queryset
-
-class listaItem(LoginRequiredMixin, ListView):
     model = CategoriaItem
     template_name = 'listaCategoria.html'
     context_object_name = 'categoriaItens_list'
@@ -506,6 +491,23 @@ class listaItem(LoginRequiredMixin, ListView):
         if search:
             queryset = queryset.filter(
                 Q(descricao__icontains=search)
+            )
+        return queryset
+
+class listaItem(LoginRequiredMixin, ListView):
+    model = Item
+    template_name = 'listaItem.html'
+    context_object_name = 'itens_list'
+    paginate_by = 2
+
+    def get_queryset(self):
+        queryset = super(listaItem, self).get_queryset()
+        data = self.request.GET
+        search = data.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(descricao__icontains=search) |
+                Q(categoria__descricao__icontains=search)
             )
         return queryset
 

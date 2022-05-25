@@ -111,6 +111,16 @@
             <hr />
             {% endif %}
             {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                aria-expanded="false"><div><i class="fa fa-solid fa-user"></i></div>{{ user.username.title }}</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'password_reset' %}">Alterar senha</a>
+              </div>
+            </li>
+
+            <hr />
+            
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout'%}">
                 <div>
@@ -186,7 +196,7 @@
     <!-- Contador regressivo da página de primeiro login -->
     <script src="{% static 'js/contadorPrimeiroLogin.js'%}"
     ></script>
-    
+
     {% block script %}
     {% endblock script %}
   </body>
