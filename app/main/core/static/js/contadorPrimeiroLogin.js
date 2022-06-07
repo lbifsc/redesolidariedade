@@ -2,9 +2,10 @@ var contador = 10;
 
 function contar() {
     document.getElementById('contador').innerHTML = contador;
-    if(contador == 0)
+    if(contador <= 0 || contador > 10)
       return;
     contador--;
 }
 
-setInterval(contar, 1000);
+if(window.location.pathname != "/accounts/password_reset/")
+  setInterval(contar, 1000);
