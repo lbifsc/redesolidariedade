@@ -486,6 +486,8 @@ def buscacpf(request):
     return render(request, 'cpfBusca.html')
 
 def movimentos(request, pk):
+
+
     if request.method == 'POST':
         newMovimentos = Movimentos(
             idFamilia = Familia.objects.get(pk=pk),
@@ -507,7 +509,8 @@ def movimentos(request, pk):
         return redirect(url)
     else:
         user = request.user
-        return render(request, 'realizaDoacao.html',{'user': user})
+        doacoesAnteriores = Movimentos.objects.filter(idFamilia__exact=pk).order_by('-data')[:5]
+        return render(request, 'realizaDoacao.html',{'user': user, 'doacoesAnteriores': doacoesAnteriores})
 
 def searchFamiliaByName(request):
     nome = request.GET.get('nomeChefeFamilia')
@@ -558,4 +561,18 @@ def searchRepresentanteByName(request):
         for representante in representantes:
             payload.append(representante.nome)
 
+    return JsonResponse({'status': 200, 'data': payload})
+
+def searchFamiliaByCpf(request):
+    cpf = request.GET.get('cpfChefeFamilia')
+    payload=[]
+
+    if cpf:
+        familias = Familia.objects.filter(
+                Q(cpfChefeFamilia__icontains=cpf) 
+            )
+
+        for familia in familias:
+            payload.append(familia.nomeChefeFamilia + ' -- CPF:' + familia.cpfChefeFamilia)
+            
     return JsonResponse({'status': 200, 'data': payload})

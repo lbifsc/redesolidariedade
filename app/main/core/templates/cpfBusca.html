@@ -20,14 +20,45 @@
             </div>
          </div>
         </div> 
-        <form method="post"> {% csrf_token %}
-            <div id="form_responsavel">
+        <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
+        <form method="post" id="cpfFamilia"> 
+            <div id="form_responsavel"> {% csrf_token %}
                 <div class="form-group col-xs-12">
-                    <input type="text" class="form-control" placeholder="Somente numeros" name="cpf" maxLength="11" minLength="11" required/>
+                    <div id="autocomplete" class="autocomplete" >
+                        <input class="autocomplete-input form-control" name="cpf" id="cpf" placeholder="Somente numeros" maxLength="11" minLength="11" required/>
+                        <ul class="autocomplete-result-list form-control"></ul>
+                    </div>
                 </div>
-            <button type="submit" class="btn btn-primary btn-lg">Buscar</button>
+            </div>
+            <button type="button" onclick="sendData()" class="btn btn-primary btn-lg">Buscar</button>
         </form>
+    </div>
     </div> 
 </div>  
 {% endif %}
+<script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+<script>
+
+    function sendData() {
+        sendCpf = String(document.getElementById("cpf").value).split(":")[1].trim()
+        document.getElementById("cpf").value = sendCpf
+        document.forms.cpfFamilia.submit()
+    }
+   
+
+    new Autocomplete('#autocomplete',{
+        search: input=> {
+            const url= `/searchFamiliaByCpf/?cpfChefeFamilia=${input}`
+            return new Promise(resolve=>{
+                fetch(url)
+                .then(response => response.json())
+                .then(data=>{
+                    console.log(data)
+                    resolve(data.data)
+                })
+            })
+        }
+    })
+</script>
 {% endblock %}
+

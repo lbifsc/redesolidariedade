@@ -43,5 +43,7 @@ urlpatterns = [
     path('searchFamiliaByName/', views.searchFamiliaByName, name='searchFamiliaByName'),  
     path('searchEntidadeByName/', views.searchEntidadeByName, name='searchEntidadeByName'), 
     path('searchItemByName/', views.searchItemByName, name='searchItemByName'),   
-    path('searchRepresentanteByName/', views.searchRepresentanteByName, name='searchRepresentanteByName'),    
+    path('searchRepresentanteByName/', views.searchRepresentanteByName, name='searchRepresentanteByName'),
+    path('searchFamiliaByCpf/', views.searchFamiliaByCpf, name='searchFamiliaByCpf'), 
+        
 ]
