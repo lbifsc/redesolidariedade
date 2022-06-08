@@ -84,10 +84,11 @@
                 aria-expanded="false"><div><i class="fa fa-heartbeat"></i></div>Doações</a>
               <div class="dropdown-menu">
                 {% if user|has_group:"user_admin" %}
+                <a class="dropdown-item" href="#">Realizar Doação</a>
                 {% else %}
                 <a class="dropdown-item" href="{% url 'Cadastro de Doações'%}">Realizar Doação</a>
-                <div class="dropdown-divider"></div>
                 {% endif %}
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'Lista de Doações'%}">Lista de Doações</a>
               </div>
             </li>
@@ -110,6 +111,7 @@
             <hr />
             {% endif %}
             {% if user.is_authenticated %}
+            
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                 aria-expanded="false"><div><i class="fa fa-solid fa-user"></i></div>{{ user.username.title }}</a>
@@ -119,7 +121,7 @@
             </li>
 
             <hr />
-            
+
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout'%}">
                 <div>
@@ -143,38 +145,12 @@
           </ul>
         </div>
 
-        {% if user|has_group:"primeirologin" %} <!-- Obriga o usuário alterar a senha no primeiro login -->
-        <div class="container col-6 d-flex align-items-center justify-content-center h-100">
-          <div class="justify-content-center">
-            <div class="card text-center d-flex p-5">
-
-              <h1 class="pl-4 pr-4 pb-4">Parece que esse é seu primeiro login!</h1>
-              <p>
-                Para uma maior segurança, redefina sua senha.</br>
-                Você será redirecionado automaticamente em <label id="contador"></label> segundos,<br/>
-                ou
-                <a href="{% url 'password_reset'%}?next={{request.path}}">
-                  clique aqui para ir agora.
-                </a>
-              </p>
-
-              <!-- Redireciona para para alteração de senha após 11 segundos. -->
-              <meta http-equiv="Refresh" content="11; url={% url 'password_reset'%}" />
-
-            </div>
-          </div>
-        </div>
-
-        {% else %}
-
-        <div class="col-lg-10 col-md-12 col-sm-12 bg-secondary">
+        <div class="col-lg-10 col-md-12 col-sm-12">
 
             {% block content %}
             {% endblock content %}
 
         </div>
-
-      {% endif %}
 
       </div>
     </div>

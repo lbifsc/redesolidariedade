@@ -24,7 +24,7 @@
         {% csrf_token %}
         <label>Familia :</label>
         <div id="autocomplete" class="autocomplete">
-            <input class="autocomplete-input" name="idFamilia" onchange="loadFamily(this.value)" oninput="loadFamily(this.value)" id="familias" type="text" required/>
+            <input class="autocomplete-input" name="idFamilia" id="familias" type="text" required/>
             <ul class="autocomplete-result-list"></ul>
         </div>
         <!--<p class="d-inline"><b>Nome Chefe familiar :</b></p> <p class="d-inline" id="nomeChefeFamilia"></p> <br/>-->

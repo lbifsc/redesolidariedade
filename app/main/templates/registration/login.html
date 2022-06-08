@@ -19,7 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;700&display=swap" rel="stylesheet">
 
 
-  <title>Tela de Login - Solidariedade</title>
+  <title>Login | Rede Solidariedade</title>
 </head>
 
 <body>
@@ -32,7 +32,15 @@
               <div class="m-5 text-center title">
                 <h2>Rede de Solidariedade</h2>
               </div>
-              <form class="m-5" method="post" action="{% url 'login' %}" class="login-form">
+
+              <!-- Exibe erros de login, caso houver -->
+              {% if form.errors %}
+    					<div class="messages px-5" role="alert">
+    						<div class="alert alert-danger">{{ form.non_field_errors }}</div>
+    					</div>
+					    {% endif %}
+
+              <form class="mx-5 mb-5" method="post" action="{% url 'login' %}" class="login-form">
 				{% csrf_token %}
                 <div class="mb-3">
                   <label class="form-label" for="nome">Login</label>
@@ -41,6 +49,10 @@
                 <div class="mb-3">
                   <label class="form-label" for="senha">Senha</label>
 				  <input class="form-control" type="password" name="password" autocomplete="current-password" required="" id="id_password">
+                </div>
+
+                <div class="mb-3">
+                  <a href="{% url 'password_reset' %}"><span>Esqueci minha senha</span></a>
                 </div>
 				<br>
                 <div class="row mb-3">

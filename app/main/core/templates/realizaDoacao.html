@@ -23,6 +23,30 @@
       <form method="post" id="form">
         {% csrf_token %}
         <h5><b>Representante : {{user}}</b></h5> <br/>
+        
+        <h5>Lista de doações anteriores:</h5>
+        <div>
+          <table class="table table-striped table-hover table-responsive-sm text-justify">
+        <thead>
+          <tr>
+            <th class="text-center">Representante:</th>
+            <th class="text-center">Data:</th>
+            <th class="text-center">Justificativa:</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for doacao in doacoesAnteriores %}
+                    <tr> 
+                      <td class="text-center"><a href="{% url 'Detalhes Doação' doacao.pk %}">{{ doacao.representante }}</a></td>
+                      <td class="text-center"><a href="{% url 'Detalhes Doação' doacao.pk %}">{{ doacao.data }}</a></td>
+                      <td class="text-center"><a href="{% url 'Detalhes Doação' doacao.pk %}">{{ doacao.justificativa }}</a></td>
+                    </tr>
+                    <br>
+        {% endfor %}
+        </tbody>
+      </table>
+        </div>
+
         <label>Justificativa :</label>
         <input type="text" class="form-control" name="justificativa" id="justificativa" maxLength='250' minLength='5'> </input>
         
