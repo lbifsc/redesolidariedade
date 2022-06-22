@@ -6,6 +6,8 @@
       <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
       <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
 {% endblock %}
 {% if user.is_authenticated %}
 <div class="col">
@@ -25,12 +27,13 @@
             <div id="form_responsavel"> {% csrf_token %}
                 <div class="form-group col-xs-12">
                     <div id="autocomplete" class="autocomplete" >
-                        <input class="autocomplete-input form-control" name="cpf" id="cpf" placeholder="Somente numeros" maxLength="11" minLength="11" required/>
-                        <ul class="autocomplete-result-list form-control"></ul>
+                        <input class="autocomplete-input" name="cpf" id="cpf" placeholder="Digite o Nome ou CPF do Favorecido..." required/>
+                        <ul class="autocomplete-result-list"></ul>
                     </div>
                 </div>
             </div>
             <button type="button" onclick="sendData()" class="btn btn-primary btn-lg">Buscar</button>
+            <button type="button" onclick="limpar()" class="btn btn-success btn-lg">Limpar</button>
         </form>
     </div>
     </div> 
@@ -40,9 +43,17 @@
 <script>
 
     function sendData() {
+        const inputFamilia = document.querySelector("#cpf")
+        inputFamilia.disabled = false;
         sendCpf = String(document.getElementById("cpf").value).split(":")[1].trim()
         document.getElementById("cpf").value = sendCpf
         document.forms.cpfFamilia.submit()
+    }
+
+    function limpar() {
+        const inputFamilia = document.querySelector("#cpf")
+        inputFamilia.disabled = false;
+        document.getElementById("cpf").value = ""
     }
    
 
@@ -57,7 +68,13 @@
                     resolve(data.data)
                 })
             })
-        }
+        },
+        onSubmit: (result) => {
+          const inputFamilia = document.querySelector("#cpf")
+          inputFamilia.disabled = true;
+        } 
     })
+
+
 </script>
 {% endblock %}

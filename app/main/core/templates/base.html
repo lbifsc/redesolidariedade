@@ -2,201 +2,212 @@
 {% load user_tags %}
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Google Fonts: Nunito sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
-    />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
 
-    <!-- Font Awesome Kit -->
-    <script
-      src="https://kit.fontawesome.com/8dcd95e926.js"
-      crossorigin="anonymous"
-    ></script>
+  <!-- Google Fonts: Nunito sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
 
-    <!-- Reset CSS -->
-    <link rel="stylesheet" href="{% static 'css/reset/reset.css'%}" />
+  <!-- Font Awesome Kit -->
+  <script src="https://kit.fontawesome.com/8dcd95e926.js" crossorigin="anonymous"></script>
 
-    <!-- Base CSS -->
-    <link rel="stylesheet" href="{% static 'css/base/base.css'%}" />
+  <!-- Reset CSS -->
+  <link rel="stylesheet" href="{% static 'css/reset/reset.css'%}" />
 
-    <!-- Título das páginas -->
-    <title>{% block title %}{% endblock %}</title>
+  <!-- Base CSS -->
+  <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
+  <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css" />
 
-    {% block style %}
-    {% endblock %}
-  </head>
+  <!-- Título das páginas -->
+  <title>{% block title %}{% endblock %}</title>
 
-  <body>
-    <div class="container-fluid h-100">
-      <div class="row h-100">
-        <div class="col-lg-2 col-md-12 col-sm-12 p-0 bg-dark">
-          <div class="logo-container text-center">
-            <a href="{% url 'Rede Solidariedade'%}"
-              >Rede <br />
-              Soliedariedade
-            </a>
-          </div>
+  {% block style %}
+  {% endblock %}
+</head>
 
-          <ul class="nav-menu">
-            <hr />
-            {% if user.is_authenticated %}
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                aria-expanded="false"><div><i class="fa fa-address-book"></i></div>Familias</a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'Cadastro de Famílias'%}">Cadastro de Famílias</a>
-                <a class="dropdown-item" href="{% url 'Cadastro de IntegranteFamilia'%}">Cadastro de Integrantes</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{% url 'Lista de Familias'%}">Lista de Famílias</a>
-              </div>
-            </li>
-            <hr />
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                aria-expanded="false"><div><i class="fa fa-shopping-basket"></i></div>Itens</a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'Cadastro Categoria Item'%}">Cadastro de Categorias</a>
-                <a class="dropdown-item" href="{% url 'Cadastro de Itens'%}">Cadastro de Itens</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{% url 'Lista de Categorias'%}">Lista de Categorias</a>
-                <a class="dropdown-item" href="{% url 'Lista de Itens'%}">Lista de Itens</a>
-              </div>
-            </li>
-            <hr />
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                aria-expanded="false"><div><i class="fa fa-heartbeat"></i></div>Doações</a>
-              <div class="dropdown-menu">
-                {% if user|has_group:"user_admin" %}
-                {% else %}
-                <a class="dropdown-item" href="{% url 'Cadastro de Doações'%}">Realizar Doação</a>
-                <div class="dropdown-divider"></div>
-                {% endif %}
-                <a class="dropdown-item" href="{% url 'Lista de Doações'%}">Lista de Doações</a>
-              </div>
-            </li>
-            <hr />
-          {% endif %}
-            {% if user|has_group:"user_admin" %}
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                aria-expanded="false"><div><i class="fa fa-smile-o"></i></div>Grupos</a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'Cadastro de Representantes'%}">Cadastro de Representantes</a>
-                <a class="dropdown-item" href="{% url 'Cadastro de Entidades'%}">Cadastro de Entidades</a>
-                <a class="dropdown-item" href="{% url 'Cadastro de Usuários'%}">Cadastro de Usuarios</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{% url 'Lista de Representantes'%}">Lista de Representantes</a>
-                <a class="dropdown-item" href="{% url 'Lista de Usuarios'%}">Lista de Usuarios</a>
-                <a class="dropdown-item" href="{% url 'Lista de Entidades'%}">Lista de Entidades</a>
-              </div>
-            </li>
-            <hr />
-            {% endif %}
-            {% if user.is_authenticated %}
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                aria-expanded="false"><div><i class="fa fa-solid fa-user"></i></div>{{ user.username.title }}</a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'password_reset' %}">Alterar senha</a>
-              </div>
-            </li>
-
-            <hr />
-            
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout'%}">
-                <div>
-                  <i class="fas fa-sign-out-alt"></i>
-                </div>
-                Sair
-              </a>
-            </li>
-            <hr />
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'login'%}?next={{request.path}}">
-                <div>
-                  <i class="fas fa-sign-out-alt"></i>
-                </div>
-                Entrar
-              </a>
-            </li>
-            <hr />
-            {% endif %}
-          </ul>
+<body>
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <div class="col-lg-2 col-md-12 col-sm-12 p-0 bg-dark">
+        <div class="logo-container text-center">
+          <a href="{% url 'Rede Solidariedade'%}">Rede <br />
+            Soliedariedade
+          </a>
         </div>
 
-        {% if user|has_group:"primeirologin" %} <!-- Obriga o usuário alterar a senha no primeiro login -->
-        <div class="container col-6 d-flex align-items-center justify-content-center h-100">
-          <div class="justify-content-center">
-            <div class="card text-center d-flex p-5">
+        <ul class="nav-menu">
+          <hr />
+          {% if user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+              aria-expanded="false">
+              <div><i class="fa fa-address-book"></i></div>Familias
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'Cadastro de Famílias'%}">Cadastro de Famílias</a>
+              <a class="dropdown-item" href="{% url 'Cadastro de IntegranteFamilia'%}">Cadastro de Integrantes</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'Lista de Familias'%}">Lista de Famílias</a>
+            </div>
+          </li>
+          <hr />
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+              aria-expanded="false">
+              <div><i class="fa fa-shopping-basket"></i></div>Itens
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'Cadastro Categoria Item'%}">Cadastro de Categorias</a>
+              <a class="dropdown-item" href="{% url 'Cadastro de Itens'%}">Cadastro de Itens</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'Lista de Categorias'%}">Lista de Categorias</a>
+              <a class="dropdown-item" href="{% url 'Lista de Itens'%}">Lista de Itens</a>
+            </div>
+          </li>
+          <hr />
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+              aria-expanded="false">
+              <div><i class="fa fa-heartbeat"></i></div>Doações
+            </a>
+            <div class="dropdown-menu">
+              {% if user|has_group:"user_admin" %}
+              {% else %}
+              <a class="dropdown-item" href="{% url 'Cadastro de Doações'%}">Realizar Doação</a>
+              <div class="dropdown-divider"></div>
+              {% endif %}
+              <a class="dropdown-item" href="{% url 'Lista de Doações'%}">Lista de Doações</a>
+            </div>
+          </li>
+          <hr />
+          {% endif %}
+          {% if user|has_group:"user_admin" %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+              aria-expanded="false">
+              <div><i class="fa fa-smile-o"></i></div>Grupos
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'Cadastro de Representantes'%}">Cadastro de Representantes</a>
+              <a class="dropdown-item" href="{% url 'Cadastro de Entidades'%}">Cadastro de Entidades</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'Lista de Representantes'%}">Lista de Representantes</a>
+              <a class="dropdown-item" href="{% url 'Lista de Usuarios'%}">Lista de Usuarios</a>
+              <a class="dropdown-item" href="{% url 'Lista de Entidades'%}">Lista de Entidades</a>
+            </div>
+          </li>
+          <hr />
+          {% endif %}
+          {% if user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+              aria-expanded="false">
+              <div><i class="fa fa-solid fa-user"></i></div>{{ user.username.title }}
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'Redefinir Senha' %}">Alterar senha</a>
+            </div>
+          </li>
 
-              <h1 class="pl-4 pr-4 pb-4">Parece que esse é seu primeiro login!</h1>
-              <p>
-                Para uma maior segurança, redefina sua senha.</br>
-                Você será redirecionado automaticamente em <label id="contador"></label> segundos,<br/>
-                ou
-                <a href="{% url 'password_reset'%}?next={{request.path}}">
-                  clique aqui para ir agora.
-                </a>
-              </p>
+          <hr />
 
-              <!-- Redireciona para para alteração de senha após 11 segundos. -->
-              <meta http-equiv="Refresh" content="11; url={% url 'password_reset'%}" />
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout'%}">
+              <div>
+                <i class="fas fa-sign-out-alt"></i>
+              </div>
+              Sair
+            </a>
+          </li>
+          <hr />
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login'%}?next={{request.path}}">
+              <div>
+                <i class="fas fa-sign-out-alt"></i>
+              </div>
+              Entrar
+            </a>
+          </li>
+          <hr />
+          {% endif %}
+        </ul>
+      </div>
 
+      {% if user|has_group:"primeirologin" %}
+      <!-- Obriga o usuário alterar a senha no primeiro login -->
+
+      <!-- Contador regressivo da página de primeiro login -->
+      <script src="{% static 'js/contadorPrimeiroLogin.js'%}"></script>
+      <div class="col bg-secondary">
+        <div class="table-wrapper" id="round">
+          <div class="table-title" id="round-top">
+            <div class="row">
+              <div class="col-sm-7">
+                <h2>Redefina sua senha</h2>
+                <div class="col-md-1 col-xs-1 col-sm-1"></div>
+              </div>
             </div>
           </div>
+          <div class="pt-2 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
+
+            <p>
+              Para uma maior segurança, redefina sua senha.</br>
+              Você será redirecionado automaticamente em <label id="contador"></label> segundos, ou
+
+              <a href="{% url 'Redefinir Senha' %}">
+                clique aqui para ir agora.
+              </a>
+
+            </p>
+
+            <!-- Redireciona para para alteração de senha após 11 segundos. -->
+            <meta http-equiv="Refresh" content="11; url={% url 'Redefinir Senha' %}" />
+
+          </div>
         </div>
+      </div>
 
-        {% else %}
+      {% else %}
 
-        <div class="col-lg-10 col-md-12 col-sm-12 bg-secondary">
+      <div class="col-lg-10 col-md-12 col-sm-12 bg-secondary">
 
-            {% block content %}
-            {% endblock content %}
+        {% block content %}
+        {% endblock content %}
 
-        </div>
+      </div>
 
       {% endif %}
 
-      </div>
     </div>
+  </div>
 
-    <!-- Boostrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-    ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.js"
-    ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+  <!-- Boostrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
     integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"
-    ></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
     integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-    crossorigin="anonymous"
-    ></script>
-    <!-- Contador regressivo da página de primeiro login -->
-    <script src="{% static 'js/contadorPrimeiroLogin.js'%}"
-    ></script>
+    crossorigin="anonymous"></script>
 
-    {% block script %}
-    {% endblock script %}
-  </body>
+  {% block script %}
+  {% endblock script %}
+</body>
+
 </html>

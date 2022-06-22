@@ -64,8 +64,9 @@
               <input class="form-control" type="number" name="quantidade" id="quantidade" style="width: 150px; height: 50px"/>
             </div>
             
-            <button onclick="itemControl(document.getElementById('item').value,document.getElementById('quantidade').value)" type="button" class="btn btn-primary mt-3 mb-3 ml-3" id="btn">Adicionar Item</button>
-            
+            <button onclick="itemControl()" type="button" class="btn btn-primary mt-3 mb-3 ml-3" id="btn">Adicionar Item</button>
+            <button type="button" onclick="limpar()" class="btn btn-sucess mt-3 mb-3 ml-3">Limpar</button>
+
           </div>
         </div> 
         
@@ -107,6 +108,14 @@
     })
 
   */  
+
+    function limpar() {
+        const aux = document.querySelector("#item")
+        aux.disabled = false;
+        document.getElementById("item").value = ""
+        document.getElementById("quantidade").value = ""
+    }
+
     function sendData() {
       let itens = document.getElementById("itens").value
 
@@ -130,13 +139,24 @@
                     resolve(data.data)
                 })
             })
-        }
+        },
+        onSubmit: (result) => {
+          const aux = document.querySelector("#item")
+          document.getElementById("quantidade").value = "1"
+          aux.disabled = true;
+        } 
     })
 
     let count = 0
     let itensToBeSend=[]
 
-    function itemControl(item, quantidade){
+    function itemControl(){
+        aux = document.getElementById('item')
+        aux.disabled = false
+        item = document.getElementById('item').value
+        aux = document.getElementById('quantidade')
+        aux.disabled = false
+        quantidade = document.getElementById('quantidade').value
         itensInMemory= itensInMemory.flat(3)
  
         if(item != "" && quantidade != "" && isValidItem(String(item))) {

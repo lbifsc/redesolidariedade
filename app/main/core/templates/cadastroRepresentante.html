@@ -36,6 +36,7 @@
         <label>Observação :</label>
         <input type="text" class="form-control" name="observacao" id="observacao" maxLength='250' minLength='2' required> </input>
         <button type="button" onclick="sendData()" class="btn btn-success mt-3">Salvar</button>
+        <button type="button" onclick="limpar()" class="btn btn-warning mt-3">Limpar</button>
       </form>
     </div>
   </div>
@@ -44,8 +45,19 @@
 <script>
     let entidades = []
 
+    function limpar() {
+        const inputFamilia = document.querySelector("#entidade")
+        inputFamilia.disabled = false;
+        document.getElementById("entidade").value = ""
+        document.getElementById("nomeRepresentante").value = ""
+        document.getElementById("cpfRepresentante").value = ""
+        document.getElementById("endereco").value = ""
+        document.getElementById("observacao").value = ""
+    }
+
     function sendData() {
       let entidadeUserInput = document.getElementById("entidade")
+      entidadeUserInput.disabled = false;
       let entidadeUserInputValue = entidadeUserInput.value
 
       if(validateInput()) {
@@ -62,6 +74,8 @@
         
       }
     }
+
+
 
     window.onload = () => {
       const cpfInput = document.getElementById("cpfRepresentante");
@@ -198,7 +212,12 @@
                     resolve(data.data)
                 })
             })
-        }
+        },
+
+        onSubmit: (result) => {
+          const aux = document.querySelector("#entidade")
+          aux.disabled = true;
+        } 
     })
 </script>
 {% endblock %}

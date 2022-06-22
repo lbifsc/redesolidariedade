@@ -29,11 +29,11 @@
         </div>
         <!--<p class="d-inline"><b>Nome Chefe familiar :</b></p> <p class="d-inline" id="nomeChefeFamilia"></p> <br/>-->
         <label class="mt-2">CPF :</label>
-        <input type="text" class="form-control" id="cpfIntegrante" name="cpfIntegrante" minLength='11' required> </input>
+        <input type="text" class="form-control" id="cpfIntegrante" name="cpfIntegrante" minLength='11' oninput="clearInput(this)" required> </input>
         <label>Nome :</label>
         <input type="text" class="form-control" id="nomeIntegrante" name="nomeIntegrante" maxLength='100' minLength='2' required> </input>
         <button type="button" onclick="sendData()" class="btn btn-success mt-3">Salvar</button>
-        <button type="button" class="btn btn-warning mt-3">Limpar</button>
+        <button type="button" onclick="limpar()" class="btn btn-warning mt-3">Limpar</button>
       </form>
     </div>
   </div>
@@ -66,6 +66,27 @@
         })
       }
     */
+
+    window.onload = () => {
+      const cpfInput = document.getElementById("cpfIntegrante");
+
+      if (cpfInput) 
+        cpfInput.addEventListener("paste", () => {
+          clearInput(cpfInput);
+        });
+    }
+    
+    const clearInput = (input) => {
+        input.value = input.value.replace(/\D+/g, '');
+    }
+
+    function limpar() {
+        const inputFamilia = document.querySelector("#familias")
+        inputFamilia.disabled = false;
+        document.getElementById("familias").value = ""
+        document.getElementById("cpfIntegrante").value = ""
+        document.getElementById("nomeIntegrante").value = ""
+    }
 
     function sendData() {
       if(validateInput()) {

@@ -139,3 +139,7 @@ class MovimentosItemForm(forms.ModelForm):
     class Meta:
         model = MovimentosItem
         exclude = ['movimentos']
+
+class RedefinirSenhaForm(forms.Form):
+    novaSenha = forms.CharField(label = "Nova senha", required=True)
+    novaSenhaConfirmacao = forms.CharField(label = "Confirmação da nova senha", required=True)

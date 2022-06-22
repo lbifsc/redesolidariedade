@@ -23,8 +23,6 @@ urlpatterns = [
     path('cadastroRepresentante/', views.cadastroRepresentante, name='Cadastro de Representantes'),
     path('cadastroRepresentante/edit/<int:pk>/', views.editarRepresentante, name='Editar Representante'),
     path('cadastroRepresentante/delete/<int:pk>/', views.excluirRepresentante, name='Excluir Representante'),
-    path('cadastroUsuario/', views.cadastroUsuario, name='Cadastro de Usuários'),
-    path('alterarSenha/', views.alterarSenha, name='Alterar Senha'),
     path('cadastroUsuario/delete/<int:pk>/', views.excluirUsuario, name='Excluir Usuario'),
     path('detalhesDoacao/<int:pk>/', views.detalhesDoacao, name='Detalhes Doação'),
     path('detalhesEntidade/<int:pk>/', views.detalhesEntidade.as_view(), name='Detalhes Entidade'),
@@ -45,6 +43,7 @@ urlpatterns = [
     path('searchFamiliaByName/', views.searchFamiliaByName, name='searchFamiliaByName'),
     path('searchEntidadeByName/', views.searchEntidadeByName, name='searchEntidadeByName'),
     path('searchItemByName/', views.searchItemByName, name='searchItemByName'),
+    path('searchCategoriaByName/', views.searchCategoriaByName, name='searchCategoriaByName'),
     path('searchRepresentanteByName/', views.searchRepresentanteByName, name='searchRepresentanteByName'),
     path('searchFamiliaByCpf/', views.searchFamiliaByCpf, name='searchFamiliaByCpf'), 
 ]

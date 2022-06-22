@@ -22,6 +22,7 @@ from django.urls import path
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
+from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,4 +34,6 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += [
     path('', include('core.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('redefinirSenha/', views.redefinirSenha, name='Redefinir Senha'),
+    path('redefinicaoSenhaCompleta/', views.redefinicaoSenhaCompleta, name='Redefinição de Senha Completa'),
 ]

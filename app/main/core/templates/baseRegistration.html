@@ -33,7 +33,11 @@
     <link rel="stylesheet" href="{% static 'css/reset/reset.css'%}" />
 
     <!-- Base CSS -->
-    <link rel="stylesheet" href="{% static 'css/base/base.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
 
     <!-- Título das páginas -->
     <title>{% block title %}{% endblock %}</title>
@@ -84,11 +88,10 @@
                 aria-expanded="false"><div><i class="fa fa-heartbeat"></i></div>Doações</a>
               <div class="dropdown-menu">
                 {% if user|has_group:"user_admin" %}
-                <a class="dropdown-item" href="#">Realizar Doação</a>
                 {% else %}
                 <a class="dropdown-item" href="{% url 'Cadastro de Doações'%}">Realizar Doação</a>
-                {% endif %}
                 <div class="dropdown-divider"></div>
+                {% endif %}
                 <a class="dropdown-item" href="{% url 'Lista de Doações'%}">Lista de Doações</a>
               </div>
             </li>
@@ -101,7 +104,6 @@
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="{% url 'Cadastro de Representantes'%}">Cadastro de Representantes</a>
                 <a class="dropdown-item" href="{% url 'Cadastro de Entidades'%}">Cadastro de Entidades</a>
-                <a class="dropdown-item" href="{% url 'Cadastro de Usuários'%}">Cadastro de Usuarios</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'Lista de Representantes'%}">Lista de Representantes</a>
                 <a class="dropdown-item" href="{% url 'Lista de Usuarios'%}">Lista de Usuarios</a>
@@ -111,17 +113,16 @@
             <hr />
             {% endif %}
             {% if user.is_authenticated %}
-            
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                 aria-expanded="false"><div><i class="fa fa-solid fa-user"></i></div>{{ user.username.title }}</a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'password_reset' %}">Alterar senha</a>
+                <a class="dropdown-item" href="{% url 'Redefinir Senha' %}">Alterar senha</a>
               </div>
             </li>
 
             <hr />
-
+            
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout'%}">
                 <div>
@@ -145,7 +146,7 @@
           </ul>
         </div>
 
-        <div class="col-lg-10 col-md-12 col-sm-12">
+        <div class="col-lg-10 col-md-12 col-sm-12 bg-secondary">
 
             {% block content %}
             {% endblock content %}
@@ -167,9 +168,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
     integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"
-    ></script>
-    <!-- Contador regressivo da página de primeiro login -->
-    <script src="{% static 'js/contadorPrimeiroLogin.js'%}"
     ></script>
 
     {% block script %}
