@@ -445,6 +445,19 @@ class listaDoacao(LoginRequiredMixin, ListView):
 
         return queryset
 
+class listaDoacaoRelatorio(LoginRequiredMixin, ListView):
+    model = Movimentos
+    template_name = 'listaDoacaoRelatorio.html'
+    context_object_name = 'doacoes'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
 class listaFamilia(LoginRequiredMixin, ListView):
     model = Familia
     template_name = 'listaFamilia.html'
