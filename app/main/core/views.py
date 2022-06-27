@@ -544,6 +544,19 @@ class listaItem(LoginRequiredMixin, ListView):
             )
         return queryset
 
+class listaItemRelatorio(LoginRequiredMixin, ListView):
+    model = Item
+    template_name = 'listaItemRelatorio.html'
+    context_object_name = 'itens'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
 def checkForFamilyId(cpf):
     chefe = Familia.objects.filter(cpfChefeFamilia__exact=cpf)
     integrante = IntegranteFamilia.objects.filter(cpf__exact=cpf)
