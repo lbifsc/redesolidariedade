@@ -286,8 +286,10 @@ def excluirItem(request, pk, template_name='confirm_delete.html'):
 
 def excluirRepresentante(request, pk, template_name='confirm_delete.html'):
     representante = get_object_or_404(Representante, pk=pk)
+    usuario = User.objects.get(username=representante.nome)
     if request.method=='POST':
         representante.delete()
+        usuario.delete()
         return redirect('Lista de Representantes')
     return render(request, template_name, {'object':representante})
 
@@ -445,6 +447,19 @@ class listaDoacao(LoginRequiredMixin, ListView):
 
         return queryset
 
+class listaDoacaoRelatorio(LoginRequiredMixin, ListView):
+    model = Movimentos
+    template_name = 'listaDoacaoRelatorio.html'
+    context_object_name = 'doacoes'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
 class listaFamilia(LoginRequiredMixin, ListView):
     model = Familia
     template_name = 'listaFamilia.html'
@@ -461,6 +476,19 @@ class listaFamilia(LoginRequiredMixin, ListView):
                 Q(cpfChefeFamilia__icontains=search)
             )
         return queryset
+
+class listaFamiliaRelatorio(LoginRequiredMixin, ListView):
+    model = Familia
+    template_name = 'listaFamiliaRelatorio.html'
+    context_object_name = 'familias'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 class listaRepresentante(LoginRequiredMixin, ListView):
     model = Representante
@@ -543,6 +571,19 @@ class listaItem(LoginRequiredMixin, ListView):
                 Q(categoria__descricao__icontains=search)
             )
         return queryset
+
+class listaItemRelatorio(LoginRequiredMixin, ListView):
+    model = Item
+    template_name = 'listaItemRelatorio.html'
+    context_object_name = 'itens'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 def checkForFamilyId(cpf):
     chefe = Familia.objects.filter(cpfChefeFamilia__exact=cpf)

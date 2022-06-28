@@ -33,12 +33,20 @@ urlpatterns = [
     path('relatorioEntidade/', views.relatorioEntidade, name='Relatório de Entidades'),
     path('relatorioFamilia/', views.relatorioFamilia, name='Relatório de Familias'),
     path('relatorioUsuario/', views.relatorioUsuario, name='Relatório de Usuarios'),
+    
     path('listaDoacao/', views.listaDoacao.as_view(), name='Lista de Doações'),
+    path('listaDoacaoRelatorio/', views.listaDoacaoRelatorio.as_view(), name='listar_doacoes_relatorio'),
+    
     path('listaFamilia/', views.listaFamilia.as_view(), name='Lista de Familias'),
+    path('listaFamiliaRelatorio/', views.listaFamiliaRelatorio.as_view(), name='listar_familias_relatorio'),
+    
     path('listaRepresentante/', views.listaRepresentante.as_view(), name='Lista de Representantes'),
     path('listaUsuario/', views.listaUsuario.as_view(), name='Lista de Usuarios'),
     path('listaEntidades/', views.listaEntidades.as_view(), name='Lista de Entidades'),
+    
     path('listaItem/', views.listaItem.as_view(), name='Lista de Itens'),
+    path('listaItemRelatorio/', views.listaItemRelatorio.as_view(),name='listar_itens_relatorio'),
+    
     path('listaCategoria/', views.listaCategoriaItem.as_view(), name='Lista de Categorias'),
     path('searchFamiliaByName/', views.searchFamiliaByName, name='searchFamiliaByName'),
     path('searchEntidadeByName/', views.searchEntidadeByName, name='searchEntidadeByName'),

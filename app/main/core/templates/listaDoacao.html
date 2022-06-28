@@ -9,7 +9,7 @@
     <div class="table-wrapper" id="round">
         <div class="table-title" id="round-top">
             <div class="row mt-3 spacing">
-                <div class="col-sm-7">
+                <div class="col-sm-8">
                     <h2>Doações</h2>
                     <br>
                     <form action="" method="GET">
@@ -36,20 +36,29 @@
                                                    name="data_final" type="date">
                                         </div>
 
-                                        <div class="col-lg-auto mt-4 ">
+                                        <div class="mt-4 ">
                                             <button type="submit" class="btn btn-primary mt-4 "><i class="material-icons">manage_search</i>Filtrar
                                             </button>
                                         </div>
 
-                                        <div class="col-lg-auto mt-5 md-5">
+                                        <div class="mt-5">
                                             <a href="{% url 'Lista de Doações' %}" class="btn btn-danger"><i
                                                     class="material-icons">highlight_off</i>Limpar
+                                            </a>
+                                        </div>
+
+                                        <div class="mt-5"">
+                                            <a href="{% url 'listar_doacoes_relatorio' %}" class="btn btn-primary">
+                                                Exibir tudo
                                             </a>
                                         </div>
 
                                     </div>
                                 </form>
                             </div>
+
+
+                            
                     </form>
                 </div>
                 {% if user.is_authenticated %}
