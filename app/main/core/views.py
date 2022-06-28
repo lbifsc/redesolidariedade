@@ -286,8 +286,10 @@ def excluirItem(request, pk, template_name='confirm_delete.html'):
 
 def excluirRepresentante(request, pk, template_name='confirm_delete.html'):
     representante = get_object_or_404(Representante, pk=pk)
+    usuario = User.objects.get(username=representante.nome)
     if request.method=='POST':
         representante.delete()
+        usuario.delete()
         return redirect('Lista de Representantes')
     return render(request, template_name, {'object':representante})
 
