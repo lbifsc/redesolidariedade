@@ -1,0 +1,30 @@
+* {
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .btn {
+    background-color: #b1b134;
+    border: none;
+  }
+  
+  .btn:hover {
+    background-color: #67a2a2;
+  }
+  
+  .text-end a {
+    color: #000;
+    text-decoration: none;
+  }
+  
+  .text-end a:hover {
+    opacity: 50%;
+  }
+  
+  body {
+    background-color: #67a2a2;
+  }
+  
+  h2 {
+    color: #56727d;
+  }
+  

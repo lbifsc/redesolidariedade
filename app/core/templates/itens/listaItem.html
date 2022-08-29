@@ -1,0 +1,76 @@
+{% extends 'generic/base.html' %}
+{% load user_tags %}
+{% block content %} 
+  {% block styles %} 
+    <link rel="stylesheet" href="../static/css/listas/listas.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  {% endblock %}
+  {% if user.is_authenticated %}
+    <div class="col">
+      <div class="table-wrapper" id="round">
+        <div class="table-title" id="round-top">
+          <div class="row">
+            <div class="col-sm-7">
+              <h2>Itens</h2>
+              <br>
+              <form action="" method="get">
+                <div class="search col">
+                  <input value="{{ request.GET.search }}" name="search" type="text" class="search form-control" placeholder="Descrição ou categoria do item">
+                  <button type="submit" id="find">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="col-sm-5">
+              <div class="clearfix">
+                <div class=float-left>
+                  <div class="btn-principal">
+                    <a href="{% url 'Cadastro de Itens' %}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Adicionar novo item</span></a>
+                  </div>
+                </div>
+                <div class=float-left>
+                  <div class="btn-principal">
+                    <a href="{% url 'listar_itens_relatorio' %}" class="btn btn-primary">
+                      Exibir tudo
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <table class="table table-striped table-hover table-responsive-sm text-justify">
+        <thead>
+            <tr>
+              <th class="text-center">ID</th>
+              <th class="text-center">Descrição</th>
+              <th class="text-center">Categoria</th>
+              <th class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for itens in itens_list %}
+            <tr>
+              <td class="text-center"> {{ itens.pk }} </td>
+              <td class="text-center"> {{ itens.descricao }} </td>
+              <td class="text-center">{{ itens.categoria }}</td>
+              <td class="text-center icons-td">
+                <a href="{% url 'Editar Item' itens.pk %}" class="edit">
+                  <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
+                </a>
+                {% if user|has_group:"user_admin" %}
+                <a href="{% url 'Excluir Item' itens.pk %}" class="delete">
+                  <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
+                </a>  
+                {% endif %}             
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>  
+  {% endif %}
+  {% include "includes/pagination.html" %}
+{% endblock %}

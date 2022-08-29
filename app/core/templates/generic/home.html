@@ -1,0 +1,262 @@
+{% extends "generic/base.html" %} 
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/dashboard/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="row h-100 d-flex justify-content-center p-3" style="gap: 
+  0.5em; overflow-y: auto;">
+
+
+    <div class="col bg-dark p-3 count-item">
+      <h3 class="title">Entidades</h3>
+      <div class="percentage-holder"> 
+        <h4 class="" id="entity-percentage"></h4>
+        <h4>em relação ao último mês.</h4>
+      </div>
+      
+
+      <div class="info-holder">
+        <i class="fas fa-building icon"></i>
+        <div class="counter" id="entity-counter">
+        </div>
+      </div>
+    </div>
+
+    <div class="col bg-dark p-3 count-item">
+      <h3 class="title">Famílias</h3>
+      <div class="percentage-holder">
+        <h4 class="" id="family-percentage"></h4>
+        <h4>em relação ao último mês.</h4>
+      </div>
+    
+
+      <div class="info-holder">
+        <i class="fas fa-users icon"></i>
+        <div class="counter" id="family-counter">
+        </div>
+      </div>
+    </div>
+
+    <div class="col bg-dark p-3 count-item">
+      <h3 class="title">Doações</h3>
+      <div class="percentage-holder">
+        <h4 class="" id="donation-percentage"></h4>
+        <h4>em relação ao último mês.</h4>
+      </div>
+      
+
+      <div class="info-holder">
+        <i class="fas fa-hand-holding-usd icon"></i>
+        <div class="counter" id="donation-counter">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 p-3 bg-dark d-flex justify-content-center align-items-center">
+      <canvas id="entity-chart" height="80"></canvas>
+    </div>
+
+    <div class="col-12 p-3 bg-dark d-flex justify-content-center align-items-center">
+      <canvas id="family-chart" height="80"></canvas>
+    </div>
+
+    <div class="col-12 p-3 bg-dark d-flex justify-content-center align-items-center">
+      <canvas id="donation-chart" height="80"></canvas>
+    </div>
+  </div>
+{% endblock %} 
+
+{% block script %}
+  <!-- Chart JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Counters -->
+  <script>
+    const entityCounter = document.querySelector("#entity-counter");
+    const entityPercentage = document.querySelector("#entity-percentage")
+    const familyCounter = document.querySelector("#family-counter");
+    const familyPercentage = document.querySelector("#family-percentage");
+    const donationCounter = document.querySelector("#donation-counter");
+    const donationPercentage = document.querySelector("#donation-percentage");
+  
+    const count = (value, end, tag) => {
+      tag.innerHTML = value;
+
+      if (value < end)
+        setTimeout(() => count(value + 1, end, tag), 10);
+    }
+
+    const getPercentage = (tag, last, count) => {
+      if ((last * count)/100 >= 0) {
+        tag.classList.add("text-success")
+        return "+" + (last * count)/100 + "%";
+      } else {
+        tag.classList.add("text-danger")
+        return "-" + (last * count)/100 + "%";
+      }
+    }
+
+    window.onload = () => {
+      const start = 0;
+
+      const entities = {
+        counter: entityCounter,
+        end: "{{ entity_count }}",
+        last_month: "{{ entity_lastmonth }}",
+      }
+
+      const families = {
+        counter: familyCounter,
+        end: "{{ family_count }}", 
+        last_month: "{{ family_lastmonth }}",
+      }
+
+      const donations = {
+        counter: donationCounter,
+        end: "{{ donation_count }}",
+        last_month: "{{ donation_lastmonth }}",
+      }
+
+      count(start, entities.end, entities.counter);
+      count(start, families.end, families.counter);
+      count(start, donations.end, donations.counter);
+
+      entityPercentage.innerHTML = getPercentage(entityPercentage, entities.last_month, entities.end) 
+      familyPercentage.innerHTML = getPercentage(familyPercentage, families.last_month, families.end) 
+      donationPercentage.innerHTML = getPercentage(donationPercentage, donations.last_month, donations.end) 
+    }
+  </script>
+
+  <!-- Charts -->
+  <script>
+    const entityCtx = document.querySelector("#entity-chart").getContext("2d");
+    const familyCtx = document.querySelector("#family-chart").getContext("2d");
+    const donationCtx = document.querySelector("#donation-chart").getContext("2d");
+
+    const months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+
+    const labels = [...Array(7)].map((_, i) => {
+      const d = new Date()
+      d.setDate(d.getDate() - i)
+      return `${d.getDate()}/${months[d.getMonth()]}`
+    });
+
+    Chart.defaults.color = "#fff";
+
+    const gradient = entityCtx.createLinearGradient(0,0,0, 400);
+    gradient.addColorStop(0, "rgb(86, 74, 192)");
+    gradient.addColorStop(1, "rgba(77, 53, 165, 0.3)");
+
+    const entityData = {
+      labels,
+      datasets: [{
+          data: ["{{ chart_data.entities.today }}", "{{ chart_data.entities.yesterday }}", "{{ chart_data.entities.twodaysbefore }}", "{{ chart_data.entities.threedaysbefore }}", "{{ chart_data.entities.fourdaysbefore }}", "{{ chart_data.entities.fivedaysbefore }}", "{{ chart_data.entities.sixdaysbefore }}", "{{ chart_data.entities.last_week }}"],
+          label: "Entidades cadastradas",
+          fill: true,
+          backgroundColor: gradient,
+          borderColor: "hsl(0, 0%, 70%)",
+          pointBackgroundColor: "hsl(0, 0%, 70%)",
+      }]
+    };
+
+    const entityConfig = {
+      type: 'line',
+      data: entityData,
+      options: {
+        radius: 5,
+        hitRadius: 30,
+        hoverRadius: 8,
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 14,
+                        weight: 600,
+                        family: "Nunito",
+                    }
+                }
+            }
+        },
+      },
+    };
+
+    const entityChart = new Chart(entityCtx, entityConfig);
+
+    const familyData = {
+      labels,
+      datasets: [{
+          data: ["{{ chart_data.families.today }}", "{{ chart_data.families.yesterday }}", "{{ chart_data.families.twodaysbefore }}", "{{ chart_data.families.threedaysbefore }}", "{{ chart_data.families.fourdaysbefore }}", "{{ chart_data.families.fivedaysbefore }}", "{{ chart_data.families.sixdaysbefore }}", "{{ chart_data.families.last_week }}"],
+          label: "Famílias cadastradas",
+          fill: true,
+          backgroundColor: gradient,
+          borderColor: "hsl(0, 0%, 70%)",
+          pointBackgroundColor: "hsl(0, 0%, 70%)",
+      }]
+    };
+
+    const familyConfig = {
+      type: 'line',
+      data: familyData,
+      options: {
+        radius: 5,
+        hitRadius: 30,
+        hoverRadius: 8,
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 14,
+                        weight: 600,
+                        family: "Nunito",
+                    }
+                }
+            }
+        },
+      },
+    };
+
+    const familyChart = new Chart(familyCtx, familyConfig);
+
+    const donationData = {
+      labels,
+      datasets: [{
+          data: ["{{ chart_data.donations.today }}", "{{ chart_data.donations.yesterday }}", "{{ chart_data.donations.twodaysbefore }}", "{{ chart_data.donations.threedaysbefore }}", "{{ chart_data.donations.fourdaysbefore }}", "{{ chart_data.donations.fivedaysbefore }}", "{{ chart_data.donations.sixdaysbefore }}", "{{ chart_data.donations.last_week }}"],
+          label: "Doações cadastradas",
+          fill: true,
+          backgroundColor: gradient,
+          borderColor: "hsl(0, 0%, 70%)",
+          pointBackgroundColor: "hsl(0, 0%, 70%)",
+      }]
+    };
+
+    const donationConfig = {
+      type: 'line',
+      data: donationData,
+      options: {
+        radius: 5,
+        hitRadius: 30,
+        hoverRadius: 8,
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 14,
+                        weight: 600,
+                        family: "Nunito",
+                    }
+                }
+            }
+        },
+      },
+    };
+
+    const donationChart = new Chart(donationCtx, donationConfig);
+  </script>
+{% endblock %}
+        
