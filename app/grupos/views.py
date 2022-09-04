@@ -50,6 +50,7 @@ class detalhesEntidade(LoginRequiredMixin, DetailView):
 #CRIAR
 @login_required
 def cadastroEntidade(request):
+    nomePagina = 'Cadastro de Entidade:'
     form = EntidadeForm()
     if request.method == 'POST':
         form = EntidadeForm(request.POST)
@@ -57,16 +58,17 @@ def cadastroEntidade(request):
             form.save()
             return redirect('Lista de Entidades')
 
-    return render(request,'generic/cadastro.html',{'form': form})
+    return render(request,'generic/cadastro.html',{'form': form, 'nomePagina': nomePagina})
 
 #EDITAR
 def editarEntidade(request, pk, template_name='generic/cadastro.html'):
+    nomePagina = 'Editar Entidade:'
     entidades = get_object_or_404(Entidade, pk=pk)
     form = EntidadeForm(request.POST or None, instance=entidades)
     if form.is_valid():
         form.save()
         return redirect('Lista de Entidades')
-    return render(request, template_name, {'form':form})
+    return render(request, template_name, {'form':form, 'nomePagina': nomePagina})
 
 #EXCLUIR
 def excluirEntidade(request, pk, template_name='generic/confirm_delete_cascade.html'):
@@ -146,12 +148,13 @@ def cadastroRepresentante(request):
 
 #EDITAR
 def editarRepresentante(request, pk, template_name='generic/cadastro.html'):
+    nomePagina = 'Editar Representante:'
     representantes = get_object_or_404(Representante, pk=pk)
     form = RepresentanteForm(request.POST or None, instance=representantes)
     if form.is_valid():
         form.save()
         return redirect('Lista de Representantes')
-    return render(request, template_name, {'form':form})
+    return render(request, template_name, {'form':form, 'nomePagina': nomePagina})
 
 #EXCLUIR
 def excluirRepresentante(request, pk, template_name='generic/confirm_delete.html'):

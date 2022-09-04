@@ -31,6 +31,7 @@ class listaCategoriaItem(LoginRequiredMixin, ListView):
 #INSERIR
 @login_required
 def cadastroCategoriaItem(request):
+    nomePagina = 'Cadastro de Categorias de Item:'
     form = CategoriaItemForm()
     if request.method == 'POST':
         form = CategoriaItemForm(request.POST)
@@ -38,16 +39,17 @@ def cadastroCategoriaItem(request):
             form.save()
             return redirect('Lista de Categorias')
 
-    return render(request,'generic/cadastro.html',{'form': form})
+    return render(request,'generic/cadastro.html',{'form': form, 'nomePagina': nomePagina})
 
 #EDITAR
 def editarCategoria(request, pk, template_name='generic/cadastro.html'):
+    nomePagina = 'Editar Categoria de Item:'
     categoria = get_object_or_404(CategoriaItem, pk=pk)
     form = CategoriaItemForm(request.POST or None, instance=categoria)
     if form.is_valid():
         form.save()
         return redirect('Lista de Categorias')
-    return render(request, template_name, {'form':form})
+    return render(request, template_name, {'form':form, 'nomePagina': nomePagina})
 
 #DELETAR
 def excluirCategoria(request, pk, template_name='generic/confirm_delete_cascade.html'):
@@ -82,6 +84,7 @@ class listaItem(LoginRequiredMixin, ListView):
 #INSERIR
 @login_required
 def cadastroItem(request):
+    nomePagina = 'Cadastro de Item:'
     form = ItemForm()
     if request.method == 'POST':
         form = ItemForm(request.POST)
@@ -89,16 +92,17 @@ def cadastroItem(request):
             form.save()
             return redirect('Lista de Itens')
 
-    return render(request,'generic/cadastro.html',{'form': form})
+    return render(request,'generic/cadastro.html',{'form': form, 'nomePagina': nomePagina})
 
 #EDITAR
 def editarItem(request, pk, template_name='generic/cadastro.html'):
+    nomePagina = 'Editar Item:'
     itens = get_object_or_404(Item, pk=pk)
     form = ItemForm(request.POST or None, instance=itens)
     if form.is_valid():
         form.save()
         return redirect('Lista de Itens')
-    return render(request, template_name, {'form':form})
+    return render(request, template_name, {'form':form, 'nomePagina': nomePagina})
 
 #DELETAR
 def excluirItem(request, pk, template_name='generic/confirm_delete.html'):

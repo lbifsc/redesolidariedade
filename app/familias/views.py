@@ -54,6 +54,7 @@ def detalhesFamilia(request, pk):
 #CRIAR
 @login_required
 def cadastroFamilia(request):
+    nomePagina = 'Cadastro de Família:'
     form = FamiliaForm()
     if request.method == 'POST':
         form = FamiliaForm(request.POST)
@@ -61,16 +62,17 @@ def cadastroFamilia(request):
             form.save()
             return redirect('Lista de Familias')
 
-    return render(request,'generic/cadastro.html',{'form': form})
+    return render(request,'generic/cadastro.html',{'form': form, 'nomePagina': nomePagina})
 
 #EDITAR
 def editarFamilia(request, pk, template_name='generic/cadastro.html'):
     familias = get_object_or_404(Familia, pk=pk)
+    nomePagina = 'Editar Família:'
     form = EditFamiliaForm(request.POST or None, instance=familias)
     if form.is_valid():
         form.save()
         return redirect('Lista de Familias')
-    return render(request, template_name, {'form':form})
+    return render(request, template_name, {'form':form, 'nomePagina': nomePagina})
 
 #EXCLUIR
 def excluirFamilia(request, pk, template_name='generic/confirm_delete_cascade.html'):
@@ -109,12 +111,13 @@ def cadastroIntegranteFamilia(request):
 
 #EDITAR
 def editarIntegranteFamilia(request, pk, template_name='generic/cadastro.html'):
+    nomePagina = 'Editar Integrante de Família:'
     integranteFamilia = get_object_or_404(IntegranteFamilia, pk=pk)
     form = IntegranteFamiliaForm(request.POST or None, instance=integranteFamilia)
     if form.is_valid():
         form.save()
         return redirect('Lista de Familias')
-    return render(request, template_name, {'form':form})
+    return render(request, template_name, {'form':form, 'nomePagina': nomePagina})
 
 #EXCLUIR
 def excluirIntegranteFamilia(request, pk, template_name='generic/confirm_delete.html'):
