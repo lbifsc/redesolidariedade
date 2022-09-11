@@ -16,6 +16,15 @@ body {
   border-radius: 5px 5px 0 0;
 }
 
+.rounded {
+  border-radius: 6px !important;
+}
+
+.rounded-bottom {
+  border-radius: 0 0 6px 6px !important;
+}
+
+
 .search {
   display: flex !important;
 }
@@ -51,7 +60,7 @@ input[type="text"] {
 }
 
 
-.table-title {        
+.table-title {
   padding-bottom: 15px;
   background: #343a40 !important;
   color: #fff;
@@ -125,7 +134,7 @@ table.table th i {
   font-size: 13px;
   margin: 0 5px;
   cursor: pointer;
-} 
+}
 
 table.table td:last-child i {
   opacity: 0.9;
@@ -218,7 +227,7 @@ b {
 
 .pagination li a:hover {
     color: rgb(61, 61, 61);
-} 
+}
 
 .pagination li.active a, .pagination li.active a.page-link {
     background: rgb(61, 61, 61);
@@ -226,7 +235,7 @@ b {
     border: solid 1px rgb(61, 61, 61);
 }
 
-.pagination li.active a:hover {        
+.pagination li.active a:hover {
     background: rgb(61, 61, 61);
 }
 
@@ -243,14 +252,14 @@ b {
     float: left;
     margin-top: 10px;
     font-size: 13px;
-}   
+}
 
 /* Estilizacao da CUSTOM BOX */
 .custom-checkbox {
 position: relative;
 }
 
-.custom-checkbox input[type="checkbox"] {    
+.custom-checkbox input[type="checkbox"] {
 opacity: 0;
 position: absolute;
 margin: 5px 0 0 3px;
@@ -339,8 +348,8 @@ resize: vertical;
 .modal .btn {
 border-radius: 1px;
 min-width: 100px;
-} 
+}
 
 .modal form label {
 font-weight: normal;
-} 
+}

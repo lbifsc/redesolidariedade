@@ -1,3 +1,5 @@
+
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from datetime import date, timedelta
 from familias.models import Familia
@@ -7,6 +9,7 @@ from doacoes.models import Movimentos
 #------------------------------------------------------------------------------
 #VIEWS CORE
 #------------------------------------------------------------------------------
+@login_required
 def home(request):
     families = Familia.objects.all()
     entities = Entidade.objects.all()

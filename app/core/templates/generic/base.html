@@ -8,6 +8,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Ícone do title -->
+  <link rel="icon" type="image/x-icon" href="{% static 'imagens/iconeTitle.ico' %}">
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
@@ -44,8 +47,8 @@
     <div class="row h-100">
       <div class="col-lg-2 col-md-12 col-sm-12 p-0 bg-dark">
         <div class="logo-container text-center">
-          <a href="{% url 'Rede Solidariedade'%}">Rede <br />
-            Soliedariedade
+          <a href="{% url 'Rede Solidariedade'%}">
+            Rede Soliedariedade
           </a>
         </div>
 
@@ -85,17 +88,14 @@
               <div><i class="fa fa-heartbeat"></i></div>Doações
             </a>
             <div class="dropdown-menu">
-              {% if user|has_group:"user_admin" %}
-              {% else %}
               <a class="dropdown-item" href="{% url 'Cadastro de Doações'%}">Realizar Doação</a>
               <div class="dropdown-divider"></div>
-              {% endif %}
               <a class="dropdown-item" href="{% url 'Lista de Doações'%}">Lista de Doações</a>
             </div>
           </li>
           <hr />
           {% endif %}
-          {% if user|has_group:"user_admin" %}
+          {% if user.is_superuser %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
               aria-expanded="false">
@@ -107,24 +107,26 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'Lista de Entidades'%}">Lista de Entidades</a>
               <a class="dropdown-item" href="{% url 'Lista de Representantes'%}">Lista de Representantes</a>
-              <a class="dropdown-item" href="{% url 'Lista de Usuarios'%}">Lista de Usuarios</a>
+              <a class="dropdown-item" href="{% url 'Lista de Usuarios'%}">Lista de Usuários</a>
             </div>
           </li>
           <hr />
           {% endif %}
-          {% if user.is_authenticated %}
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
               aria-expanded="false">
               <div><i class="fa fa-solid fa-user"></i></div>{{ user.username.title }}
             </a>
             <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'Editar Usuário' user.pk %}">Editar usuário</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'Redefinir Senha' %}">Alterar senha</a>
             </div>
           </li>
 
           <hr />
-
+          {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout'%}">
               <div>
@@ -148,39 +150,40 @@
         </ul>
       </div>
 
-      {% if user|has_group:"primeirologin" %}
       <!-- Obriga o usuário alterar a senha no primeiro login -->
+      {% if user|has_group:"primeirologin" and ehPaginaRedefinicaoSenha == false%}
 
-      <!-- Contador regressivo da página de primeiro login -->
-      <script src="{% static 'js/contadorPrimeiroLogin.js'%}"></script>
-      <div class="col bg-secondary">
-        <div class="table-wrapper" id="round">
-          <div class="table-title" id="round-top">
-            <div class="row">
-              <div class="col-sm-7">
-                <h2>Redefina sua senha</h2>
-                <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        <!-- Contador regressivo da página de primeiro login -->
+        <script src="{% static 'js/contadorPrimeiroLogin.js'%}"></script>
+
+        <div class="col bg-secondary">
+          <div class="table-wrapper m-4" id="round">
+            <div class="table-title" id="round-top">
+              <div class="row">
+                <div class="col-sm-7">
+                  <h2>Parece que esse é seu primeiro login</h2>
+                  <div class="col-md-1 col-xs-1 col-sm-1"></div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="pt-2 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
+            <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
 
-            <p>
-              Para uma maior segurança, redefina sua senha.</br>
-              Você será redirecionado automaticamente em <label id="contador"></label> segundos, ou
+              <p>
+                Para uma maior segurança, redefina sua senha.</br>
+                Você será redirecionado automaticamente em <label id="contador"></label> segundos, ou
 
-              <a href="{% url 'Redefinir Senha' %}">
-                clique aqui para ir agora.
-              </a>
+                <a href="{% url 'Redefinir Senha' %}">
+                  clique aqui para ir agora.
+                </a>
 
-            </p>
+              </p>
 
-            <!-- Redireciona para para alteração de senha após 11 segundos. -->
-            <meta http-equiv="Refresh" content="11; url={% url 'Redefinir Senha' %}" />
+              <!-- Redireciona para para alteração de senha após 11 segundos. -->
+              <meta http-equiv="Refresh" content="11; url={% url 'Redefinir Senha' %}" />
 
+            </div>
           </div>
         </div>
-      </div>
 
       {% else %}
 
@@ -195,6 +198,131 @@
 
     </div>
   </div>
+
+<!-- ****************************************************************************
+MODALS DE CONFIRMAÇÃO DE ATIVAÇÃO, EXCLUSÃO E INATIVAÇÃO DE CADASTROS
+***************************************************************************** -->
+
+<!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO DE CADASTRO -->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="tituloModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content rounded">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="tituloModal">Confirmação de exclusão</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+          Você quer mesmo excluir {{ object }}?
+      </div>
+
+      <div class="modal-footer rounded-bottom">
+        <form method="post" action="" id="formDelete">
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+            <button type="submit" onclick="atualizaActionFormDelete()" class="btn btn-danger rounded"><span class="glyphicon glyphicon-trash">Sim</span></button>
+            <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Não</button>
+            {% endif %}
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO CASCADE DE CADASTRO -->
+<div class="modal fade" id="deleteCascade" tabindex="-1" role="dialog" aria-labelledby="tituloModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content rounded">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="tituloModal">Confirmação de exclusão</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        Você quer mesmo deletar {{ object }}? <br>
+        Esta ação irá remover todos os registros relacionados a este cadastro!
+      </div>
+
+      <div class="modal-footer rounded-bottom">
+        <form method="post" action="" id="formDeleteCascade">
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+            <button type="submit" onclick="atualizaActionFormDeleteCascade()" class="btn btn-danger rounded" ><span class="glyphicon glyphicon-trash">Sim</span></button>
+            <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Não</button>
+            {% endif %}
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE INATIVAÇÃO DE CADASTRO -->
+<div class="modal fade" id="inativar" tabindex="-1" role="dialog" aria-labelledby="tituloModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content rounded">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="tituloModal">Confirmação de inativação</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+          Você quer mesmo inativar {{ object }}?
+      </div>
+
+      <div class="modal-footer rounded-bottom">
+        <form method="post" action="" id="formInativar">
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+            <button type="submit" id="botaoConfirmaAlteracao" onclick="atualizaActionFormInativar()" class="btn btn-danger rounded"><span class="glyphicon glyphicon-trash">Sim</span></button>
+            <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Não</button>
+            {% endif %}
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE REATIVAÇÃO DE CADASTRO -->
+<div class="modal fade" id="reativar" tabindex="-1" role="dialog" aria-labelledby="tituloModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content rounded">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="tituloModal">Confirmação de reativação</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+          Você quer mesmo reativar {{ object }}?
+      </div>
+
+      <div class="modal-footer rounded-bottom">
+        <form method="post" action="" id="formReativar">
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+            <button type="submit" onclick="atualizaActionFormReativar()" class="btn btn-primary rounded"><span class="glyphicon glyphicon-trash">Sim</span></button>
+            <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Não</button>
+            {% endif %}
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
 
   <!-- Boostrap JS -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

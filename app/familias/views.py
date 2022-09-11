@@ -54,7 +54,7 @@ def detalhesFamilia(request, pk):
 #CRIAR
 @login_required
 def cadastroFamilia(request):
-    nomePagina = 'Cadastro de Família:'
+    nomePagina = 'Cadastro de Família'
     form = FamiliaForm()
     if request.method == 'POST':
         form = FamiliaForm(request.POST)
@@ -67,7 +67,7 @@ def cadastroFamilia(request):
 #EDITAR
 def editarFamilia(request, pk, template_name='generic/cadastro.html'):
     familias = get_object_or_404(Familia, pk=pk)
-    nomePagina = 'Editar Família:'
+    nomePagina = 'Editar Família'
     form = EditFamiliaForm(request.POST or None, instance=familias)
     if form.is_valid():
         form.save()
@@ -111,7 +111,7 @@ def cadastroIntegranteFamilia(request):
 
 #EDITAR
 def editarIntegranteFamilia(request, pk, template_name='generic/cadastro.html'):
-    nomePagina = 'Editar Integrante de Família:'
+    nomePagina = 'Editar Integrante de Família'
     integranteFamilia = get_object_or_404(IntegranteFamilia, pk=pk)
     form = IntegranteFamiliaForm(request.POST or None, instance=integranteFamilia)
     if form.is_valid():
@@ -155,11 +155,11 @@ def searchFamiliaByCpf(request):
     if cpf:
         membros = IntegranteFamilia.objects.filter(
                 Q(nome__icontains=cpf)|
-                Q(cpf__icontains=cpf) 
+                Q(cpf__icontains=cpf)
             )
         familia = Familia.objects.filter(
                 Q(nomeChefeFamilia__icontains=cpf)|
-                Q(cpfChefeFamilia__icontains=cpf) 
+                Q(cpfChefeFamilia__icontains=cpf)
             )
 
         for integrante in membros:
@@ -167,6 +167,6 @@ def searchFamiliaByCpf(request):
         for chefe in familia:
             payload.append(chefe.nomeChefeFamilia + ' -- CPF:' + str(chefe.cpfChefeFamilia))
 
-    return JsonResponse({'status': 200, 'data': payload}) 
+    return JsonResponse({'status': 200, 'data': payload})
 
 #------------------------------------------------------------------------------

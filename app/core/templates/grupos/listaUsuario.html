@@ -1,10 +1,11 @@
 {% extends 'generic/base.html' %}
+{% block title %}Usuários{% endblock %}
 {% load user_tags %}
-{% block content %} {% block styles %} 
+{% block content %} {% block styles %}
 <link rel="stylesheet" href="../static/css/listas/listas.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   {% endblock %}
-  {% if user|has_group:"user_admin" %}
+  {% if user.is_superuser %}
   <div class="col">
     <div class="table-wrapper" id="round">
       <div class="table-title" id="round-top">
@@ -31,8 +32,9 @@
         <thead>
             <tr>
               <th class="text-center">ID</th>
-              <th class="text-center">Usuario</th>
+              <th class="text-center">Usuário</th>
               <th class="text-center">Papel</th>
+              <th class="text-center">Situação</th>
               <th class="text-center">Ações</th>
             </tr>
           </thead>
@@ -41,28 +43,36 @@
             <tr>
               <td class="text-center">{{ usuarios.pk }} </td>
               <td class="text-center">{{ usuarios.username }} </td>
-              {% if usuarios|has_group:"user_admin" %}
+
+              {% if usuarios.is_superuser %}
               <td class="text-center"> Administrador </td>
-              {% else %} 
+              {% else %}
               <td class="text-center"> Representante </td>
-              {% endif %} 
+              {% endif %}
+
+              {% if usuarios.is_active %}
+              <td class="text-center"> Ativo </td>
+              {% else %}
+              <td class="text-center"> Inativo </td>
+              {% endif %}
+
               <td class="text-center icons-td">
-                {% if usuarios|has_group:"user_admin" %}
-                <a href="{% url 'Excluir Usuario' usuarios.pk %}" class="delete" data-toggle="modal">
-                  <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
-                </a>  
-                {% else %}  
-                <a href="{% url 'Excluir Usuario' usuarios.pk %}" class="delete">
-                  <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
-                </a>  
-                {% endif %}           
+                {% if usuarios.is_superuser %}
+                <a href="{% url 'Editar Usuário' usuarios.pk %}" class="edit">
+                  <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
+                </a>
+                {% else %}
+                <a href="{% url 'Editar Usuário' usuarios.pk %}" class="edit">
+                  <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
+                </a>
+                {% endif %}
               </td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
     </div>
-  </div>  
+  </div>
   {% endif %}
   {% include "includes/pagination.html" %}
 {% endblock %}

@@ -1,4 +1,5 @@
-{% extends "generic/base.html" %} 
+{% extends "generic/base.html" %}
+{% block title %}Página Inicial | Rede Solidariedade{% endblock %}
 {% load static %}
 
 {% block style %}
@@ -6,17 +7,17 @@
 {% endblock %}
 
 {% block content %}
-  <div class="row h-100 d-flex justify-content-center p-3" style="gap: 
+  <div class="row h-100 d-flex justify-content-center p-3" style="gap:
   0.5em; overflow-y: auto;">
 
 
     <div class="col bg-dark p-3 count-item">
       <h3 class="title">Entidades</h3>
-      <div class="percentage-holder"> 
+      <div class="percentage-holder">
         <h4 class="" id="entity-percentage"></h4>
         <h4>em relação ao último mês.</h4>
       </div>
-      
+
 
       <div class="info-holder">
         <i class="fas fa-building icon"></i>
@@ -31,7 +32,7 @@
         <h4 class="" id="family-percentage"></h4>
         <h4>em relação ao último mês.</h4>
       </div>
-    
+
 
       <div class="info-holder">
         <i class="fas fa-users icon"></i>
@@ -46,7 +47,7 @@
         <h4 class="" id="donation-percentage"></h4>
         <h4>em relação ao último mês.</h4>
       </div>
-      
+
 
       <div class="info-holder">
         <i class="fas fa-hand-holding-usd icon"></i>
@@ -67,7 +68,7 @@
       <canvas id="donation-chart" height="80"></canvas>
     </div>
   </div>
-{% endblock %} 
+{% endblock %}
 
 {% block script %}
   <!-- Chart JS -->
@@ -81,7 +82,7 @@
     const familyPercentage = document.querySelector("#family-percentage");
     const donationCounter = document.querySelector("#donation-counter");
     const donationPercentage = document.querySelector("#donation-percentage");
-  
+
     const count = (value, end, tag) => {
       tag.innerHTML = value;
 
@@ -110,7 +111,7 @@
 
       const families = {
         counter: familyCounter,
-        end: "{{ family_count }}", 
+        end: "{{ family_count }}",
         last_month: "{{ family_lastmonth }}",
       }
 
@@ -124,9 +125,9 @@
       count(start, families.end, families.counter);
       count(start, donations.end, donations.counter);
 
-      entityPercentage.innerHTML = getPercentage(entityPercentage, entities.last_month, entities.end) 
-      familyPercentage.innerHTML = getPercentage(familyPercentage, families.last_month, families.end) 
-      donationPercentage.innerHTML = getPercentage(donationPercentage, donations.last_month, donations.end) 
+      entityPercentage.innerHTML = getPercentage(entityPercentage, entities.last_month, entities.end)
+      familyPercentage.innerHTML = getPercentage(familyPercentage, families.last_month, families.end)
+      donationPercentage.innerHTML = getPercentage(donationPercentage, donations.last_month, donations.end)
     }
   </script>
 
@@ -259,4 +260,3 @@
     const donationChart = new Chart(donationCtx, donationConfig);
   </script>
 {% endblock %}
-        

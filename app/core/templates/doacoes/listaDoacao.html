@@ -1,5 +1,6 @@
 {% extends 'generic/base.html' %}
 {% load user_tags %}
+{% block title %}Doações{% endblock %}
 {% block content %} {% block styles %}
 <link rel="stylesheet" href="../static/css/listas/listas.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -47,7 +48,7 @@
                                             </a>
                                         </div>
 
-                                        <div class="mt-5"">
+                                        <div class="mt-5">
                                             <a href="{% url 'listar_doacoes_relatorio' %}" class="btn btn-primary">
                                                 Exibir tudo
                                             </a>
@@ -58,7 +59,7 @@
                             </div>
 
 
-                            
+
                     </form>
                 </div>
                 {% if user.is_authenticated %}
@@ -95,8 +96,8 @@
                     visibility
                   </span>
                     </a>
-                    {% if user|has_group:"user_admin" %}
-                    <a href="{% url 'Excluir Doação' movimentos.pk %}" class="delete">
+                    {% if user.is_superuser %}
+                    <a href="{% url 'Excluir Doação' movimentos.pk %}" class="delete" id="deletarDoacao" data-toggle="modal" data-target="#deleteCascade">
                         <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
                     </a>
                     {% endif %}
@@ -109,4 +110,13 @@
     </div>
 </div>
 {% include "includes/pagination.html" %}
+
+<script>
+
+  // Atualizando o action do form da confirmação de exclusão (no modal do base.html)
+  function atualizaActionFormDeleteCascade() {
+    document.getElementById('formDeleteCascade').action = document.getElementById('deletarDoacao').href;
+  }
+
+</script>
 {% endblock %}

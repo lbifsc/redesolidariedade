@@ -1,6 +1,7 @@
 {% extends 'generic/base.html' %}
+{% block title %}Representantes{% endblock %}
 {% load user_tags %}
-  {% block content %} {% block styles %} 
+  {% block content %} {% block styles %}
   <link rel="stylesheet" href="../static/css/listas/listas.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   {% endblock %}
@@ -53,18 +54,27 @@
                 <a href="{% url 'Editar Representante' representantes.pk %}" class="edit">
                   <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
                 </a>
-                {% if user|has_group:"user_admin" %}
-                <a href="{% url 'Excluir Representante' representantes.pk %}" class="delete">
+                {% if user.is_superuser %}
+                <a href="{% url 'Excluir Representante' representantes.pk %}" class="delete" id="deletarRepresentante" data-toggle="modal" data-target="#delete">
                   <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
-                </a>    
-                {% endif %}           
+                </a>
+                {% endif %}
               </td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
     </div>
-  </div>  
+  </div>
   {% endif %}
   {% include "includes/pagination.html" %}
+
+  <script>
+
+    // Atualizando o action do form da confirmação de exclusão (no modal do base.html)
+    function atualizaActionFormDelete() {
+      document.getElementById('formDelete').action = document.getElementById('deletarRepresentante').href;
+    }
+
+  </script>
 {% endblock %}

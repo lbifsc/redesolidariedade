@@ -1,5 +1,6 @@
 {% extends 'generic/base.html' %}
-  {% block content %} {% block styles %} 
+{% block title %}{{ representante.nome }}{% endblock %}
+  {% block content %} {% block styles %}
   {% load static %}
       <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
       <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
@@ -18,14 +19,14 @@
             <div class="col-md-1 col-xs-1 col-sm-1"></div>
             </div>
          </div>
-        </div> 
+        </div>
         <br>
                     {% if representante.idEntidade %}<p><a href="{% url 'Detalhes Entidade' representante.idEntidade.pk %}">Entidade: {{ representante.idEntidade }}</a></p>{% endif %}
                     <p>CPF: {{ representante.cpf }}</p>
                     <p>Endereço: {{ representante.endereco }}</p>
                     <p>Observação: {{ representante.observacao }}</p>
                     <br>
-    </div> 
-</div>  
+    </div>
+</div>
 {% endif %}
 {% endblock %}

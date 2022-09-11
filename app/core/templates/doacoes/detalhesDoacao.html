@@ -1,5 +1,6 @@
 {% extends 'generic/base.html' %}
-  {% block content %} {% block styles %} 
+{% block title %}Doação para {{ movimento.idFamilia }}{% endblock %}
+  {% block content %} {% block styles %}
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
   <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
@@ -37,13 +38,13 @@
             <div class="col-sm-7">
                 <h2>Doação: #{{ movimento.pk }}</h2>
                 <br>
-                <input type="button" class="btn-primary p-1 rounded" style="cursor: pointer;" value="Imprimir Recibo" onclick="printDiv()"> 
+                <input type="button" class="btn-primary p-1 rounded" style="cursor: pointer;" value="Imprimir Recibo" onclick="printDiv()">
             <div class="col-md-10 col-xs-10 col-sm-10">
             </div>
             <div class="col-md-1 col-xs-1 col-sm-1"></div>
             </div>
          </div>
-        </div> 
+        </div>
         <br>
         <h4>Representante: {{ movimento.representante }}</h4>
         {% if movimento.justificativa %}
@@ -70,8 +71,8 @@
         {% endfor %}
         </tbody>
       </table>
-    </div> 
-</div>  
+    </div>
+</div>
 {% endif %}
 {% block script %}
 <script>
