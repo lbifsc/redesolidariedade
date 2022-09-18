@@ -1,0 +1,100 @@
+{% extends 'generic/base.html' %}
+{% load user_tags %}
+{% block title %}Altere sua senha{% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+{% block styles %}
+{% load user_tags %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
+<link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
+<link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css" />
+{% endblock %}
+
+{% if user|has_group:"primeirologin" %}
+<!-- Obriga alteração de senha no primeiro login -->
+
+<div class="col">
+    <div class="table-wrapper" id="round">
+
+        <div class="table-title" id="round-top">
+            <div class="row">
+                <div class="col-sm-7">
+                    <h2>Edição de usuário</h2>
+                    <div class="col-md-1 col-xs-1 col-sm-1"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
+
+            <!-- Contador regressivo da página de primeiro login -->
+            <script src="{% static 'js/contadorPrimeiroLogin.js'%}"></script>
+            <div class="col bg-secondary">
+                <div class="table-wrapper m-4" id="round">
+
+                    <div class="table-title" id="round-top">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <h2>Parece que esse é seu primeiro login</h2>
+                                <div class="col-md-1 col-xs-1 col-sm-1"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
+
+                        <p>
+                            Para uma maior segurança, redefina sua senha.</br>
+                            Você será redirecionado automaticamente em <label id="contador"></label> segundos, ou
+
+                            <a href="{% url 'Redefinir Senha' %}">
+                                clique aqui para ir agora.
+                            </a>
+
+                        </p>
+
+                        <!-- Redireciona automaticamente para para alteração de senha após 11 segundos. -->
+                        <meta http-equiv="Refresh" content="11; url={% url 'Redefinir Senha' %}" />
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    // Se o usuário mudar o valor do checkbox, retornar ao valor original
+    function verificaCheckBoxUsuarioAtivo() {
+
+        if (document.getElementById("usuarioAtivo").checked == false) {
+            document.getElementById("usuarioAtivo").click();
+
+        } else if (document.getElementById("usuarioAtivo").checked == true) {
+            document.getElementById("usuarioAtivo").click();
+        }
+        return
+    }
+
+    // Atualizando o action do form da confirmação de inativação (no modal do base.html)
+    function atualizaActionFormInativar() {
+        document.getElementById('formInativar').action = document.getElementById('inativarUsuario').href;
+    }
+
+    // Atualizando o action do form da confirmação de reativação (no modal do base.html)
+    function atualizaActionFormReativar() {
+        document.getElementById('formReativar').action = document.getElementById('reativarUsuario').href;
+    }
+
+</script>
+{% endif %}
+
+{% endblock %}

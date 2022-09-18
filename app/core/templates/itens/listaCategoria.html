@@ -1,6 +1,7 @@
 {% extends 'generic/base.html' %}
+{% block title %}Categorias{% endblock %}
 {% load user_tags %}
-  {% block content %} {% block styles %} 
+  {% block content %} {% block styles %}
   <link rel="stylesheet" href="../static/css/listas/listas.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   {% endblock %}
@@ -45,10 +46,10 @@
                 <a href="{% url 'Editar Categoria' categoria.pk %}" class="edit">
                   <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
                 </a>
-                {% if user|has_group:"user_admin" %}
-                <a href="{% url 'Excluir Categoria' categoria.pk %}" class="delete">
+                {% if user.is_superuser %}
+                <a href="{% url 'Excluir Categoria' categoria.pk %}" class="delete" id="deletarCategoria" data-toggle="modal" data-target="#deleteCascade">
                   <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
-                </a>  
+                </a>
                 {% endif %}
               </td>
               {% endif %}
@@ -58,5 +59,13 @@
         </table>
     </div>
   </div>
-  {% include "includes/pagination.html" %}  
+  {% include "includes/pagination.html" %}
+  <script>
+
+    // Atualizando o action do form da confirmação de inativação (no modal do base.html)
+    function atualizaActionFormDeleteCascade() {
+      document.getElementById('formDeleteCascade').action = document.getElementById('deletarCategoria').href;
+    }
+
+  </script>
 {% endblock %}

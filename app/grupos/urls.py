@@ -26,15 +26,12 @@ urlpatterns += [
 #CRUD USUARIOS
 urlpatterns += [
     path('listaUsuario/', views.listaUsuario.as_view(), name='Lista de Usuarios'),
-    path('cadastroUsuario/delete/<int:pk>/', views.excluirUsuario, name='Excluir Usuario'),
+    path('inativarUsuario/<int:pk>/', views.inativarUsuario, name='Inativar Usuário'),
+    path('reativarUsuario/<int:pk>/', views.reativarUsuario, name='Reativar Usuário'),
     path('redefinirSenha/', views.redefinirSenha, name='Redefinir Senha'),
     path('redefinicaoSenhaCompleta/', views.redefinicaoSenhaCompleta, name='Redefinição de Senha Completa'),
-]
-
-#SEARCH
-urlpatterns += [
-    path('searchEntidadeByName/', views.searchEntidadeByName, name='searchEntidadeByName'),
-    path('searchRepresentanteByName/', views.searchRepresentanteByName, name='searchRepresentanteByName'),
+    path('editarUsuario/<int:pk>/', views.editarUsuario, name='Editar Usuário'),
+    path('primeiroLogin/', views.primeiroLogin, name='Primeiro Login'),
 ]
 
 #------------------------------------------------------------------------------

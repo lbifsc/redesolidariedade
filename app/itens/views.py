@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 #------------------------------------------------------------------------------
-# CRUD CATEGORIA 
+# CRUD CATEGORIA
 #------------------------------------------------------------------------------
 
 #LISTAR
@@ -31,7 +31,7 @@ class listaCategoriaItem(LoginRequiredMixin, ListView):
 #INSERIR
 @login_required
 def cadastroCategoriaItem(request):
-    nomePagina = 'Cadastro de Categorias de Item:'
+    nomePagina = 'Cadastro de Categorias de Item'
     form = CategoriaItemForm()
     if request.method == 'POST':
         form = CategoriaItemForm(request.POST)
@@ -43,7 +43,7 @@ def cadastroCategoriaItem(request):
 
 #EDITAR
 def editarCategoria(request, pk, template_name='generic/cadastro.html'):
-    nomePagina = 'Editar Categoria de Item:'
+    nomePagina = 'Editar Categoria de Item'
     categoria = get_object_or_404(CategoriaItem, pk=pk)
     form = CategoriaItemForm(request.POST or None, instance=categoria)
     if form.is_valid():
@@ -84,7 +84,7 @@ class listaItem(LoginRequiredMixin, ListView):
 #INSERIR
 @login_required
 def cadastroItem(request):
-    nomePagina = 'Cadastro de Item:'
+    nomePagina = 'Cadastro de Item'
     form = ItemForm()
     if request.method == 'POST':
         form = ItemForm(request.POST)
@@ -96,7 +96,7 @@ def cadastroItem(request):
 
 #EDITAR
 def editarItem(request, pk, template_name='generic/cadastro.html'):
-    nomePagina = 'Editar Item:'
+    nomePagina = 'Editar Item'
     itens = get_object_or_404(Item, pk=pk)
     form = ItemForm(request.POST or None, instance=itens)
     if form.is_valid():
@@ -112,34 +112,5 @@ def excluirItem(request, pk, template_name='generic/confirm_delete.html'):
         return redirect('Lista de Itens')
     return render(request, template_name, {'object':item})
 
-#------------------------------------------------------------------------------
-#SEARCH
-#------------------------------------------------------------------------------
-
-#ITEM POR NOME
-def searchItemByName(request):
-    nomeItem = request.GET.get('nomeItem')
-    payload=[]
-
-    if nomeItem:
-        itens = Item.objects.filter(descricao__icontains=nomeItem)
-
-        for item in itens:
-            payload.append(item.descricao)
-
-    return JsonResponse({'status': 200, 'data': payload})
-
-#CATEGORIA DE ITEM POR NOME
-def searchCategoriaByName(request):
-    nomeCategoria = request.GET.get('nomeCategoria')
-    payload=[]
-
-    if nomeCategoria:
-        categorias = CategoriaItem.objects.filter(descricao__icontains=nomeCategoria)
-
-        for categoria in categorias:
-            payload.append(categoria.descricao)
-
-    return JsonResponse({'status': 200, 'data': payload})
 
 #------------------------------------------------------------------------------

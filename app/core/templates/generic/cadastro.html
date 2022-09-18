@@ -1,4 +1,5 @@
 {% extends 'generic/base.html' %}
+{% block title %}{{ nomePagina }}{% endblock %}
 {% block content %} {% load widget_tweaks %} {% block styles %}
 {% load user_tags %}
 {% load static %}
@@ -85,17 +86,17 @@
 
       cnpjInput.addEventListener("input", () => {
         clearInput(cnpjInput);
-      }); 
+      });
 
       cnpjInput.addEventListener("paste", () => {
         clearInput(cnpjInput);
-      }); 
+      });
     }
   }
-    
+
   const clearInput = (input) => {
       input.value = input.value.replace(/\D+/g, '');
   }
-  
+
 </script>
 {% endblock %}

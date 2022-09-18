@@ -2,7 +2,6 @@ import re
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Familia, IntegranteFamilia
 from .forms import FamiliaForm, EditFamiliaForm, IntegranteFamiliaForm
-from django.http import JsonResponse
 from django.views.generic import ListView
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -54,7 +53,7 @@ def detalhesFamilia(request, pk):
 #CRIAR
 @login_required
 def cadastroFamilia(request):
-    nomePagina = 'Cadastro de Família:'
+    nomePagina = 'Cadastro de Família'
     form = FamiliaForm()
     if request.method == 'POST':
         form = FamiliaForm(request.POST)
@@ -67,7 +66,7 @@ def cadastroFamilia(request):
 #EDITAR
 def editarFamilia(request, pk, template_name='generic/cadastro.html'):
     familias = get_object_or_404(Familia, pk=pk)
-    nomePagina = 'Editar Família:'
+    nomePagina = 'Editar Família'
     form = EditFamiliaForm(request.POST or None, instance=familias)
     if form.is_valid():
         form.save()
@@ -111,7 +110,7 @@ def cadastroIntegranteFamilia(request):
 
 #EDITAR
 def editarIntegranteFamilia(request, pk, template_name='generic/cadastro.html'):
-    nomePagina = 'Editar Integrante de Família:'
+    nomePagina = 'Editar Integrante de Família'
     integranteFamilia = get_object_or_404(IntegranteFamilia, pk=pk)
     form = IntegranteFamiliaForm(request.POST or None, instance=integranteFamilia)
     if form.is_valid():
@@ -126,47 +125,5 @@ def excluirIntegranteFamilia(request, pk, template_name='generic/confirm_delete.
         integranteFamilia.delete()
         return redirect('Lista de Familias')
     return render(request, template_name, {'object':integranteFamilia})
-
-#------------------------------------------------------------------------------
-#SEARCH
-#------------------------------------------------------------------------------
-
-#FAMILIA POR NOME
-def searchFamiliaByName(request):
-    nome = request.GET.get('nomeChefeFamilia')
-    payload=[]
-
-    if nome:
-        familias = Familia.objects.filter(
-                Q(nomeChefeFamilia__icontains=nome) |
-                Q(cpfChefeFamilia__icontains=nome)
-            )
-
-        for familia in familias:
-            payload.append(familia.nomeChefeFamilia + ' -- CPF:' + str(familia.cpfChefeFamilia))
-
-    return JsonResponse({'status': 200, 'data': payload})
-
-#FAMILIA POR CPF
-def searchFamiliaByCpf(request):
-    cpf = request.GET.get('cpfChefeFamilia')
-    payload=[]
-
-    if cpf:
-        membros = IntegranteFamilia.objects.filter(
-                Q(nome__icontains=cpf)|
-                Q(cpf__icontains=cpf) 
-            )
-        familia = Familia.objects.filter(
-                Q(nomeChefeFamilia__icontains=cpf)|
-                Q(cpfChefeFamilia__icontains=cpf) 
-            )
-
-        for integrante in membros:
-            payload.append(integrante.nome + ' -- CPF:' + str(integrante.cpf))
-        for chefe in familia:
-            payload.append(chefe.nomeChefeFamilia + ' -- CPF:' + str(chefe.cpfChefeFamilia))
-
-    return JsonResponse({'status': 200, 'data': payload}) 
 
 #------------------------------------------------------------------------------

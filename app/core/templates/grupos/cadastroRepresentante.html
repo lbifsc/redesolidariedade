@@ -1,4 +1,5 @@
 {% extends 'generic/base.html' %}
+{% block title %}Cadastro de Representante{% endblock %}
 {% block content %} {% load widget_tweaks %} {% block styles %}
 {% load user_tags %}
 {% load static %}
@@ -67,11 +68,11 @@
               document.forms.representante.submit()
             }
           })
-        } 
-        
+        }
+
         entidadeUserInput.classList.add("form-control")
         entidadeUserInput.classList.add("is-invalid")
-        
+
       }
     }
 
@@ -80,25 +81,25 @@
     window.onload = () => {
       const cpfInput = document.getElementById("cpfRepresentante");
 
-      if (cpfInput) 
+      if (cpfInput)
         cpfInput.addEventListener("paste", () => {
           clearInput(cpfInput);
         });
     }
-    
+
     const clearInput = (input) => {
         input.value = input.value.replace(/\D+/g, '');
     }
 
     function validateInput(){
-      //VALIDAÇÃO DE TODOS CAMPOS, POIS UTILIZANDO ONCLICK NO BOTAO ELE PULA AS TAGS REQUIRED DO HTML E SE MUDAR PARA O FORM ONSUBMIT ELE ENVIA PRIMEIRO 
+      //VALIDAÇÃO DE TODOS CAMPOS, POIS UTILIZANDO ONCLICK NO BOTAO ELE PULA AS TAGS REQUIRED DO HTML E SE MUDAR PARA O FORM ONSUBMIT ELE ENVIA PRIMEIRO
       //SEM CONSULTAR A FUNÇÃO
       let nome = document.getElementById("nomeRepresentante")
       let cpf = document.getElementById("cpfRepresentante")
       let endereco = document.getElementById("endereco")
       let observacao = document.getElementById("observacao")
       let erroNome
-      let erroCpf 
+      let erroCpf
       let erroEndereco
       let erroObservacao
 
@@ -163,11 +164,11 @@
     }
 
     function validaCpf(cpf) {
-      if(cpf.length === 11 && cpfChecker(cpf)) 
+      if(cpf.length === 11 && cpfChecker(cpf))
         return true
       return false
     }
-    
+
     function cpfChecker(strCPF) {
           var Soma;
           var Resto;
@@ -190,13 +191,13 @@
     }
 
     function validaEndereco(endereco) {
-      if(endereco.length >= 0) 
+      if(endereco.length >= 0)
         return true
       return false
     }
 
     function validaObservacao(observacao) {
-      if(observacao.length >= 0) 
+      if(observacao.length >= 0)
         return true
       return false
     }
@@ -217,7 +218,7 @@
         onSubmit: (result) => {
           const aux = document.querySelector("#entidade")
           aux.disabled = true;
-        } 
+        }
     })
 </script>
 {% endblock %}

@@ -1,12 +1,8 @@
 {% extends 'generic/base.html' %}
+{% block title %}Cadastro de Integrante Familiar{% endblock %}
 {% block content %} {% load widget_tweaks %} {% block styles %}
 {% load user_tags %}
 {% load static %}
-      <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
-      <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
-      <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-      <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
 {% endblock %}
 
 <div class="col">
@@ -54,7 +50,7 @@
                 resolve(String(data.data))
             })
         })
-      
+
         ret.then((val)=> {
           if(val.length > 0 && val != "" & val != undefined) {
             let hiddenField = document.getElementById("nomeChefeFamilia")
@@ -70,12 +66,12 @@
     window.onload = () => {
       const cpfInput = document.getElementById("cpfIntegrante");
 
-      if (cpfInput) 
+      if (cpfInput)
         cpfInput.addEventListener("paste", () => {
           clearInput(cpfInput);
         });
     }
-    
+
     const clearInput = (input) => {
         input.value = input.value.replace(/\D+/g, '');
     }
@@ -108,13 +104,13 @@
     }
 
     function validateInput(){
-      //VALIDAÇÃO DE TODOS CAMPOS, POIS UTILIZANDO ONCLICK NO BOTAO ELE PULA AS TAGS REQUIRED DO HTML E SE MUDAR PARA O FORM ONSUBMIT ELE ENVIA PRIMEIRO 
+      //VALIDAÇÃO DE TODOS CAMPOS, POIS UTILIZANDO ONCLICK NO BOTAO ELE PULA AS TAGS REQUIRED DO HTML E SE MUDAR PARA O FORM ONSUBMIT ELE ENVIA PRIMEIRO
       //SEM CONSULTAR A FUNÇÃO
       let nome = document.getElementById("nomeIntegrante")
       let cpf = document.getElementById("cpfIntegrante")
       let erroNome
-      let erroCpf 
-  
+      let erroCpf
+
       if(validaNome(nome.value)) {
         nome.classList.add("form-control")
         nome.classList.add("is-valid")
@@ -152,11 +148,11 @@
     }
 
     function validaCpf(cpf) {
-      if(cpf.length === 11 && cpfChecker(cpf)) 
+      if(cpf.length === 11 && cpfChecker(cpf))
         return true
       return false
     }
-    
+
     function cpfChecker(strCPF) {
           var Soma;
           var Resto;
@@ -197,9 +193,9 @@
           selectedFamily = result;
 
           inputFamilia.disabled = true;
-        } 
+        }
     })
 
-    
+
 </script>
 {% endblock %}

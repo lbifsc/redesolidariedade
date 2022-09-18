@@ -20,4 +20,14 @@ urlpatterns += [
     path('relatorios/', include('relatorios.urls')),
 ]
 
+#SEARCH
+urlpatterns += [
+    path('searchFamiliaByName/', views.searchFamiliaByName, name='searchFamiliaByName'),
+    path('searchFamiliaByCpf/', views.searchFamiliaByCpf, name='searchFamiliaByCpf'), 
+    path('searchEntidadeByName/', views.searchEntidadeByName, name='searchEntidadeByName'),
+    path('searchRepresentanteByName/', views.searchRepresentanteByName, name='searchRepresentanteByName'),
+    path('searchItemByName/', views.searchItemByName, name='searchItemByName'),
+    path('searchCategoriaByName/', views.searchCategoriaByName, name='searchCategoriaByName'),
+]
+
 #------------------------------------------------------------------------------

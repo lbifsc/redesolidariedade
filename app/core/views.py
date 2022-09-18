@@ -1,12 +1,19 @@
+
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from datetime import date, timedelta
-from familias.models import Familia
+from familias.models import Familia, IntegranteFamilia
+from grupos.models import Entidade, Representante
+from itens.models import Item, CategoriaItem
+from django.http import JsonResponse
+from django.db.models import Q
 from grupos.models import Entidade
 from doacoes.models import Movimentos
 
 #------------------------------------------------------------------------------
 #VIEWS CORE
 #------------------------------------------------------------------------------
+@login_required
 def home(request):
     families = Familia.objects.all()
     entities = Entidade.objects.all()
@@ -72,5 +79,99 @@ def home(request):
     }
 
     return render(request, 'generic/home.html', context)
+
+#------------------------------------------------------------------------------
+#SEARCH
+#------------------------------------------------------------------------------
+
+#FAMILIA POR NOME
+def searchFamiliaByName(request):
+    nome = request.GET.get('nomeChefeFamilia')
+    payload=[]
+
+    if nome:
+        familias = Familia.objects.filter(
+                Q(nomeChefeFamilia__icontains=nome) |
+                Q(cpfChefeFamilia__icontains=nome)
+            )
+
+        for familia in familias:
+            payload.append(familia.nomeChefeFamilia + ' -- CPF:' + str(familia.cpfChefeFamilia))
+
+    return JsonResponse({'status': 200, 'data': payload})
+
+#FAMILIA POR CPF
+def searchFamiliaByCpf(request):
+    cpf = request.GET.get('cpfChefeFamilia')
+    payload=[]
+
+    if cpf:
+        membros = IntegranteFamilia.objects.filter(
+                Q(nome__icontains=cpf)|
+                Q(cpf__icontains=cpf)
+            )
+        familia = Familia.objects.filter(
+                Q(nomeChefeFamilia__icontains=cpf)|
+                Q(cpfChefeFamilia__icontains=cpf)
+            )
+
+        for integrante in membros:
+            payload.append(integrante.nome + ' -- CPF:' + str(integrante.cpf))
+        for chefe in familia:
+            payload.append(chefe.nomeChefeFamilia + ' -- CPF:' + str(chefe.cpfChefeFamilia))
+
+    return JsonResponse({'status': 200, 'data': payload})
+
+#ENTIDADE POR NOME
+def searchEntidadeByName(request):
+    nomeEntidade = request.GET.get('nomeEntidade')
+    payload=[]
+
+    if nomeEntidade:
+        entidades = Entidade.objects.filter(nome__icontains=nomeEntidade)
+
+        for entidade in entidades:
+            payload.append(entidade.nome)
+
+    return JsonResponse({'status': 200, 'data': payload})
+
+#REPRESENTANTE POR NOME
+def searchRepresentanteByName(request):
+    nomeRepresentante = request.GET.get('nomeRepresentante')
+    payload=[]
+
+    if nomeRepresentante:
+        representantes = Representante.objects.filter(nome__icontains=nomeRepresentante)
+
+        for representante in representantes:
+            payload.append(representante.nome)
+
+    return JsonResponse({'status': 200, 'data': payload})
+
+#ITEM POR NOME
+def searchItemByName(request):
+    nomeItem = request.GET.get('nomeItem')
+    payload=[]
+
+    if nomeItem:
+        itens = Item.objects.filter(descricao__icontains=nomeItem)
+
+        for item in itens:
+            payload.append(item.descricao)
+
+    return JsonResponse({'status': 200, 'data': payload})
+
+#CATEGORIA DE ITEM POR NOME
+def searchCategoriaByName(request):
+    nomeCategoria = request.GET.get('nomeCategoria')
+    payload=[]
+
+    if nomeCategoria:
+        categorias = CategoriaItem.objects.filter(descricao__icontains=nomeCategoria)
+
+        for categoria in categorias:
+            payload.append(categoria.descricao)
+
+    return JsonResponse({'status': 200, 'data': payload})
 
 #------------------------------------------------------------------------------

@@ -1,0 +1,137 @@
+{% extends 'generic/base.html' %}
+{% load user_tags %}
+{% block title %}Editar usuário{% endblock %}
+
+{% block content %}
+  {% load widget_tweaks %}
+  {% block styles %}
+    {% load user_tags %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
+  {% endblock %}
+
+  <div class="col">
+    <div class="table-wrapper" id="round">
+      <div class="table-title" id="round-top">
+        <div class="row">
+          <div class="col-sm-7">
+            <h2>Edição de usuário</h2>
+            <div class="col-md-1 col-xs-1 col-sm-1"></div>
+          </div>
+        </div>
+      </div>
+      <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
+
+        <!-- Exibe erros retornadas da view ou form, caso houver -->
+        {% if messages %}
+        <div class="form-group">
+          <ul class="messages p-0" role="alert">
+              {% for message in messages %}
+               <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
+               {% if form.erros %}
+               <li class="alert alert-warning p-0 m-0">{{ form.non_field_errors }}</li>
+               {% endif %}
+              {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'Editar Usuário' usuarioAlterado.pk %}">
+
+          {% csrf_token %}
+
+          <div class="row mb-4 d-flex">
+
+            <div class="col pr-5">
+              <label class="form-label" for="nomeUsuario">Nome de usuário: </label>
+              <input class="form-control text-secondary" type="text" value="{{usuarioAlterado.username}}" disabled="true" autocomplete="off">
+            </div>
+
+            <div class="col pr-5">
+              <label class="form-label" for="primeiroNome">Primeiro nome: </label>
+              <input class="form-control" type="text" value="{{usuarioAlterado.first_name}}" name="primeiroNome" autocomplete="on" id="primeiroNome">
+            </div>
+
+            <div class="col">
+              <label class="form-label" for="sobrenome">Sobrenome: </label>
+              <input class="form-control" type="text" value="{{usuarioAlterado.last_name}}" name="sobrenome" autocomplete="on" id="sobrenome">
+            </div>
+
+          </div>
+
+          <div class="row mb-4 d-flex">
+
+            <div class="col pr-5">
+              <label class="form-label" for="email">E-mail: </label>
+              <input class="form-control" type="email" value="{{usuarioAlterado.email}}" name="email" autocomplete="on" id="email">
+            </div>
+
+            <div class="col pr-5">
+              <label class="form-label" for="dataCriacao">Data de criação: </label>
+              <input class="form-control text-secondary" type="datetime" value="{{usuarioAlterado.date_joined}}" disabled="true" name="dataCriacao" autocomplete="on" id="nomeUsuario">
+            </div>
+
+            <div class="col">
+              <label class="form-label" for="ultimoLogin">Último login: </label>
+              <input class="form-control text-secondary" type="datetime" value="{{usuarioAlterado.last_login}}" disabled="true" name="ultimoLogin" autocomplete="on" id="nomeUsuario">
+            </div>
+
+          </div>
+
+          <div class="row mb-3 pr-3 pl-3 d-flex">
+            <div class="form-check form-switch col" data-toggle="tooltip" title="Marcar essa opção concede todas as permissões ao usuário">
+              <input class="form-check-input" type="checkbox" name="usuarioAdministrador" id="usuarioAdministrador" {% if usuarioAlterado.is_superuser %} checked {% endif %}>
+              <label class="form-check-label" for="usuarioAdministrador">Usuário administrador</label>
+            </div>
+
+            <div class="form-check form-switch float-right" data-toggle="tooltip" title="Para inativar/ativar o usuário, utilize o botão abaixo">
+              <input class="form-check-input" onclick="verificaCheckBoxUsuarioAtivo()" type="checkbox" name="usuarioAtivo" id="usuarioAtivo" {% if usuarioAlterado.is_active %} checked {% endif %}>
+              <label class="form-check-label" onclick="verificaCheckBoxUsuarioAtivo()" for="usuarioAtivo">Usuário ativo</label>
+            </div>
+          </div>
+
+          <!-- Divisor -->
+          <div class="border-top my-3 mt-4"></div>
+
+          <button type="submit" class="btn btn-success mb-1">Confirmar alterações</button>
+          {% if usuarioAlterado.is_active %}
+            <a href="{% url 'Inativar Usuário' usuarioAlterado.pk %}" class="btn btn-outline-danger mb-1 float-right" data-toggle="modal" data-target="#inativar" id="inativarUsuario">Inativar usuário</a>
+          {% else %}
+            <a href="{% url 'Reativar Usuário' usuarioAlterado.pk %}" class="btn btn-outline-primary mb-1 float-right" data-toggle="modal" data-target="#reativar" id="reativarUsuario">Reativar usuário</a>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    // Se o usuário mudar o valor do checkbox, retornar ao valor original
+    function verificaCheckBoxUsuarioAtivo() {
+
+      if (document.getElementById("usuarioAtivo").checked == false) {
+        document.getElementById("usuarioAtivo").click();
+
+      } else if (document.getElementById("usuarioAtivo").checked == true) {
+        document.getElementById("usuarioAtivo").click();
+      }
+      return
+    }
+
+    // Atualizando o action do form da confirmação de inativação (no modal do base.html)
+    function atualizaActionFormInativar() {
+      document.getElementById('formInativar').action = document.getElementById('inativarUsuario').href;
+    }
+
+    // Atualizando o action do form da confirmação de reativação (no modal do base.html)
+    function atualizaActionFormReativar() {
+      document.getElementById('formReativar').action = document.getElementById('reativarUsuario').href;
+    }
+
+  </script>
+
+{% endblock %}

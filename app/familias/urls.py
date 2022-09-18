@@ -21,10 +21,4 @@ urlpatterns += [
     path('cadastroIntegranteFamilia/delete/<int:pk>/', views.excluirIntegranteFamilia, name='Excluir IntegranteFamilia'),
 ]
 
-#SEARCH
-urlpatterns += [
-    path('searchFamiliaByName/', views.searchFamiliaByName, name='searchFamiliaByName'),
-    path('searchFamiliaByCpf/', views.searchFamiliaByCpf, name='searchFamiliaByCpf'), 
-]
-
 #------------------------------------------------------------------------------

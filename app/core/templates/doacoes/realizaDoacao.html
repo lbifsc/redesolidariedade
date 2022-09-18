@@ -1,4 +1,5 @@
 {% extends 'generic/base.html' %}
+{% block title %}Cadastro de doação{% endblock %}
 {% block content %} {% load widget_tweaks %} {% block styles %}
 {% load user_tags %}
 {% load static %}
@@ -14,16 +15,31 @@
     <div class="table-title" id="round-top">
       <div class="row">
         <div class="col-sm-7">
-          <h2>Cadastro Doação:</h2>
+          <h2>Cadastro de Doação:</h2>
           <div class="col-md-1 col-xs-1 col-sm-1"></div>
         </div>
       </div>
     </div>
     <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
+
+      <!-- Exibe erros retornadas da view ou form, caso houver -->
+      {% if messages %}
+      <div class="form-group">
+        <ul class="messages p-0" role="alert">
+            {% for message in messages %}
+             <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
+             {% if form.erros %}
+             <li class="alert alert-warning p-0 m-0">{{ form.non_field_errors }}</li>
+             {% endif %}
+            {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
       <form method="post" id="form">
         {% csrf_token %}
         <h5><b>Representante : {{user}}</b></h5> <br/>
-        
+
         <h5>Lista de doações anteriores:</h5>
         <div>
           <table class="table table-striped table-hover table-responsive-sm text-justify">
@@ -36,7 +52,7 @@
         </thead>
         <tbody>
         {% for doacao in doacoesAnteriores %}
-                    <tr> 
+                    <tr>
                       <td class="text-center"><a href="{% url 'Detalhes Doação' doacao.pk %}">{{ doacao.representante }}</a></td>
                       <td class="text-center"><a href="{% url 'Detalhes Doação' doacao.pk %}">{{ doacao.data }}</a></td>
                       <td class="text-center"><a href="{% url 'Detalhes Doação' doacao.pk %}">{{ doacao.justificativa }}</a></td>
@@ -49,7 +65,7 @@
 
         <label>Justificativa :</label>
         <input type="text" class="form-control" name="justificativa" id="justificativa" maxLength='250' minLength='5'> </input>
-        
+
         <div class="container">
           <div class="row">
             <div class="col-md-6">
@@ -63,13 +79,13 @@
               <label>Quantidade</label> :</label>
               <input class="form-control" type="number" name="quantidade" id="quantidade" style="width: 150px; height: 50px"/>
             </div>
-            
+
             <button onclick="itemControl()" type="button" class="btn btn-primary mt-3 mb-3 ml-3" id="btn">Adicionar Item</button>
             <button type="button" onclick="limpar()" class="btn btn-sucess mt-3 mb-3 ml-3">Limpar</button>
 
           </div>
-        </div> 
-        
+        </div>
+
         <h5>Lista Doação :</h5>
         <div>
             <table class="table table-dark mt-3">
@@ -107,7 +123,7 @@
         }
     })
 
-  */  
+  */
 
     function limpar() {
         const aux = document.querySelector("#item")
@@ -120,14 +136,14 @@
       let itens = document.getElementById("itens").value
 
       if(itens == "") {
-        alert("A doação deve possuir no minimo um item!!!")
+        alert("A doação deve possuir no mínimo um item!")
       } else {
         document.forms.form.submit()
       }
     }
 
     let itensInMemory =[]
-    
+
     new Autocomplete('#autocompleteItem',{
         search: input=> {
             const url= `/searchItemByName/?nomeItem=${input}`
@@ -144,7 +160,7 @@
           const aux = document.querySelector("#item")
           document.getElementById("quantidade").value = "1"
           aux.disabled = true;
-        } 
+        }
     })
 
     let count = 0
@@ -158,7 +174,7 @@
         aux.disabled = false
         quantidade = document.getElementById('quantidade').value
         itensInMemory= itensInMemory.flat(3)
- 
+
         if(item != "" && quantidade != "" && isValidItem(String(item))) {
           let element = document.getElementById("tableData")
           let tr = document.createElement("tr")
@@ -211,7 +227,7 @@
     function removeItem(idElement, itemName){
       let element = document.getElementById("tableData")
       element.removeChild(document.getElementById(idElement))
-     
+
       itensToBeSend.forEach( (valor,indice) => {
         if(valor['item'] === itemName){
           itensToBeSend.splice(indice, 1)

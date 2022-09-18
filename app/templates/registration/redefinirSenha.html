@@ -1,4 +1,4 @@
-{% extends 'generic/baseRegistration.html' %}
+{% extends 'generic/base.html' %}
 {% block title %}Redefinição de senha{% endblock %}
 
 {% block content %}
@@ -39,20 +39,28 @@
         </div>
         {% endif %}
 
-        <p>Digite no campo abaixo a sua nova senha escolhida. Certifique-se de que as duas senhas coincidam.</p>
+        <p>Preencha os campos abaixo para prosseguir com sua redefinição de senha.</p>
 
         <form method="post" action="{% url 'Redefinir Senha' %}">
 
           {% csrf_token %}
 
           <div class="mb-3">
-            <label class="form-label" for="novaSenha">Insira seu nova senha:</label>
-            <input class="form-control col-3" type="password" name="novaSenha" autocomplete="current-password" required="" id="novaSenha">
+            <label class="form-label" for="senhaAtual">Insira sua senha atual:</label>
+            <input class="form-control col-3" type="password" name="senhaAtual" autocomplete="current-password" required="true" id="senhaAtual">
+          </div>
+
+          <!-- Divisor -->
+          <div class="border-top my-3 mt-4"></div>
+
+          <div class="mb-3">
+            <label class="form-label" for="novaSenha">Insira sua nova senha:</label>
+            <input class="form-control col-3" type="password" name="novaSenha" autocomplete="current-password" required="true" id="novaSenha">
           </div>
 
           <div class="mb-3">
-            <label class="form-label" for="novaSenhaConfirmacao">Insira novamente seu nova senha:</label>
-            <input class="form-control col-3" type="password" name="novaSenhaConfirmacao" autocomplete="current-password" required="" id="novaSenhaConfirmacao">
+            <label class="form-label" for="novaSenhaConfirmacao">Insira novamente sua nova senha:</label>
+            <input class="form-control col-3" type="password" name="novaSenhaConfirmacao" autocomplete="current-password" required="true" id="novaSenhaConfirmacao">
           </div>
 
           <button type="submit" class="btn btn-success mb-1">Solicitar redefinição</button>

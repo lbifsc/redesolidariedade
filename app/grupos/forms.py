@@ -47,5 +47,6 @@ class RepresentanteForm(forms.ModelForm):
 class RedefinirSenhaForm(forms.Form):
     novaSenha = forms.CharField(label = "Nova senha", required=True)
     novaSenhaConfirmacao = forms.CharField(label = "Confirmação da nova senha", required=True)
-
+    novaSenha = forms.CharField(label = "Nova senha", required=True)
+    senhaAtual = forms.CharField(label = "Senha atual", required=True)
 #------------------------------------------------------------------------------

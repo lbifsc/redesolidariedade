@@ -10,6 +10,7 @@ from django.db.models import Q
 from dateutil.parser import parse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 #------------------------------------------------------------------------------
 #GENERIC
@@ -88,7 +89,8 @@ def buscacpf(request):
             url = "../realizaDoacao/" + str(id_familia)
             return redirect(url)
         else:
-            return render(request, 'doacoes/cpfErro.html')
+            messages.success(request, "CPF não cadastrado. Por favor, realize o cadastramento da família.", extra_tags='alert alert-danger px-2')
+            return render(request, 'doacoes/cadastroDoacao.html')
     return render(request, 'doacoes/cpfBusca.html')
 
 #REALIZAR DOACAO

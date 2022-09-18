@@ -1,10 +1,11 @@
 {% extends 'generic/base.html' %}
+{% block title %}Entidades{% endblock %}
 {% load user_tags %}
-{% block content %} {% block styles %} 
+{% block content %} {% block styles %}
 <link rel="stylesheet" href="../static/css/listas/listas.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   {% endblock %}
-  {% if user|has_group:"user_admin" %}
+  {% if user.is_superuser %}
   <div class="col">
     <div class="table-wrapper" id="round">
       <div class="table-title" id="round-top">
@@ -48,16 +49,25 @@
               <td class="text-center">{{ entidade.endereco}} </td>
               <td class="text-center">{{ entidade.telefone}} </td>
               <td class="text-center icons-td">
-                <a href="{% url 'Excluir Entidade' entidade.pk %}" class="delete">
+                <a href="{% url 'Excluir Entidade' entidade.pk %}" class="delete" id="deletarEntidade" data-toggle="modal" data-target="#deleteCascade">
                     <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
-                </a>    
+                </a>
               </td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
     </div>
-  </div>  
+  </div>
   {% endif %}
   {% include "includes/pagination.html" %}
+
+  <script>
+
+    // Atualizando o action do form da confirmação de exclusão (no modal do base.html)
+    function atualizaActionFormDeleteCascade() {
+      document.getElementById('formDeleteCascade').action = document.getElementById('deletarEntidade').href;
+    }
+
+  </script>
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends 'generic/base.html' %}
-{% block content %} {% block styles %} 
+{% block title %}Doação | CPF não cadastrado{% endblock %}
+{% block content %} {% block styles %}
 {% load static %}
     <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
     <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
@@ -18,10 +19,10 @@
           <div class="col-md-1 col-xs-1 col-sm-1"></div>
           </div>
        </div>
-      </div> 
+      </div>
       <br>
       <h6>Por favor faça o cadastro de sua familia</h6>
         <a href="{% url 'Cadastro de Doações' %}" class="btn btn-success"><span>Voltar</span></a>
-  </div> 
-</div>   
+  </div>
+</div>
 {% endblock %}

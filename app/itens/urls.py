@@ -21,10 +21,4 @@ urlpatterns += [
     path('cadastroItem/delete/<int:pk>/', views.excluirItem, name='Excluir Item'),
 ]
 
-#SEARCH
-urlpatterns += [
-    path('searchItemByName/', views.searchItemByName, name='searchItemByName'),
-    path('searchCategoriaByName/', views.searchCategoriaByName, name='searchCategoriaByName'),
-]
-
 #------------------------------------------------------------------------------

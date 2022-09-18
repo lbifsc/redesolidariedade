@@ -11,6 +11,7 @@ from .forms import EntidadeForm, RepresentanteForm, RedefinirSenhaForm
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Permission
 
 #------------------------------------------------------------------------------
 #GENERIC
@@ -50,7 +51,7 @@ class detalhesEntidade(LoginRequiredMixin, DetailView):
 #CRIAR
 @login_required
 def cadastroEntidade(request):
-    nomePagina = 'Cadastro de Entidade:'
+    nomePagina = 'Cadastro de Entidade'
     form = EntidadeForm()
     if request.method == 'POST':
         form = EntidadeForm(request.POST)
@@ -62,7 +63,7 @@ def cadastroEntidade(request):
 
 #EDITAR
 def editarEntidade(request, pk, template_name='generic/cadastro.html'):
-    nomePagina = 'Editar Entidade:'
+    nomePagina = 'Editar Entidade'
     entidades = get_object_or_404(Entidade, pk=pk)
     form = EntidadeForm(request.POST or None, instance=entidades)
     if form.is_valid():
@@ -131,14 +132,12 @@ def cadastroRepresentante(request):
 
                 relatedUser = User.objects.create_user(
                 username= novoRepresentante.nome,
-                email= novoRepresentante.nome,
                 password='novousuario'
                 )
 
                 relatedUser.save()
                 grupo, foiCriado = Group.objects.get_or_create(name='primeirologin')
                 relatedUser.groups.add(grupo)
-                relatedUser.groups.add(Group.objects.get(name='user_common'))
 
                 return redirect('Lista de Representantes')
         else:
@@ -148,7 +147,7 @@ def cadastroRepresentante(request):
 
 #EDITAR
 def editarRepresentante(request, pk, template_name='generic/cadastro.html'):
-    nomePagina = 'Editar Representante:'
+    nomePagina = 'Editar Representante'
     representantes = get_object_or_404(Representante, pk=pk)
     form = RepresentanteForm(request.POST or None, instance=representantes)
     if form.is_valid():
@@ -162,7 +161,7 @@ def excluirRepresentante(request, pk, template_name='generic/confirm_delete.html
     usuario = User.objects.get(username=representante.nome)
     if request.method=='POST':
         representante.delete()
-        usuario.delete()
+        usuario.is_active = False
         return redirect('Lista de Representantes')
     return render(request, template_name, {'object':representante})
 
@@ -187,41 +186,104 @@ class listaUsuario(LoginRequiredMixin, ListView):
             )
         return queryset
 
-#EXCLUIR
-def excluirUsuario(request, pk, template_name='generic/confirm_delete.html'):
+#INATIVAR
+def inativarUsuario(request, pk):
     usuario = get_object_or_404(User, pk=pk)
     if request.method=='POST':
-        usuario.delete()
-        return redirect('Lista de Usuarios')
-    return render(request, template_name, {'object':usuario})
+        usuario.is_active = False
+        usuario.save()
+        messages.success(request, "Usuário inativado com sucesso.", extra_tags='alert alert-success px-2')
+        return redirect('Editar Usuário', pk=usuario.pk)
+    else:
+        return render(request,'registration/editarUsuario.html',{'usuarioAlterado': usuario, 'object': usuario})
+
+#REATIVAR
+def reativarUsuario(request, pk):
+    usuario = get_object_or_404(User, pk=pk)
+    if request.method=='POST':
+        usuario.is_active = True
+        usuario.save()
+        messages.success(request, "Usuário reativado com sucesso.", extra_tags='alert alert-success px-2')
+        return redirect('Editar Usuário', pk=usuario.pk)
+    else:
+        return render(request,'registration/editarUsuario.html',{'usuarioAlterado': usuario, 'object': usuario})
+
+#EDITAR
+@login_required
+def editarUsuario(request, pk, template_name='generic/cadastro.html'):
+    erro = ''
+    usuarioAlterado = get_object_or_404(User, pk=pk)
+
+    try:
+        if request.method == 'POST':
+            usuario = get_object_or_404(User, pk=pk)
+
+            usuario.first_name = request.POST.get('primeiroNome')
+            usuario.last_name = request.POST.get('sobrenome')
+            usuario.email = request.POST.get('email')
+
+            if request.POST.get('usuarioAdministrador', "") == "on": # Se checkbox foi marcado
+                usuario.is_superuser = True
+                usuario.is_staff = True
+            elif request.POST.get('usuarioAdministrador', "") != "on": # Se checkbox não foi marcado
+                usuario.is_superuser = False
+                usuario.is_staff = False
+
+            usuario.save()
+            messages.success(request, "Dados atualizados com sucesso.", extra_tags='alert alert-success px-2')
+
+            return redirect('Editar Usuário', pk=usuario.pk)
+
+        else: # se for GET
+            #Formatando data de cadastro e último login apenas para exibição na tela
+            usuarioAlterado.date_joined = usuarioAlterado.date_joined.strftime("%d/%m/%Y   %H:%M:%S")
+            try:
+                # Verificando se usuário já logou alguma vez pra não tentar formatar uma data com valor nulo
+                usuarioAlterado.last_login = usuarioAlterado.last_login.strftime("%d/%m/%Y   %H:%M:%S")
+            except:
+                usuarioAlterado.last_login = "Usuário ainda não logou"
+            return render(request,'registration/editarUsuario.html',{'usuarioAlterado': usuarioAlterado, 'object':usuarioAlterado})
+
+    except Exception as excecao:
+        erro = "Tente novamente: " + str(excecao)
+        messages.warning(request, erro, extra_tags='alert alert-danger px-2')
+        return render(request,'registration/editarUsuario.html', {'usuarioAlterado': usuarioAlterado, 'object':usuarioAlterado})
+
 
 #VIEW REDEFINIR SENHA
 @login_required
 def redefinirSenha(request):
     erro = ''
     user = request.user
+    ehPaginaRedefinicaoSenha = True
     try:
         if request.method == 'POST':
             novaSenha = request.POST.get('novaSenhaConfirmacao')
+            senhaAtualDigitada = request.POST.get('senhaAtual')
+            senhaAtual = user.password
+
+            # Verifica se senha atual coincide com a cadastrada
+            if check_password(senhaAtualDigitada, senhaAtual) == False:
+                erro = 'A senha atual não coincide com a cadastrada para este usuário.'
+                raise Exception(erro)
 
             # Tratamento de erros dos requisitos da senha
-            #Se contém espaço em branco ou é uma string vazia
+            # Se contém espaço em branco ou é uma string vazia
             if novaSenha.find(" ") != -1 or novaSenha == '':
                 erro = 'A senha não pode conter espaço em branco. Utilize apenas letras, números e/ou caracteres especiais.'
                 raise Exception(erro)
 
-            #Se for menor que 4 caracteres
+            # Se for menor que 4 caracteres
             if len(novaSenha) < 4:
                 erro = 'Sua nova senha precisa ter no mínimo 4 caracteres.'
                 raise Exception(erro)
 
-            # Verifica se as duas senhas digitadas coincidem, se não, lança uma exceção e retorna o erro para o usuário
+            # Verifica se as duas senhas digitadas coincidem
             if request.POST.get('novaSenha') != request.POST.get('novaSenhaConfirmacao'):
-                erro = 'As senhas digitadas não coincidem. Certifique-se de que as senhas são iguais.'
+                erro = 'As senhas digitadas não coincidem. Certifique-se de que as novas senhas digitadas são iguais.'
                 raise Exception(erro)
 
             # Verifica se a nova senha é igual a senha atual
-            senhaAtual = user.password
             if check_password(novaSenha, senhaAtual):
                 erro = 'Sua nova senha não pode ser igual a senha atual.'
                 raise Exception(erro)
@@ -237,7 +299,7 @@ def redefinirSenha(request):
 
         else:
             form = RedefinirSenhaForm()
-            return render(request,'registration/redefinirSenha.html',{'form': form})
+            return render(request,'registration/redefinirSenha.html',{'form': form, "ehPaginaRedefinicaoSenha": ehPaginaRedefinicaoSenha})
 
     except Exception as excecao:
         if excecao is not None: #Se cair em um erro não tratado acima, retorna a mensagem do Django
@@ -246,40 +308,15 @@ def redefinirSenha(request):
         else:
             messages.warning(request, erro, extra_tags='alert alert-danger px-2')
         form = RedefinirSenhaForm()
-        return render(request,'registration/redefinirSenha.html', {'form': form})
+        return render(request,'registration/redefinirSenha.html', {'form': form, "ehPaginaRedefinicaoSenha": ehPaginaRedefinicaoSenha})
 
 #VIEW REDEFINIR SENHA COMPLETA
 def redefinicaoSenhaCompleta(request):
     return render(request, 'registration/redefinicaoSenhaCompleta.html')
 
-#------------------------------------------------------------------------------
-#SEARCH
-#------------------------------------------------------------------------------
+#VIEW PRIMEIRO LOGIN (solicita alteração de senha)
+def primeiroLogin(request):
+    return render(request, 'registration/primeiroLogin.html')
 
-#ENTIDADE POR NOME
-def searchEntidadeByName(request):
-    nomeEntidade = request.GET.get('nomeEntidade')
-    payload=[]
-
-    if nomeEntidade:
-        entidades = Entidade.objects.filter(nome__icontains=nomeEntidade)
-
-        for entidade in entidades:
-            payload.append(entidade.nome)
-
-    return JsonResponse({'status': 200, 'data': payload})
-
-#REPRESENTANTE POR NOME
-def searchRepresentanteByName(request):
-    nomeRepresentante = request.GET.get('nomeRepresentante')
-    payload=[]
-
-    if nomeRepresentante:
-        representantes = Representante.objects.filter(nome__icontains=nomeRepresentante)
-
-        for representante in representantes:
-            payload.append(representante.nome)
-
-    return JsonResponse({'status': 200, 'data': payload})
 
 #------------------------------------------------------------------------------
