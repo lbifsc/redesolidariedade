@@ -188,25 +188,58 @@ class listaUsuario(LoginRequiredMixin, ListView):
 
 #INATIVAR
 def inativarUsuario(request, pk):
+    erro = ''
     usuario = get_object_or_404(User, pk=pk)
-    if request.method=='POST':
-        usuario.is_active = False
-        usuario.save()
-        messages.success(request, "Usuário inativado com sucesso.", extra_tags='alert alert-success px-2')
-        return redirect('Editar Usuário', pk=usuario.pk)
-    else:
-        return render(request,'registration/editarUsuario.html',{'usuarioAlterado': usuario, 'object': usuario})
+    try:
+        if request.method=='POST':
+            
+            # Verificando se usuário é administrador
+            if request.user.is_superuser is False:
+                erro = "Você não tem permissão para inativar usuários. Solicite a um usuário administrador."
+                raise Exception(erro)
+            
+            # Impedir usuário de inativar o próprio cadastro e perder acesso ao sistema
+            if request.user == usuario:
+                erro = "Você não pode inativar seu próprio usuário. Solicite a outro usuário administrador."
+                raise Exception(erro)
+
+            usuario.is_active = False
+            usuario.save()
+            messages.success(request, "Usuário inativado com sucesso.", extra_tags='alert alert-success px-2')
+            return redirect('Editar Usuário', pk=usuario.pk)
+        else:
+            return render(request,'registration/editarUsuario.html',{'usuarioAlterado': usuario, 'object': usuario})
+        
+    except Exception as excecao:
+        erro = "Tente novamente: " + str(excecao)
+        messages.warning(request, erro, extra_tags='alert alert-danger px-2')
+        return redirect('Editar Usuário', pk = usuario.pk)
+
+
 
 #REATIVAR
 def reativarUsuario(request, pk):
+    erro = ''
     usuario = get_object_or_404(User, pk=pk)
-    if request.method=='POST':
-        usuario.is_active = True
-        usuario.save()
-        messages.success(request, "Usuário reativado com sucesso.", extra_tags='alert alert-success px-2')
-        return redirect('Editar Usuário', pk=usuario.pk)
-    else:
-        return render(request,'registration/editarUsuario.html',{'usuarioAlterado': usuario, 'object': usuario})
+    try:
+        if request.method=='POST':
+            
+            # Verificando se usuário é administrador
+            if request.user.is_superuser is False:
+                erro = "Você não tem permissão para reativar usuários. Solicite a um usuário administrador."
+                raise Exception(erro)
+            
+            usuario.is_active = True
+            usuario.save()
+            messages.success(request, "Usuário reativado com sucesso.", extra_tags='alert alert-success px-2')
+            return redirect('Editar Usuário', pk=usuario.pk)
+        else:
+            return render(request,'registration/editarUsuario.html',{'usuarioAlterado': usuario, 'object': usuario})
+        
+    except Exception as excecao:
+        erro = "Tente novamente: " + str(excecao)
+        messages.warning(request, erro, extra_tags='alert alert-danger px-2')
+        return redirect('Editar Usuário', pk = usuario.pk)
 
 #EDITAR
 @login_required
@@ -214,10 +247,30 @@ def editarUsuario(request, pk, template_name='generic/cadastro.html'):
     erro = ''
     usuarioAlterado = get_object_or_404(User, pk=pk)
 
+    #Formatando data de cadastro e último login apenas para exibição na tela
+    usuarioAlterado.date_joined = usuarioAlterado.date_joined.strftime("%d/%m/%Y   %H:%M:%S")
+    try:
+        # Verificando se usuário já logou alguma vez pra não tentar formatar uma data com valor nulo
+        usuarioAlterado.last_login = usuarioAlterado.last_login.strftime("%d/%m/%Y   %H:%M:%S")
+    except:
+        usuarioAlterado.last_login = "Usuário ainda não logou"
+
     try:
         if request.method == 'POST':
             usuario = get_object_or_404(User, pk=pk)
 
+            # Verificando se usuário é administrador
+            if request.user.is_superuser is False:
+                erro = "Você não tem permissão para alterar usuários. Solicite a um usuário administrador."
+                raise Exception(erro)
+
+            # Verificando se já existe usuário com mesmo username
+            if usuario.username != request.POST.get('username'):
+                if User.objects.filter( username=request.POST.get('username') ).first():
+                    erro = "Já existe um usário com o mesmo nome de usuário escolhido."
+                    raise Exception(erro)
+
+            usuario.username = request.POST.get('username')
             usuario.first_name = request.POST.get('primeiroNome')
             usuario.last_name = request.POST.get('sobrenome')
             usuario.email = request.POST.get('email')
@@ -235,13 +288,6 @@ def editarUsuario(request, pk, template_name='generic/cadastro.html'):
             return redirect('Editar Usuário', pk=usuario.pk)
 
         else: # se for GET
-            #Formatando data de cadastro e último login apenas para exibição na tela
-            usuarioAlterado.date_joined = usuarioAlterado.date_joined.strftime("%d/%m/%Y   %H:%M:%S")
-            try:
-                # Verificando se usuário já logou alguma vez pra não tentar formatar uma data com valor nulo
-                usuarioAlterado.last_login = usuarioAlterado.last_login.strftime("%d/%m/%Y   %H:%M:%S")
-            except:
-                usuarioAlterado.last_login = "Usuário ainda não logou"
             return render(request,'registration/editarUsuario.html',{'usuarioAlterado': usuarioAlterado, 'object':usuarioAlterado})
 
     except Exception as excecao:
