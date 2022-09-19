@@ -60,10 +60,7 @@
             <i class="bx bx-chevron-right icon-right"></i
           ></a>
           <ul class="side-dropdown">
-            {% if user.username == 'admin' %}
-            {% else %}
             <li><a href="{% url 'Cadastro de Doações'%}">Realizar Doação</a></li>
-            {% endif %}
             <li><a href="{% url 'Lista de Doações'%}">Lista de Doações</a></li>
           </ul>
         </li>
@@ -144,7 +141,7 @@
 
               </p>
 
-              <!-- Redireciona para para alteração de senha após 11 segundos. -->
+              <!-- Redireciona automáticamente para alteração de senha após 11 segundos. -->
               <meta http-equiv="Refresh" content="11; url={% url 'Redefinir Senha' %}" />
 
             </div>
@@ -161,6 +158,131 @@
       </main>
       <!-- FIM MAIN -->
     </section>
+
+    <!-- ****************************************************************************
+    MODALS DE CONFIRMAÇÃO DE ATIVAÇÃO, EXCLUSÃO E INATIVAÇÃO DE CADASTROS
+    ***************************************************************************** -->
+
+    <!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO DE CADASTRO -->
+    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="tituloModal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content rounded">
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="tituloModal">Confirmação de exclusão</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+              Você quer mesmo excluir {{ object }}?
+          </div>
+
+          <div class="modal-footer rounded-bottom">
+            <form method="post" action="" id="formDelete">
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                <button type="submit" onclick="atualizaActionFormDelete()" class="btn btn-danger rounded"><span class="glyphicon glyphicon-trash">Sim</span></button>
+                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Não</button>
+                {% endif %}
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO CASCADE DE CADASTRO -->
+    <div class="modal fade" id="deleteCascade" tabindex="-1" role="dialog" aria-labelledby="tituloModal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content rounded">
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="tituloModal">Confirmação de exclusão</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            Você quer mesmo deletar {{ object }}? <br>
+            Esta ação irá remover todos os registros relacionados a este cadastro!
+          </div>
+
+          <div class="modal-footer rounded-bottom">
+            <form method="post" action="" id="formDeleteCascade">
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                <button type="submit" onclick="atualizaActionFormDeleteCascade()" class="btn btn-danger rounded" ><span class="glyphicon glyphicon-trash">Sim</span></button>
+                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Não</button>
+                {% endif %}
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO DE INATIVAÇÃO DE CADASTRO -->
+    <div class="modal fade" id="inativar" tabindex="-1" role="dialog" aria-labelledby="tituloModal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content rounded">
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="tituloModal">Confirmação de inativação</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+              Você quer mesmo inativar {{ object }}?
+          </div>
+
+          <div class="modal-footer rounded-bottom">
+            <form method="post" action="" id="formInativar">
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                <button type="submit" id="botaoConfirmaAlteracao" onclick="atualizaActionFormInativar()" class="btn btn-danger rounded"><span class="glyphicon glyphicon-trash">Sim</span></button>
+                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Não</button>
+                {% endif %}
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO DE REATIVAÇÃO DE CADASTRO -->
+    <div class="modal fade" id="reativar" tabindex="-1" role="dialog" aria-labelledby="tituloModal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content rounded">
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="tituloModal">Confirmação de reativação</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+              Você quer mesmo reativar {{ object }}?
+          </div>
+
+          <div class="modal-footer rounded-bottom">
+            <form method="post" action="" id="formReativar">
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                <button type="submit" onclick="atualizaActionFormReativar()" class="btn btn-primary rounded"><span class="glyphicon glyphicon-trash">Sim</span></button>
+                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Não</button>
+                {% endif %}
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="{% static 'assets/script.js' %}"></script>
