@@ -264,13 +264,6 @@ def editarUsuario(request, pk, template_name='generic/cadastro.html'):
                 erro = "Você não tem permissão para alterar usuários. Solicite a um usuário administrador."
                 raise Exception(erro)
 
-            # Verificando se já existe usuário com mesmo username
-            if usuario.username != request.POST.get('username'):
-                if User.objects.filter( username=request.POST.get('username') ).first():
-                    erro = "Já existe um usário com o mesmo nome de usuário escolhido."
-                    raise Exception(erro)
-
-            usuario.username = request.POST.get('username')
             usuario.first_name = request.POST.get('primeiroNome')
             usuario.last_name = request.POST.get('sobrenome')
             usuario.email = request.POST.get('email')
