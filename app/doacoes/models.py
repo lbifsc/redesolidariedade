@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from itens.models import Item
 from familias.models import Familia
@@ -10,6 +11,7 @@ from grupos.models import Representante
 #MODEL MOVIMENTOS(DOACOES)
 class Movimentos(models.Model):
     idFamilia = models.ForeignKey(Familia, on_delete=models.CASCADE)
+    responsavel = models.CharField(max_length=96)
     representante = models.ForeignKey(Representante, on_delete=models.CASCADE, blank = True, null = True)
     data = models.DateTimeField(auto_now_add=True)
     justificativa = models.TextField(max_length=96, blank = True, null = True)

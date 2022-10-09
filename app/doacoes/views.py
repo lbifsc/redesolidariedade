@@ -28,6 +28,31 @@ def checkForFamilyId(cpf):
 
     return "DONT_EXIST"
 
+def checkForName(cpf):
+    chefe = Familia.objects.filter(cpfChefeFamilia__exact=cpf)
+    integrante = IntegranteFamilia.objects.filter(cpf__exact=cpf)
+
+    if chefe:
+      return chefe.first().nomeChefeFamilia
+
+    if integrante:
+      return integrante.first().nome
+
+    return "DONT_EXIST"
+
+def checkForCpf(pk):
+    movimento = Movimentos.objects.get(pk=pk)
+    chefe = Familia.objects.filter(nomeChefeFamilia__exact=movimento.responsavel)
+    integrante = IntegranteFamilia.objects.filter(nome__exact=movimento.responsavel)
+
+    if chefe:
+      return chefe.first().cpfChefeFamilia
+
+    if integrante:
+      return integrante.first().cpf
+
+    return "Null"
+
 #------------------------------------------------------------------------------
 # CRUD FAMILIAS
 #------------------------------------------------------------------------------
@@ -72,10 +97,12 @@ class listaDoacao(LoginRequiredMixin, ListView):
 def detalhesDoacao(request, pk):
     template_name = 'doacoes/detalhesDoacao.html'
     movimento = Movimentos.objects.get(pk=pk)
+    cpf_responsavel = checkForCpf(pk)
     movimentosItens = MovimentosItem.objects.get_queryset().filter(movimentos=pk)
     context = {
         'movimento': movimento,
         'movimentosItens': movimentosItens,
+        'cpf_responsavel' : cpf_responsavel,
     }
     return render(request, template_name, context)
 
@@ -85,8 +112,9 @@ def buscacpf(request):
     if request.method == 'POST':
         cpf = request.POST["cpf"]
         id_familia = checkForFamilyId(cpf)
+        nome_responsavel = checkForName(cpf)
         if id_familia != "DONT_EXIST":
-            url = "../realizaDoacao/" + str(id_familia)
+            url = "../realizaDoacao/" + str(id_familia) + "/" + str(nome_responsavel)
             return redirect(url)
         else:
             messages.success(request, "CPF não cadastrado. Por favor, realize o cadastramento da família.", extra_tags='alert alert-danger px-2')
@@ -95,10 +123,11 @@ def buscacpf(request):
 
 #REALIZAR DOACAO
 @login_required()
-def movimentos(request, pk):
+def movimentos(request, pk, nome_responsavel):
     if request.method == 'POST':
         newMovimentos = Movimentos(
             idFamilia = Familia.objects.get(pk=pk),
+            responsavel = nome_responsavel,
             representante = Representante.objects.get(nome=request.user),
             justificativa = request.POST.get('justificativa')
         )

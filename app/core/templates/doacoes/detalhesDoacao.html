@@ -11,7 +11,7 @@
   <div class="col">
     <div id="teste" hidden>
       <h1>Recibo</h1>
-      <h3>Eu ____________________________________ Portador do CPF: ____________________________________________ Pertencente a Familia de {{ movimento.idFamilia }} ( CPF: {{movimento.idFamilia.cpfChefeFamilia}} ) atesto que recebi os seguintes itens:</h3>
+      <h3>Eu {{ movimento.responsavel }} Portador do CPF: {{ cpf_responsavel }} atesto que recebi os seguintes itens:</h3>
       <table class="table table-bordered table-striped text-justify mb-4">
         <thead>
           <tr>
@@ -47,6 +47,8 @@
         </div>
         <br>
         <h4>Representante: {{ movimento.representante }}</h4>
+        <br>
+        <h5>Recebedor: {{ movimento.responsavel }}</h5>
         {% if movimento.justificativa %}
         <br>
         <h5>Justificativa: </h5>
