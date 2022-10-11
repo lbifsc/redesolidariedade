@@ -16,14 +16,15 @@
 <h4 align="center">4. instale o pip "python -m pip install --upgrade pip"</h4>
 <h4 align="center">5. instale os requirements.txt "pip install -r requirements.txt"</h4>
 <h4 align="center">6. va para a pasta app "cd app" </h4>
-<h4 align="center">7. va para a raiz do app "cd main"</h4>
-<h4 align="center">8. faça as migrations "python manage.py makemigrations"</h4>
-<h4 align="center">9. migre os dados "python manage.py migrate"</h4>
-<h4 align="center">10. crie um superuser "python manage.py createsuperuser"</h4>
-<h4 align="center">11. Você deve gerar uma secretkey para o arquivo .env, que por padrão vai estar vazia.</h4>
-<h4 align="center">12. rode o app "python manage.py runserver"</h4>
-<h4 align="center">13. acesse a pagina <a href='http://127.0.0.1:8000/admin' target="_blank">Admin</a></h4>
-<h4 align="center">14. crie um grupo de usuario chamado "user_admin" com todas as permissoes</h4>
-<h4 align="center">15. crie um grupo de usuario chamado "user_common" sem nenhuma permissão</h4>
-<h4 align="center">16. atribua ao super user criado anteriormente o grupo "user_admin"</h4>
-<h4 align="center">17. acesse o <a href='http://127.0.0.1:8000/' target="_blank">Site</a></h4>
+<h4 align="center">7. faça as migrations "python manage.py makemigrations"</h4>
+<h4 align="center">8. migre os dados "python manage.py migrate"</h4>
+<h4 align="center">9. crie um superuser "python manage.py createsuperuser"</h4>
+<h4 align="center">10 Você deve gerar uma secretkey para o arquivo .env, que por padrão vai estar vazia.</h4>
+<h4 align="center">11. rode o app "python manage.py runserver"</h4>
+<h4 align="center">12. acesse o <a href='http://127.0.0.1:8000/' target="_blank">Site</a></h4>
+<h4 align="center">13. faça login com a conta de administrador criada no passo 9 </h4>
+<h4 align="center">14. cadastre Entidade e depois um Representante </h4>
+<h4 align="center">15. faça login com o Representante criado, utilizando a senha "novousuario" e troque a senha </h4>
+<h4 align="center">16. cadastre Categorias e Itens </h4>
+<h4 align="center">17. cadastre Famílias e Integrantes </h4>
+<h4 align="center">18. faça Doações </h4>
