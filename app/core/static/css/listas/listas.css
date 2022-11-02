@@ -29,10 +29,6 @@ body {
   display: flex !important;
 }
 
-input[type="text"] {
-  border-radius: 5px 0 0 5px;
-}
-
 #find {
   background-color: rgb(35, 35, 35);
   border: none;
