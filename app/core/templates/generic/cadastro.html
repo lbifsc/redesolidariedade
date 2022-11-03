@@ -7,21 +7,21 @@
 <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
 <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="icon" type="image/x-icon" href="{% static 'img/forms/Family-Icon.png' %}">
 {% endblock %}
 
-<div class="col">
-  <div class="table-wrapper" id="round">
-    <div class="table-title" id="round-top">
-      <div class="row">
-        <div class="col-sm-7">
-          <h2>{{ nomePagina }}</h2>
-          <div class="col-md-1 col-xs-1 col-sm-1"></div>
-        </div>
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100">
+      <div class="login100-pic">
+        <img src="{% static 'img/forms/Family-Icon.png' %}" alt="IMG">
       </div>
-    </div>
-    <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10">
-      <form method="post" novalidate>
+
+      <form class="login100-form" method="post" novalidate>
         {% csrf_token %}
+        <span class="login100-form-title">
+          <h2>{{ nomePagina }}</h2>
+        </span>
         {% for hidden_field in form.hidden_fields %}
         {{ hidden_field }}
         {% endfor %}
@@ -58,7 +58,11 @@
           {% endif %}
         </div>
         {% endfor %}
-        <p align="right"><button type="submit" class="btn btn-success">Salvar</button></p>
+        <div class="container-login100-form-btn">
+          <button class="salvar-form-btn" type="submit" align="right">
+            Salvar
+          </button>
+        </div>
       </form>
     </div>
   </div>

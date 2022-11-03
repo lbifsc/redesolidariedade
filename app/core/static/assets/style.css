@@ -244,16 +244,16 @@ li {
 /*Barra - NAVBAR*/
 
 nav {
-  background: var(--white);
-  height: 60px;
+  background: grey;
   padding: 0 30px;
-  display: flex;
   align-items: center;
   grid-gap: 28px;
   position: sticky;
   top: 0;
   left: 0;
   z-index: 100;
+  color: white;
+  margin-left: 1.2rem;
 }
 
 /*Menu Hamburguer - NAVBAR*/
