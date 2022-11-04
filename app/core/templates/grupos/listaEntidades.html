@@ -4,39 +4,74 @@
 {% block content %} {% block styles %}
 <link rel="stylesheet" href="../static/css/listas/listas.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  {% endblock %}
-  {% if user.is_superuser %}
-  <div class="col">
-    <div class="table-wrapper" id="round">
-      <div class="table-title" id="round-top">
-          <div class="row spacing mt-3">
-            <div class="col-sm-7">
-                <h2>Entidades</h2>
-                <br>
+  {% load static %}
+  <link rel="icon" type="image/x-icon" href="{% static 'img/forms/Group-Icon.png' %}">
+{% endblock %}
+{% if user.is_superuser %}
+
+  <div class="limiter" >
+    <div class="container-login100" >
+      <div class="d-flex wrap-login100"  style="gap: 2rem;">
+  
+        <div class="login100-pic col-sm-4">
+          <img src="{% static 'img/forms/Group-Icon.png' %}" alt="IMG">
+        </div>
+  
+  
+        <form class="login100-form mb-0 col-7" action="" method="get">
+          {% csrf_token %}
+  
+          <span class="login100-form-title pb-4">
+            Categorias cadastradas
+          </span>
+  
+          <div class="wrap-input100">
+  
+            <div class="wrap-input100">
+  
+              <span class="focus-input100"></span>
+              <span class="symbol-input100">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </span>
+  
               <form action="" method="get">
-                <div class="search col">
-                  <input value="{{ request.GET.search }}" name="search" type="text" class="search form-control" placeholder="Nome da Entidade">
-                  <button type="submit" id="find">
-                    <i class="fas fa-search"></i>
+  
+                <div class="search">
+                  <input type="text" value="{{ request.GET.search }}" name="search" class="search input100" placeholder="Busque pelo nome da entidade">
+                
+                  <button class="btn btn-outline-primary p-3 rounded-circle ml-2">
+                    <i class="float-right fa fa-search" aria-hidden="true"></i>
                   </button>
                 </div>
+  
               </form>
+  
             </div>
-
-            <div class="btn-principal">
-                    <a href="{% url 'Cadastro de Entidades' %}" class="btn btn-success" ><i class="material-icons">&#xE147;</i> <span>Adicionar nova Entidade</span></a>
+  
+            <div class="buttons col-md-8 pt-3 m-auto pb-2 justify-content-center" >
+  
+              <div class="container-login100-form-btn">
+                <a class="salvar-form-btn m-0" href="{% url 'Cadastro de Entidades' %}">
+                  Adicionar nova entidade
+                </a>
+              </div>
+    
             </div>
+  
           </div>
-      </div>
-      <table class="table table-striped table-hover table-responsive-sm text-justify">
-        <thead>
+  
+        </form>
+  
+        <table class="table table-striped table-light w-100 table-hover table-responsive-sm text-justify">
+          <thead>
             <tr>
               <th class="text-center">ID</th>
               <th class="text-center">CNPJ</th>
               <th class="text-center">Nome</th>
-              <th class="text-center">Email</th>
+              <th class="text-center">E-mail</th>
               <th class="text-center">Endereço</th>
               <th class="text-center">Telefone</th>
+              <th class="text-center">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -49,6 +84,9 @@
               <td class="text-center">{{ entidade.endereco}} </td>
               <td class="text-center">{{ entidade.telefone}} </td>
               <td class="text-center icons-td">
+                <a href="{% url 'Editar Entidade' entidade.pk %}" class="edit">
+                  <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
+                </a>
                 <a href="{% url 'Excluir Entidade' entidade.pk %}" class="delete" id="deletarEntidade" data-toggle="modal" data-target="#deleteCascade">
                     <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
                 </a>
@@ -57,10 +95,14 @@
             {% endfor %}
           </tbody>
         </table>
+  
+        {% include "includes/pagination.html" %}
+        
+  
+      </div>
     </div>
-  </div>
+
   {% endif %}
-  {% include "includes/pagination.html" %}
 
   <script>
 

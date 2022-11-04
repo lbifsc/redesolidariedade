@@ -8,41 +8,89 @@
       <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
       <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
+      <link rel="icon" type="image/x-icon" href="{% static 'img/forms/Group-Icon.png' %}">
 {% endblock %}
 
-<div class="col">
-  <div class="table-wrapper" id="round">
-    <div class="table-title" id="round-top">
-      <div class="row">
-        <div class="col-sm-7">
-          <h2>Cadastro de Representante:</h2>
-          <div class="col-md-1 col-xs-1 col-sm-1"></div>
-        </div>
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100">
+      <div class="login100-pic">
+        <img src="{% static 'img/forms/Group-Icon.png' %}" alt="IMG">
       </div>
-    </div>
-    <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
-      <form method="post" id="representante">
+
+      <form class="login100-form mb-4" method="post" id="familia">
         {% csrf_token %}
-        <label>Entidade :</label>
-        <div id="autocomplete" class="autocomplete">
-            <input class="autocomplete-input" name="nomeEntidade" id="entidade" type="text" required/>
+        <span class="login100-form-title pb-4">
+          Cadastro de Representante
+        </span>
+
+        <label for="idFamilia">Entidade:</label>
+        <div class="wrap-input100">
+          <div id="autocomplete" class="autocomplete">
+            <input class="autocomplete-input" name="nomeEntidade" id="entidade" type="text" placeholder="Selecione uma entidade" equired/>
             <ul class="autocomplete-result-list"></ul>
+          </div>
         </div>
-        <label>Nome :</label>
-        <input type="text" class="form-control" name="nomeRepresentante" id="nomeRepresentante" maxLength='100' minLength='2' required> </input>
-        <label>CPF :</label>
-        <input type="text" class="form-control" name="cpfRepresentante" id="cpfRepresentante" minLength='11' maxlength="11" oninput="clearInput(this)" required> </input>
-        <label>Endereço :</label>
-        <input type="text" class="form-control" name="endereco" id="endereco" maxLength='100' minLength='2' required> </input>
-        <label>Observação :</label>
-        <input type="text" class="form-control" name="observacao" id="observacao" maxLength='250' minLength='2' required> </input>
-        <button type="button" onclick="sendData()" class="btn btn-success mt-3">Salvar</button>
-        <button type="button" onclick="limpar()" class="btn btn-warning mt-3">Limpar</button>
+
+        <label for="nomeIntegrante">Nome:</label>
+        <div class="wrap-input100">
+          <input class="input100" type="text" placeholder="Nome do representante (e usuário)" name="nomeRepresentante" id="nomeRepresentante" maxLength='100' minLength='2' required>
+          <span class="focus-input100"></span>
+          <span class="symbol-input100">
+            <i class="fa fa-user" aria-hidden="true"></i>
+          </span>
+        </div>
+
+        <label for="cpfIntegrante">CPF:</label>
+        <div class="wrap-input100">
+          <input class="input100" type="text" placeholder="CPF do representante" name="cpfRepresentante" id="cpfRepresentante" minLength='11' maxlength="11" oninput="clearInput(this)" required> 
+          <span class="focus-input100"></span>
+          <span class="symbol-input100">
+            <i class="fa fa-address-card" aria-hidden="true"></i>
+          </span>
+        </div>
+
+        <label for="cpfIntegrante">Endereço:</label>
+        <div class="wrap-input100">
+          <input class="input100" type="text" placeholder="Endereço do representante" name="endereco" id="endereco" maxLength='100' minLength='2' required> 
+          <span class="focus-input100"></span>
+          <span class="symbol-input100">
+            <i class="fa fa-home" aria-hidden="true"></i>
+          </span>
+        </div>
+
+        <label for="cpfIntegrante">Observações:</label>
+        <div class="wrap-input100">
+          <input class="input100" type="text" placeholder="Observações adicionais" name="observacao" id="observacao" maxLength='250' minLength='2' required> 
+          <span class="focus-input100"></span>
+          <span class="symbol-input100">
+            <i class="fa fa-comment" aria-hidden="true"></i>
+          </span>
+        </div>
+
+        <div class="buttons">
+
+          <div class="container-login100-form-btn">
+            <button class="salvar-form-btn" onclick="sendData()">
+              Salvar
+            </button>
+          </div>
+
+          <div class="container-login100-form-btn">
+            <button class="limpar-form-btn" onclick="limpar()">
+              Limpar
+            </button>
+          </div>
+
+        </div>
+
       </form>
     </div>
   </div>
 </div>
+
 <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+
 <script>
     let entidades = []
 

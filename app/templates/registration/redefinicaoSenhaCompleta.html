@@ -13,20 +13,23 @@
     <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
   {% endblock %}
 
-  <div class="col">
-    <div class="table-wrapper" id="round">
-      <div class="table-title" id="round-top">
-        <div class="row">
-          <div class="col-sm-7">
-            <h2>Senha redefinida com sucesso</h2>
-            <div class="col-md-1 col-xs-1 col-sm-1"></div>
-          </div>
-        </div>
-      </div>
-      <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100">
 
-        <p>Sua senha foi redefinida com sucesso. Você já pode utilizar o sistema normalmente.</p>
+        <form method="post" action="{% url 'Redefinir Senha' %}">
+          {% csrf_token %}
+          
+          <span class="login100-form-title pb-4">
+            Senha redefinida com sucesso
+          </span>
 
+          <hr>
+
+          <p>Sua senha foi redefinida com sucesso. Você já pode utilizar o sistema normalmente.</p> <br>
+
+
+        </form>
       </div>
     </div>
   </div>

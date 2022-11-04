@@ -17,58 +17,52 @@
 {% if user|has_group:"primeirologin" %}
 <!-- Obriga alteração de senha no primeiro login -->
 
-<div class="col">
-    <div class="table-wrapper" id="round">
 
-        <div class="table-title" id="round-top">
-            <div class="row">
-                <div class="col-sm-7">
-                    <h2>Edição de usuário</h2>
-                    <div class="col-md-1 col-xs-1 col-sm-1"></div>
-                </div>
-            </div>
-        </div>
+<div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100 justify-content-center">
 
-        <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
+        <form method="post" action="{% url 'Redefinir Senha' %}" class="w-75">
+          {% csrf_token %}
+          
+          <span class="login100-form-title pb-4">
+            Primeiro acesso
+          </span>
 
-            <!-- Contador regressivo da página de primeiro login -->
-            <script src="{% static 'js/contadorPrimeiroLogin.js'%}"></script>
-            <div class="col bg-secondary">
-                <div class="table-wrapper m-4" id="round">
+          <!-- Exibe erros retornadas da view ou form, caso houver -->
+          {% if messages %}
+          <div class="form-group w-auto m-0 pb-3">
+            <ul class="messages p-0 text-center" role="alert">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }} p-0 m-0 text-wrap" {% endif %}>{{ message }}</li>
+                {% if form.erros %}
+                <li class="alert alert-warning p-0 m-0">{{ form.non_field_errors }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
 
-                    <div class="table-title" id="round-top">
-                        <div class="row">
-                            <div class="col-sm-7">
-                                <h2>Parece que esse é seu primeiro login</h2>
-                                <div class="col-md-1 col-xs-1 col-sm-1"></div>
-                            </div>
-                        </div>
-                    </div>
+          <h2>Parece que esse é seu primeiro login</h2>
+          
+          <p class="text-center">
+            Para uma maior segurança, redefina sua senha.</br>
+            Você será redirecionado automaticamente em <label id="contador"></label> segundos, ou
 
-                    <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
+            <a href="{% url 'Redefinir Senha' %}">
+                clique aqui para ir agora.
+            </a>
 
-                        <p>
-                            Para uma maior segurança, redefina sua senha.</br>
-                            Você será redirecionado automaticamente em <label id="contador"></label> segundos, ou
-
-                            <a href="{% url 'Redefinir Senha' %}">
-                                clique aqui para ir agora.
-                            </a>
-
-                        </p>
-
-                        <!-- Redireciona automaticamente para para alteração de senha após 11 segundos. -->
-                        <meta http-equiv="Refresh" content="11; url={% url 'Redefinir Senha' %}" />
-
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
+            </p> 
+            
+            <!-- Redireciona automaticamente para para alteração de senha após 11 segundos. -->
+            <meta http-equiv="Refresh" content="11; url={% url 'Redefinir Senha' %}" />
+  
+        </form>
+      </div>
     </div>
-</div>
+  </div>
+
 
 <script>
 

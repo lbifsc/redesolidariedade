@@ -4,32 +4,66 @@
   {% block content %} {% block styles %}
   <link rel="stylesheet" href="../static/css/listas/listas.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  {% load static %}
+  <link rel="icon" type="image/x-icon" href="{% static 'img/forms/Group-Icon.png' %}">
   {% endblock %}
   {% if user.is_authenticated %}
-  <div class="col">
-    <div class="table-wrapper" id="round">
-      <div class="table-title" id="round-top">
-          <div class="row spacing mt-3">
-            <div class="col-sm-7">
-                <h2>Representantes</h2>
-                <br>
+
+  <div class="limiter" >
+    <div class="container-login100" >
+      <div class="d-flex wrap-login100"  style="gap: 2rem;">
+  
+        <div class="login100-pic col-sm-4">
+          <img src="{% static 'img/forms/Group-Icon.png' %}" alt="IMG">
+        </div>
+  
+  
+        <form class="login100-form mb-0 col-7" action="" method="get">
+          {% csrf_token %}
+  
+          <span class="login100-form-title pb-4">
+            Representantes cadastrados
+          </span>
+  
+          <div class="wrap-input100">
+  
+            <div class="wrap-input100">
+  
+              <span class="focus-input100"></span>
+              <span class="symbol-input100">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </span>
+  
               <form action="" method="get">
-                <div class="search col">
-                  <input value="{{ request.GET.search }}" name="search" type="text" class="search form-control" placeholder="Nome ou CPF do representante">
-                  <button type="submit" id="find">
-                    <i class="fas fa-search"></i>
+  
+                <div class="search">
+                  <input type="text" value="{{ request.GET.search }}" name="search" class="search input100" placeholder="Busque pelo nome ou CPF do representante">
+                
+                  <button class="btn btn-outline-primary p-3 rounded-circle ml-2">
+                    <i class="float-right fa fa-search" aria-hidden="true"></i>
                   </button>
                 </div>
+  
               </form>
+  
             </div>
-
-            <div class="btn-principal">
-                    <a href="{% url 'Cadastro de Representantes' %}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Adicionar novo representante</span></a>
+  
+            <div class="buttons col-md-10 pt-3 m-auto pb-2 justify-content-center" >
+  
+              <div class="container-login100-form-btn">
+                <a class="salvar-form-btn m-0" href="{% url 'Cadastro de Representantes' %}">
+                  Adicionar novo representante
+                </a>
+              </div>
+    
             </div>
+  
           </div>
-      </div>
-      <table class="table table-striped table-hover table-responsive-sm text-justify">
-        <thead>
+  
+        </form>
+  
+        <table class="table table-striped table-light w-100 table-hover table-responsive-sm text-justify">
+          <thead>
             <tr>
               <th class="text-center">ID</th>
               <th class="text-center">Nome</th>
@@ -64,10 +98,14 @@
             {% endfor %}
           </tbody>
         </table>
+  
+        {% include "includes/pagination.html" %}
+        
+  
+      </div>
     </div>
-  </div>
+
   {% endif %}
-  {% include "includes/pagination.html" %}
 
   <script>
 

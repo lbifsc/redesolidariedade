@@ -4,112 +4,115 @@
 {% block content %} {% block styles %}
 <link rel="stylesheet" href="../static/css/listas/listas.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% load static %}
+<link rel="icon" type="image/x-icon" href="{% static 'img/forms/Donation-Icon.png' %}">
 {% endblock %}
 
-<div class="col">
-    <div class="table-wrapper" id="round">
-        <div class="table-title" id="round-top">
-            <div class="row mt-3 spacing">
-                <div class="col-sm-8">
-                    <h2>Doações</h2>
-                    <br>
-                    <form action="" method="GET">
-                        <div class="search col">
-                            <input value="{{ request.GET.search }}" name="search" type="text"
-                                   class="search form-control" placeholder="Nome do chefe de família">
-                            <button type="submit" id="find">
-                                <i class="fas fa-search"></i>
-                            </button>
+<div class="limiter">
+    <div class="container-login100">
+        <div class="d-flex wrap-login100" style="gap: 1rem !important;">
+            <div class="login100-pic col-4">
+                <img src="{% static '/img/forms/Donation-Icon.png' %}" alt="IMG">
+            </div>
+
+            <form class="login100-form mb-0 col" method="GET">
+
+                <span class="login100-form-title pb-4">
+                    Doações realizadas
+                </span>
+                
+                <div class="d-flex pb-3">
+                    <div class="wrap-input100">
+
+                        <div class="col">
+                            <label>Data Inicial:</label>
+                            <input value="" class="form-control" name="data_inicial" type="date">
                         </div>
-
-                        <div class="col-lg-12">
-                                <form action="" method="GET">
-                                    <div class="form-row">
-                                        <div class="col-lg-4 mt-3">
-                                            <label>Data Inicial:</label>
-                                            <input value="{{ request.GET.data_inicial }}" class="form-control"
-                                                   name="data_inicial" type="date">
-                                        </div>
-
-                                        <div class="col-lg-4 mt-3">
-                                            <label>Data Final:</label>
-                                            <input value="{{ request.GET.data_final }}" class="form-control"
-                                                   name="data_final" type="date">
-                                        </div>
-
-                                        <div class="mt-4 ">
-                                            <button type="submit" class="btn btn-primary mt-4 "><i class="material-icons">manage_search</i>Filtrar
-                                            </button>
-                                        </div>
-
-                                        <div class="mt-5">
-                                            <a href="{% url 'Lista de Doações' %}" class="btn btn-danger"><i
-                                                    class="material-icons">highlight_off</i>Limpar
-                                            </a>
-                                        </div>
-
-                                        <div class="mt-5">
-                                            <a href="{% url 'listar_doacoes_relatorio' %}" class="btn btn-primary">
-                                                Exibir tudo
-                                            </a>
-                                        </div>
-
-                                    </div>
-                                </form>
-                            </div>
-
-
-
-                    </form>
-                </div>
-                {% if user.is_authenticated %}
-                {% if user|has_group:"user_common" %}
-                <div class="btn-principal">
-                    <div class="col-sm-5">
-                        <a href="{% url 'Cadastro de Doações' %}" class="btn btn-success"><i class="material-icons">&#xE147;</i>
-                            <span>Adicionar nova doação</span></a>
+    
+                    </div>
+    
+                    <div class="wrap-input100">
+    
+                        <div class="col">
+                            <label>Data Final:</label>
+                            <input value="" class="form-control" name="data_final" type="date">
+                        </div>
+    
                     </div>
                 </div>
-                {% endif %}
-                {% endif %}
-            </div>
+                
+
+                
+                <div class="wrap-input100 d-flex" >
+
+                    <form method="get" class="d-flex">
+
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </span>
+
+                        <input type="text" value name="search" class="input100 "
+                            placeholder="Busque pelo nome do chefe de família">
+                            
+                        <button class="salvar-form-btn col-3 ml-2" type="submit">
+                            <i class="material-icons">manage_search</i>
+                            Filtrar
+                        </button>
+                    </form>
+
+                </div>
+                
+                
+                <!-- <div class="d-flex flex-row-reverse col-">
+
+                    <div class="container-login100-form-btn col-5 px-2">
+                        <a class="salvar-form-btn m-1 mx-0" href="{% url 'Cadastro de Doações'%}">
+                            Nova doação
+                        </a>
+                    </div>
+
+                    <div class="container-login100-form-btn col-4 mr-1 px-2">
+                        <a class="limpar-form-btn bg-primary mt-1 mx-0" href="{% url 'listar_doacoes_relatorio' %}">
+                            Exibir tudo
+                        </a>
+                    </div>
+
+                    <button class="limpar-form-btn col-4 mt-4 ml-1 px-2" type="reset">
+                        <i class="material-icons m-0">manage_search</i>
+                        Filtrar
+                    </button>
+
+                </div> -->
+
+                
+            </form>
+
+            <table class="table table-striped table-hover table-responsive-sm text-justify">
+                <thead>
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">ID Familia</th>
+                        <th class="text-center">Data</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            
+            {% include "includes/pagination.html" %}
+
         </div>
-        <table class="table table-striped table-hover table-responsive-sm text-justify">
-            <thead>
-            <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">ID Familia</th>
-                <th class="text-center">Data</th>
-                <th class="text-center">Ações</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for movimentos in movimentos_list %}
-            <tr>
-                <td class="text-center">{{ movimentos.pk }}</td>
-                <td class="text-center">{{ movimentos.idFamilia }}</td>
-                <td class="text-center">{{ movimentos.data }}</td>
-                {% if user.is_authenticated %}
-                <td class="text-center icons-td">
-                    <a href="{% url 'Detalhes Doação' movimentos.pk %}" class="details">
-                  <span class="material-icons">
-                    visibility
-                  </span>
-                    </a>
-                    {% if user.is_superuser %}
-                    <a href="{% url 'Excluir Doação' movimentos.pk %}" class="delete" id="deletarDoacao" data-toggle="modal" data-target="#deleteCascade">
-                        <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
-                    </a>
-                    {% endif %}
-                </td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+
     </div>
+
+
 </div>
-{% include "includes/pagination.html" %}
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="/assets/script.js"></script>
 
 <script>
 

@@ -10,6 +10,12 @@ from .models import Familia, IntegranteFamilia
 #FORMULARIO FAMILIAS
 class FamiliaForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(FamiliaForm, self).__init__(*args, **kwargs)
+        self.fields['nomeChefeFamilia'].widget.attrs.update({'placeholder' : 'Nome do(a) chefe de família', 'icone' : 'fa-user'})
+        self.fields['cpfChefeFamilia'].widget.attrs.update({'placeholder' : 'CPF do(a) chefe de família', 'icone' : 'fa-address-card'})
+        self.fields['enderecoChefeFamilia'].widget.attrs.update({'placeholder' : 'Endereço do(a) chefe de família', 'icone' : 'fa-map-marker'})
+        
     def clean_nomeChefeFamilia(self):
       nomeChefeFamilia = self.cleaned_data['nomeChefeFamilia']
       nomeChefeFamilia = re.sub(' -- CPF:', '', nomeChefeFamilia)
@@ -21,7 +27,7 @@ class FamiliaForm(forms.ModelForm):
         if (cpfChefeFamilia == ""):
             return cpfChefeFamilia
         if Familia.objects.filter(cpfChefeFamilia = cpfChefeFamilia).exists():
-            raise forms.ValidationError(_('CPF em Uso!'))
+            raise forms.ValidationError(_('O CPF digitado está em uso. Digite um CPF válido.'))
         return cpfChefeFamilia
 
     class Meta:
@@ -29,9 +35,10 @@ class FamiliaForm(forms.ModelForm):
         labels = {
           "nomeChefeFamilia": "Nome",
           "cpfChefeFamilia": "CPF",
-          "enderecoChefeFamilia": "Endereço",
+          "enderecoChefeFamilia": "Endereço"
         }
         fields = "__all__"
+        
 
 #FORMULARIO EDITAR FAMILIA
 class EditFamiliaForm(forms.ModelForm):

@@ -8,6 +8,15 @@ from .models import Entidade, Representante
 
 class EntidadeForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(EntidadeForm, self).__init__(*args, **kwargs)
+        self.fields['cnpj'].widget.attrs.update({'class':'select-input','placeholder' : 'CNPJ da entidade', 'icone' : 'fa-address-card'})  
+        self.fields['nome'].widget.attrs.update({'class':'select-input','placeholder' : 'Nome da entidade', 'icone' : 'fa-user'})  
+        self.fields['telefone'].widget.attrs.update({'class':'select-input','placeholder' : 'Telefone da entidade', 'icone' : 'fa-phone'})  
+        self.fields['email'].widget.attrs.update({'class':'select-input','placeholder' : 'E-mail da entidade', 'icone' : 'fa-envelope'})  
+        self.fields['endereco'].widget.attrs.update({'class':'select-input','placeholder' : 'Endereço da entidade', 'icone' : 'fa-home'})  
+
+
     def clean_email(self):
         email = self.cleaned_data['email']
         if Entidade.objects.filter(email = email).exists():

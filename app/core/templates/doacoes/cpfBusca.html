@@ -2,43 +2,71 @@
 {% block title %}Doação | Buscar CPF{% endblock %}
 {% block content %}{% block styles %}
 {% load static %}
-      <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
-      <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
-      <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-      <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
+<link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
+<link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
+<link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css" />
 {% endblock %}
 {% if user.is_authenticated %}
-<div class="col">
-    <div class="table-wrapper" id="round">
-      <div class="table-title" id="round-top">
-          <div class="row">
-            <div class="col-sm-7">
-                <h2>Buscar CPF:</h2>
-            <div class="col-md-10 col-xs-10 col-sm-10">
-            </div>
-            <div class="col-md-1 col-xs-1 col-sm-1"></div>
-            </div>
-         </div>
-        </div>
-        <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
-        <form method="post" id="cpfFamilia">
-            <div id="form_responsavel"> {% csrf_token %}
-                <div class="form-group col-xs-12">
-                    <div id="autocomplete" class="autocomplete" >
-                        <input class="autocomplete-input" name="cpf" id="cpf" placeholder="Digite o Nome ou CPF do Favorecido..." required/>
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100 col-10 justify-content-center">
+
+            <form class="login100-form col mb-4" method="post" id="cpfFamilia">
+                {% csrf_token %}
+
+                <span class="login100-form-title pb-4">
+                    Selecione uma família para doação
+                </span>
+
+                 <!-- Exibe erros retornadas da view ou form, caso houver -->
+                {% if messages %}
+                <div class="form-group">
+                <ul class="messages p-0 text-center" role="alert">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
+                    {% if form.erros %}
+                    <li class="alert alert-warning p-0 m-0">{{ form.non_field_errors }}</li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                </div>
+                {% endif %}
+
+                <div class="wrap-input100">
+                    <div id="autocomplete" class="autocomplete">
+                        <input class="autocomplete-input" name="cpf" id="cpf"
+                            placeholder="Busque pelo nome ou CPF do favorecido" type="text" required />
                         <ul class="autocomplete-result-list"></ul>
                     </div>
                 </div>
-            </div>
-            <button type="button" onclick="sendData()" class="btn btn-primary btn-lg">Buscar</button>
-            <button type="button" onclick="limpar()" class="btn btn-success btn-lg">Limpar</button>
-        </form>
-    </div>
+
+                <div class="buttons m-auto">
+
+                    <div class="container-login100-form-btn">
+                        <button class="salvar-form-btn" onclick="sendData()">
+                            Buscar
+                        </button>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button type="reset" class="limpar-form-btn" onclick="limpar()">
+                            Limpar
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
     </div>
 </div>
+
 {% endif %}
+
 <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
 <script>
 
@@ -57,21 +85,21 @@
     }
 
 
-    new Autocomplete('#autocomplete',{
-        search: input=> {
-            const url= `/searchFamiliaByCpf/?cpfChefeFamilia=${input}`
-            return new Promise(resolve=>{
+    new Autocomplete('#autocomplete', {
+        search: input => {
+            const url = `/searchFamiliaByCpf/?cpfChefeFamilia=${input}`
+            return new Promise(resolve => {
                 fetch(url)
-                .then(response => response.json())
-                .then(data=>{
-                    console.log(data)
-                    resolve(data.data)
-                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        resolve(data.data)
+                    })
             })
         },
         onSubmit: (result) => {
-          const inputFamilia = document.querySelector("#cpf")
-          inputFamilia.disabled = true;
+            const inputFamilia = document.querySelector("#cpf")
+            inputFamilia.disabled = true;
         }
     })
 

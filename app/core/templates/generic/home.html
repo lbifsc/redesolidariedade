@@ -7,94 +7,97 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="title">Home</h1>
-<ul class="breadcrumbs">
-  <li><a href="#">Ínicio</a></li>
-  <li class="divider">/</li>
-  <li><a href="#" class="active">Home</a></li>
-</ul>
-<div class="info-data">
-  <div class="card">
-    <div class="head">
-      <div>
+<div class="bg-white p-4">
+
+  <h1 class="title">Home</h1>
+  <ul class="breadcrumbs">
+    <li><a href="#">Ínicio</a></li>
+    <li class="divider">/</li>
+    <li><a href="#" class="active">Home</a></li>
+  </ul>
+  <div class="info-data">
+    <div class="card">
+      <div class="head">
+        <div>
+          <div class="count-item">
+            <h3 class="title">Entidades</h3>
+            <div class="percentage-holder">
+              <h4 class="" id="entity-percentage"></h4>
+              <h4>em relação ao último mês.</h4>
+            </div>
+
+
+            <div class="info-holder">
+              <i class="fas fa-building icon"></i>
+              <div class="counter" id="entity-counter">
+              </div>
+            </div>
+          </div>
+        </div>
+        <i class="bx bx-message-square icon"></i>
+      </div>
+    </div>
+    <div class="card">
+      <div class="head">
         <div class="count-item">
-          <h3 class="title">Entidades</h3>
+          <h3 class="title">Famílias</h3>
           <div class="percentage-holder">
-            <h4 class="" id="entity-percentage"></h4>
+            <h4 class="" id="family-percentage"></h4>
+            <h4>em relação ao último mês.</h4>
+          </div>
+          <div class="info-holder">
+            <i class="fas fa-users icon"></i>
+            <div class="counter" id="family-counter">
+            </div>
+          </div>
+        </div>
+        <i class="bx bx-message-square icon"></i>
+      </div>
+    </div>
+    <div class="card">
+      <div class="head">
+        <div class="count-item">
+          <h3 class="title">Doações</h3>
+          <div class="percentage-holder">
+            <h4 class="" id="donation-percentage"></h4>
             <h4>em relação ao último mês.</h4>
           </div>
 
 
           <div class="info-holder">
-            <i class="fas fa-building icon"></i>
-            <div class="counter" id="entity-counter">
+            <i class="fas fa-hand-holding-usd icon"></i>
+            <div class="counter" id="donation-counter">
             </div>
           </div>
         </div>
+        <i class="bx bx-message-square icon"></i>
       </div>
-      <i class="bx bx-message-square icon"></i>
     </div>
   </div>
-  <div class="card">
-    <div class="head">
-      <div class="count-item">
-        <h3 class="title">Famílias</h3>
-        <div class="percentage-holder">
-          <h4 class="" id="family-percentage"></h4>
-          <h4>em relação ao último mês.</h4>
-        </div>
-        <div class="info-holder">
-          <i class="fas fa-users icon"></i>
-          <div class="counter" id="family-counter">
-          </div>
-        </div>
+  <div class="data">
+    <div class="content-data">
+      <div class="head">
+        <h3>Entidades Cadastradas</h3>
       </div>
-      <i class="bx bx-message-square icon"></i>
-    </div>
-  </div>
-  <div class="card">
-    <div class="head">
-      <div class="count-item">
-        <h3 class="title">Doações</h3>
-        <div class="percentage-holder">
-          <h4 class="" id="donation-percentage"></h4>
-          <h4>em relação ao último mês.</h4>
-        </div>
-
-
-        <div class="info-holder">
-          <i class="fas fa-hand-holding-usd icon"></i>
-          <div class="counter" id="donation-counter">
-          </div>
-        </div>
+      <div class="col-12 p-3 bg-light d-flex justify-content-center align-items-center">
+        <canvas id="entity-chart" height="80"></canvas>
       </div>
-      <i class="bx bx-message-square icon"></i>
     </div>
-  </div>
-</div>
-<div class="data">
-  <div class="content-data">
-    <div class="head">
-      <h3>Entidades Cadastradas</h3>
+    <div class="content-data">
+      <div class="head">
+        <h3>Familías Cadastradas</h3>
+      </div>
+      <div class="col-12 p-3 bg-light d-flex justify-content-center align-items-center">
+        <canvas id="family-chart" height="80"></canvas>
+      </div>
     </div>
-    <div class="col-12 p-3 bg-light d-flex justify-content-center align-items-center">
-      <canvas id="entity-chart" height="80"></canvas>
-    </div>
-  </div>
-  <div class="content-data">
-    <div class="head">
-      <h3>Familías Cadastradas</h3>
-    </div>
-    <div class="col-12 p-3 bg-light d-flex justify-content-center align-items-center">
-      <canvas id="family-chart" height="80"></canvas>
-    </div>
-  </div>
-  <div class="content-data">
-    <div class="head">
-      <h3>Doações Cadastradas</h3>
-    </div>
-    <div class="col-12 p-3 bg-light d-flex justify-content-center align-items-center">
-      <canvas id="donation-chart" height="80"></canvas>
+    <div class="content-data">
+      <div class="head">
+        <h3>Doações Cadastradas</h3>
+      </div>
+      <div class="col-12 p-3 bg-light d-flex justify-content-center align-items-center">
+        <canvas id="donation-chart" height="80"></canvas>
+      </div>
     </div>
   </div>
 </div>

@@ -14,73 +14,90 @@
     <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
   {% endblock %}
 
-  <div class="col">
-    <div class="table-wrapper" id="round">
-      <div class="table-title" id="round-top">
-        <div class="row">
-          <div class="col-sm-7">
-            <h2>Edição de usuário</h2>
-            <div class="col-md-1 col-xs-1 col-sm-1"></div>
-          </div>
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100">
+        <div class="login100-pic">
+          <img src="{% static 'img/forms/Group-Icon.png' %}" alt="IMG">
         </div>
-      </div>
-      <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
-
-        <!-- Exibe erros retornadas da view ou form, caso houver -->
-        {% if messages %}
-        <div class="form-group">
-          <ul class="messages p-0" role="alert">
-              {% for message in messages %}
-               <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
-               {% if form.erros %}
-               <li class="alert alert-warning p-0 m-0">{{ form.non_field_errors }}</li>
-               {% endif %}
-              {% endfor %}
-          </ul>
-        </div>
-        {% endif %}
-
+  
         <form method="POST" action="{% url 'Editar Usuário' usuarioAlterado.pk %}">
-
           {% csrf_token %}
+          
+          <span class="login100-form-title pb-4">
+            Edição de usuário
+          </span>
 
-          <div class="row mb-4 d-flex">
+          <!-- Exibe erros retornadas da view ou form, caso houver -->
+          {% if messages %}
+          <div class="form-group">
+            <ul class="messages p-0 text-center" role="alert">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
+                {% if form.erros %}
+                <li class="alert alert-warning p-0 m-0">{{ form.non_field_errors }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
 
-            <div class="col pr-5">
-              <label class="form-label" for="nomeUsuario">Nome de usuário: </label>
-              <input class="form-control text-secondary" type="text" value="{{usuarioAlterado.username}}" disabled="true" autocomplete="off">
-            </div>
-
-            <div class="col pr-5">
-              <label class="form-label" for="primeiroNome">Primeiro nome: </label>
-              <input class="form-control" type="text" value="{{usuarioAlterado.first_name}}" name="primeiroNome" autocomplete="on" id="primeiroNome">
-            </div>
-
-            <div class="col">
-              <label class="form-label" for="sobrenome">Sobrenome: </label>
-              <input class="form-control" type="text" value="{{usuarioAlterado.last_name}}" name="sobrenome" autocomplete="on" id="sobrenome">
-            </div>
-
+  
+          <label for="">Nome de usuário:</label>
+          <div class="wrap-input100">
+            <input class="input100" type="text" placeholder="Nome de usuário (usado para acesso)" value="{{usuarioAlterado.username}}" disabled="true" autocomplete="off">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-user" aria-hidden="true"></i>
+            </span>
+          </div>
+  
+          <label for="primeiroNome">Primeiro nome:</label>
+          <div class="wrap-input100">
+            <input class="input100" type="text" placeholder="Primeiro nome" value="{{usuarioAlterado.first_name}}" name="primeiroNome" autocomplete="on" id="primeiroNome"> 
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-user" aria-hidden="true"></i>
+            </span>
+          </div>
+  
+          <label for="sobrenome">Sobrenome:</label>
+          <div class="wrap-input100">
+            <input class="input100" type="text" placeholder="Sobrenome" value="{{usuarioAlterado.last_name}}" name="sobrenome" autocomplete="on" id="sobrenome"> 
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-user" aria-hidden="true"></i>
+            </span>
           </div>
 
-          <div class="row mb-4 d-flex">
-
-            <div class="col pr-5">
-              <label class="form-label" for="email">E-mail: </label>
-              <input class="form-control" type="email" value="{{usuarioAlterado.email}}" name="email" autocomplete="on" id="email">
-            </div>
-
-            <div class="col pr-5">
-              <label class="form-label" for="dataCriacao">Data de criação: </label>
-              <input class="form-control text-secondary" type="datetime" value="{{usuarioAlterado.date_joined}}" disabled="true" name="dataCriacao" autocomplete="on" id="nomeUsuario">
-            </div>
-
-            <div class="col">
-              <label class="form-label" for="ultimoLogin">Último login: </label>
-              <input class="form-control text-secondary" type="datetime" value="{{usuarioAlterado.last_login}}" disabled="true" name="ultimoLogin" autocomplete="on" id="nomeUsuario">
-            </div>
-
+          <label for="email">E-mail:</label>
+          <div class="wrap-input100">
+            <input class="input100" placeholder="Insira seu e-mail" type="email" value="{{usuarioAlterado.email}}" name="email" autocomplete="on" id="email">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-user" aria-hidden="true"></i>
+            </span>
           </div>
+  
+          <label for="dataCriacao">Data de criação:</label>
+          <div class="wrap-input100">
+            <input class="input100" type="datetime" value="{{usuarioAlterado.date_joined}}" disabled="true" name="dataCriacao" autocomplete="on" id="nomeUsuario"> 
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-user" aria-hidden="true"></i>
+            </span>
+          </div>
+  
+          <label for="nomeUsuario">Último login:</label>
+          <div class="wrap-input100">
+            <input class="input100" type="datetime" value="{{usuarioAlterado.last_login}}" disabled="true" name="ultimoLogin" autocomplete="on" id="nomeUsuario"> 
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-user" aria-hidden="true"></i>
+            </span>
+          </div>
+
+          <hr>
 
           <div class="row mb-3 pr-3 pl-3 d-flex">
             <div class="form-check form-switch col" data-toggle="tooltip" title="Marcar essa opção concede todas as permissões ao usuário">
@@ -93,16 +110,39 @@
               <label class="form-check-label" onclick="verificaCheckBoxUsuarioAtivo()" for="usuarioAtivo">Usuário ativo</label>
             </div>
           </div>
+  
+          <div class="d-flex">
 
-          <!-- Divisor -->
-          <div class="border-top my-3 mt-4"></div>
+              <div class="container-login100-form-btn mt-1">
+                <button class="salvar-form-btn m-auto col" type="submit">
+                  Salvar
+                </button>
+              </div>
+  
+              {% if usuarioAlterado.is_active %}
+              <div class="container-login100-form-btn">
+                <div class="container-login100-form-btn mb-3 ml-3">
+                  <a class="limpar-form-btn m-auto col" href="{% url 'Inativar Usuário' usuarioAlterado.pk %}" data-toggle="modal" data-target="#inativar" id="inativarUsuario">
+                    Inativar
+                  </a>
+                </div>
+              </div>
+  
+              {% else %}
+              <div class="container-login100-form-btn">
+                <div class="container-login100-form-btn mb-3 ml-3">
+                  <a class="salvar-form-btn bg-primary m-auto col" href="{% url 'Reativar Usuário' usuarioAlterado.pk %}" data-toggle="modal" data-target="#reativar" id="reativarUsuario">
+                    Reativar
+                  </a>
+                </div>
 
-          <button type="submit" class="btn btn-success mb-1">Confirmar alterações</button>
-          {% if usuarioAlterado.is_active %}
-            <a href="{% url 'Inativar Usuário' usuarioAlterado.pk %}" class="btn btn-outline-danger mb-1 float-right" data-toggle="modal" data-target="#inativar" id="inativarUsuario">Inativar usuário</a>
-          {% else %}
-            <a href="{% url 'Reativar Usuário' usuarioAlterado.pk %}" class="btn btn-outline-primary mb-1 float-right" data-toggle="modal" data-target="#reativar" id="reativarUsuario">Reativar usuário</a>
-          {% endif %}
+              {% endif %}
+
+            </div>
+            
+  
+          </div>
+  
         </form>
       </div>
     </div>
