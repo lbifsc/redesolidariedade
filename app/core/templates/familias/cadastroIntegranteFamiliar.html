@@ -3,37 +3,72 @@
 {% block content %} {% load widget_tweaks %} {% block styles %}
 {% load user_tags %}
 {% load static %}
+  <link rel="icon" type="image/x-icon" href="{% static 'img/forms/Family-Icon.png' %}">
 {% endblock %}
 
-<div class="col">
-  <div class="table-wrapper" id="round">
-    <div class="table-title" id="round-top">
-      <div class="row">
-        <div class="col-sm-7">
-          <h2>Cadastro Integrante Familiar :</h2>
-          <div class="col-md-1 col-xs-1 col-sm-1"></div>
-        </div>
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100">
+      <div class="login100-pic">
+        <img src="{% static 'img/forms/Family-Icon.png' %}" alt="IMG">
       </div>
-    </div>
-    <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
-      <form method="post" id="familia">
+
+      <form class="login100-form mb-4" method="post" id="familia">
         {% csrf_token %}
-        <label>Familia :</label>
-        <div id="autocomplete" class="autocomplete">
-            <input class="autocomplete-input" name="idFamilia" id="familias" type="text" required/>
+        <span class="login100-form-title pb-4">
+          Cadastro de Integrante Familiar
+        </span>
+
+        <label for="idFamilia">Família:</label>
+        <div class="wrap-input100">
+          <div id="autocomplete" class="autocomplete">
+            <input class="autocomplete-input" name="idFamilia" id="familias" placeholder="Selecione a família do integrante" type="text" required/>
             <ul class="autocomplete-result-list"></ul>
+          </div>
         </div>
-        <!--<p class="d-inline"><b>Nome Chefe familiar :</b></p> <p class="d-inline" id="nomeChefeFamilia"></p> <br/>-->
-        <label class="mt-2">CPF :</label>
-        <input type="text" class="form-control" id="cpfIntegrante" name="cpfIntegrante" minLength='11' oninput="clearInput(this)" required> </input>
-        <label>Nome :</label>
-        <input type="text" class="form-control" id="nomeIntegrante" name="nomeIntegrante" maxLength='100' minLength='2' required> </input>
-        <button type="button" onclick="sendData()" class="btn btn-success mt-3">Salvar</button>
-        <button type="button" onclick="limpar()" class="btn btn-warning mt-3">Limpar</button>
+
+        <label for="nomeIntegrante">Nome:</label>
+        <div class="wrap-input100">
+          <input class="input100" type="text" placeholder="Nome do integrante" id="nomeIntegrante" name="nomeIntegrante" maxLength='100' minLength='2' required>
+          <span class="focus-input100"></span>
+          <span class="symbol-input100">
+            <i class="fa fa-user" aria-hidden="true"></i>
+          </span>
+        </div>
+
+        <label for="cpfIntegrante">CPF:</label>
+        <div class="wrap-input100">
+          <input class="input100" type="text" placeholder="CPF do integrante" id="cpfIntegrante" name="cpfIntegrante" minLength='11' oninput="clearInput(this)" required> 
+          <span class="focus-input100"></span>
+          <span class="symbol-input100">
+            <i class="fa fa-address-card" aria-hidden="true"></i>
+          </span>
+        </div>
+
+        <div class="buttons">
+
+          <div class="container-login100-form-btn">
+            <button class="salvar-form-btn" onclick="sendData()">
+              Salvar
+            </button>
+          </div>
+
+          <div class="container-login100-form-btn">
+            <button class="limpar-form-btn" onclick="limpar()">
+              Limpar
+            </button>
+          </div>
+
+        </div>
+
+
+
+
       </form>
     </div>
   </div>
 </div>
+
 <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
 
 <script>

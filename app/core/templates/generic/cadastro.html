@@ -6,59 +6,106 @@
 <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
 <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
 <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/forms/forms.css' %}">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="icon" type="image/x-icon" href="{% static 'img/forms/Family-Icon.png' %}">
 {% endblock %}
 
-<div class="col">
-  <div class="table-wrapper" id="round">
-    <div class="table-title" id="round-top">
-      <div class="row">
-        <div class="col-sm-7">
-          <h2>{{ nomePagina }}</h2>
-          <div class="col-md-1 col-xs-1 col-sm-1"></div>
-        </div>
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100">
+      <div class="login100-pic">
+        <img src="{% static 'img/forms/Family-Icon.png' %}" alt="IMG">
       </div>
-    </div>
-    <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10">
-      <form method="post" novalidate>
-        {% csrf_token %}
-        {% for hidden_field in form.hidden_fields %}
-        {{ hidden_field }}
-        {% endfor %}
 
+      <form class="login100-form mb-4" method="post" novalidate>
+        {% csrf_token %}
+
+        <span class="login100-form-title">
+          <h2>{{ nomePagina }}</h2>
+        </span>
+
+        {% for hidden_field in form.hidden_fields %}
+          {{ hidden_field }}
+        {% endfor %}
+        
         {% if form.non_field_errors %}
-        <div class="alert alert-danger" role="alert">
-          {% for error in form.non_field_errors %}
-          {{ error }}
-          {% endfor %}
-        </div>
+          <div class="alert alert-danger h6 text-center" role="alert">
+            {% for error in form.non_field_errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
         {% endif %}
 
         {% for field in form.visible_fields %}
-        <div class="form-group">
-          {{ field.label_tag }}
+          <div class="form-group">
+            {{ field.label_tag }}
+            
+            {% if form.is_bound %}
+              {% if field.errors %}
 
-          {% if form.is_bound %}
-          {% if field.errors %}
-          {% render_field field class="form-control is-invalid" %}
-          {% for error in field.errors %}
-          <div class="invalid-feedback">
-            {{ error }}
+                <div class="wrap-input100">
+                  {% render_field field class="input100 is-invalid" %}
+
+                  <span class="focus-input100"></span>
+                  <span class="symbol-input100">
+                    <i class="fa {{ field.field.widget.attrs.icone }}" aria-hidden="true"></i>
+                  </span>
+                </div>
+
+                  {% for error in field.errors %}
+                    <div class="alert alert-warning h6 text-center py-1" role="alert">
+                      {{ error }}
+                    </div>
+                  {% endfor %}
+
+              {% else %}
+
+                <div class="wrap-input100">
+                  {% render_field field class="input100 is-valid" %}
+
+                  <span class="focus-input100"></span>
+                  <span class="symbol-input100">
+                    <i class="fa {{ field.field.widget.attrs.icone }}" aria-hidden="true"></i>
+                  </span>
+                </div>
+            
+              {% endif %}
+            {% else %}
+
+              <div class="wrap-input100">
+                {% render_field field class="input100" %}
+
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                  <i class="fa {{ field.field.widget.attrs.icone }}" aria-hidden="true"></i>
+                </span>
+              </div>
+      
+            {% endif %}
+
+            {% if field.help_text %}
+              <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
           </div>
-          {% endfor %}
-          {% else %}
-          {% render_field field class="form-control is-valid" %}
-          {% endif %}
-          {% else %}
-          {% render_field field class="form-control" %}
-          {% endif %}
-
-          {% if field.help_text %}
-          <small class="form-text text-muted">{{ field.help_text }}</small>
-          {% endif %}
-        </div>
         {% endfor %}
-        <p align="right"><button type="submit" class="btn btn-success">Salvar</button></p>
+
+        <div class="buttons">
+
+          <div class="container-login100-form-btn">
+            <button class="salvar-form-btn" type="submit">
+              Salvar
+            </button>
+          </div>
+
+          <div class="container-login100-form-btn">
+            <button type="reset" class="limpar-form-btn">
+              Limpar
+            </button>
+          </div>
+
+        </div>
+
       </form>
     </div>
   </div>
@@ -95,7 +142,7 @@
   }
 
   const clearInput = (input) => {
-      input.value = input.value.replace(/\D+/g, '');
+    input.value = input.value.replace(/\D+/g, '');
   }
 
 </script>

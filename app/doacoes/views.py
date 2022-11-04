@@ -117,8 +117,8 @@ def buscacpf(request):
             url = "../realizaDoacao/" + str(id_familia) + "/" + str(nome_responsavel)
             return redirect(url)
         else:
-            messages.success(request, "CPF não cadastrado. Por favor, realize o cadastramento da família.", extra_tags='alert alert-danger px-2')
-            return render(request, 'doacoes/cadastroDoacao.html')
+            messages.warning(request, "CPF não cadastrado. Por favor, realize o cadastramento da família.", extra_tags='alert alert-danger px-2')
+            return render(request, 'doacoes/cpfBusca.html')
     return render(request, 'doacoes/cpfBusca.html')
 
 #REALIZAR DOACAO
@@ -146,8 +146,9 @@ def movimentos(request, pk, nome_responsavel):
         return redirect(url)
     else:
         user = request.user
+        familia = Familia.objects.get(pk=pk)
         doacoesAnteriores = Movimentos.objects.filter(idFamilia__exact=pk).order_by('-data')[:5]
-        return render(request, 'doacoes/realizaDoacao.html',{'user': user, 'doacoesAnteriores': doacoesAnteriores})
+        return render(request, 'doacoes/realizaDoacao.html',{'user': user, 'doacoesAnteriores': doacoesAnteriores, 'familia': familia})
 
 #EXCLUIR
 def excluirDoacao(request, pk, template_name='generic/confirm_delete_cascade.html'):

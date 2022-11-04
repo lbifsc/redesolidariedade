@@ -20,15 +20,41 @@
     <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/forms/forms.css' %}">
+
+    <link rel="icon" type="image" href="{% static 'img/forms/Family-Icon.png' %}">
+
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
     <!-- INICIO SIDEBAR -->
     <section id="sidebar">
-      <a href="{% url 'Rede Solidariedade'%}" class="brand"
-        ><i class="bx bxs-donate-heart icon"></i> Rede Solidariedade</a
-      >
-      <ul class="side-menu">
+
+      <!-- INICIO NAVBAR -->
+      <nav class="bg-transparent ml-3 pl-0 pt-2 text-secondary d-flex">
+        <i class="bx bx-menu toggle-sidebar text-secondary"> </i>
+        <div class="" style="font-size:13px;">Olá <b>{{user}}</b>!</div>
+      </nav>
+      <!-- FIM NAVBAR -->
+      
+      <hr class="dropdown-divider text-center mx-3">
+
+      <a href="{% url 'Rede Solidariedade'%}" class="brand pl-3 d-flex mt-3">
+        <img class="img-fluid mr-3" style="width: 24%; min-width: 30px" src="{% static 'img/iconeTitle.ico' %}" alt="Logo">
+        <div >Rede Solidariedade</div> 
+      </a>
+
+
+      <ul class="side-menu mt-2 mb-0">
         {% if user.is_authenticated %}
         <li class="divider" data-text="gerenciamento">Gerenciamento</li>
         <li>
@@ -95,9 +121,10 @@
         </li>
         {% endif %}
       </ul>
-      <div class="box">
+      
+      <div class="box mt-100">
         <div class="wrapper">
-          <p>Desenvolvido por <span>IFSC - Câmpus Canoinhas</span></p>
+          <p>Desenvolvido por <br><span>IFSC - Câmpus Canoinhas</span></p>
           <a
             href="https://www.ifsc.edu.br/web/campus-canoinhas"
             class="btn-know"
@@ -105,51 +132,48 @@
           >
         </div>
       </div>
+      
     </section>
     <!-- FIM SIDEBAR -->
-    <!-- INICIO NAVBAR -->
     <section id="content">
-      <nav>
-        <i class="bx bx-menu toggle-sidebar"></i>
-      </nav>
-      <!-- FIM NAVBAR -->
       <!-- INICIO MAIN -->
-      <main>
+      <main class="p-0">
         {% if user|has_group:"primeirologin" and ehPaginaRedefinicaoSenha == false%}
 
         <!-- Contador regressivo da página de primeiro login -->
         <script src="{% static 'js/contadorPrimeiroLogin.js'%}"></script>
 
-          <div class="table-wrapper m-4" id="round">
-            <div class="table-title" id="round-top">
-              <div class="row">
-                <div class="col-sm-7">
-                  <h2>Parece que esse é seu primeiro login</h2>
-                  <div class="col-md-1 col-xs-1 col-sm-1"></div>
-                </div>
-              </div>
-            </div>
-            <div class="pt-4 col-lg-12 col-md-10 col-xs-10 col-sm-10 ">
 
-              <p>
-                Para uma maior segurança, redefina sua senha.</br>
-                Você será redirecionado automaticamente em <label id="contador"></label> segundos, ou
 
-                <a href="{% url 'Redefinir Senha' %}">
-                  clique aqui para ir agora.
-                </a>
+        <div class="limiter">
+          <div class="container-login100">
+            <div class="wrap-login100 justify-content-center">
+                
+                <span class="login100-form-title p-0">
+                  Hmmm, parece que esse é seu primeiro acesso...
+                </span>
 
-              </p>
-
-              <!-- Redireciona automáticamente para alteração de senha após 11 segundos. -->
-              <meta http-equiv="Refresh" content="11; url={% url 'Redefinir Senha' %}" />
-
+                <hr>
+                     
+                <p class="text-center h6">
+                  <b>Para uma maior segurança, redefina sua senha.</b></br>
+                  Você será redirecionado automaticamente em <b><label id="contador"></label> segundos</b>, ou
+      
+                  <a class="h6 text-primary" href="{% url 'Redefinir Senha' %}">
+                      clique aqui para ir agora.
+                  </a>
+      
+                  </p> 
+                  
+                  <!-- Redireciona automaticamente para para alteração de senha após 11 segundos. -->
+                  <meta http-equiv="Refresh" content="11; url={% url 'Redefinir Senha' %}" />
+      
             </div>
           </div>
+        </div>
 
       {% else %}
-
-
+          
         {% block content %}
         {% endblock content %}
 

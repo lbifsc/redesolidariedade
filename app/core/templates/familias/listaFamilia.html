@@ -2,84 +2,123 @@
 {% load user_tags %}
 {% block title %}Famílias{% endblock %}
 {% block content %}
-  {% block styles %}
-    <link rel="stylesheet" href="../static/css/listas/listas.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  {% endblock %}
-  {% if user.is_authenticated %}
-    <div class="col">
-      <div class="table-wrapper" id="round">
-        <div class="table-title" id="round-top">
-            <div class="row">
-              <div class="col-sm-7">
-                  <h2>Famílias</h2>
-                  <br>
-                  <form action="" method="get">
-                    <div class="search col">
-                      <input value="{{ request.GET.search }}" name="search" type="text" class="search form-control" placeholder="Nome ou CPF do chefe de família">
-                      <button type="submit" id="find">
-                        <i class="fas fa-search"></i>
-                      </button>
-                    </div>
-                  </form>
+{% block styles %}
+<link rel="stylesheet" href="../static/css/listas/listas.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% load user_tags %}
+{% load static %}
+<link rel="icon" type="image/x-icon" href="{% static 'img/forms/Family-Icon.png' %}">
+{% endblock %}
+
+{% if user.is_authenticated %}
+
+<div class="limiter" >
+  <div class="container-login100" >
+    <div class="d-flex wrap-login100"  style="gap: 2rem;">
+
+      <div class="login100-pic col-sm-4">
+        <img src="{% static 'img/forms/Family-Icon.png' %}" alt="IMG">
+      </div>
+
+
+      <form class="login100-form mb-0 col-7" action="" method="get">
+        {% csrf_token %}
+
+        <span class="login100-form-title pb-4">
+          Famílias cadastradas
+        </span>
+
+        <div class="wrap-input100">
+
+          <div class="wrap-input100">
+
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </span>
+
+            <form action="" method="get">
+
+              <div class="search">
+                <input type="text" value="{{ request.GET.search }}" name="search" class="search input100" placeholder="Busque por um nome ou CPF do chefe de família">
+              
+                <button class="btn btn-outline-primary p-3 rounded-circle ml-2">
+                  <i class="float-right fa fa-search" aria-hidden="true"></i>
+                </button>
               </div>
-              <div class="col-sm-5">
-                <div class="clearfix">
-                  <div class=float-left>
-                    <div class="btn-principal">
-                      <a href="{% url 'Cadastro de Famílias' %}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Adicionar nova família</span></a>
-                    </div>
-                  </div>
-                  <div class=float-left>
-                    <div class="btn-principal">
-                      <a href="{% url 'listar_familias_relatorio' %}" class="btn btn-primary">
-                        Exibir tudo
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
+            </form>
+
+          </div>
+
+          <div class="buttons pt-4 pb-2">
+
+            <div class="container-login100-form-btn">
+              <a class="salvar-form-btn" href="{% url 'Cadastro de Famílias' %}">
+                Adicionar
+              </a>
             </div>
+  
+            <div class="container-login100-form-btn">
+              <a class="salvar-form-btn bg-primary" href="{% url 'listar_familias_relatorio' %}">
+                Exibir todas
+              </a>
+            </div>
+  
+          </div>
+
         </div>
-        <table class="table table-striped table-hover table-responsive-sm text-justify">
-          <thead>
-              <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">Nome Chefe Familia</th>
-                <th class="text-center">CPF</th>
-                <th class="text-center">Endereco</th>
-                <th class="text-center">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for familias in familias_list %}
-              <tr>
-                <td class="text-center"> {{ familias.pk }} </td>
-                <td class="text-center"> {{ familias.nomeChefeFamilia }} </td>
-                <td class="text-center">{{ familias.cpfChefeFamilia }}</td>
-                <td class="text-center">{{ familias.enderecoChefeFamilia }}</td>
-                <td class="text-center icons-td">
-                  <a href="{% url 'Detalhes Familia' familias.pk %}" class="details">
-                    <span class="material-icons">
-                      visibility
-                    </span>
-                  </a>
-                  <a href="{% url 'Editar Familia' familias.pk %}" class="edit">
-                    <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
-                  </a>
-                  {% if user.is_superuser %}
-                  <a href="{% url 'Excluir Familia' familias.pk %}" class="delete" id="deletarFamilia" data-toggle="modal" data-target="#deleteCascade">
-                    <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
-                  </a>
-                  {% endif %}
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+
+      </form>
+
+      <table class="table table-striped table-light w-100 table-hover table-responsive-sm text-justify">
+        <thead>
+          <tr>
+            <th class="text-center">ID</th>
+            <th class="text-center">Nome do chefe de família</th>
+            <th class="text-center">CPF</th>
+            <th class="text-center">Endereço</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for familias in familias_list %}
+          <tr>
+            <td class="text-center"> {{ familias.pk }} </td>
+            <td class="text-center"> {{ familias.nomeChefeFamilia }} </td>
+            <td class="text-center">{{ familias.cpfChefeFamilia }}</td>
+            <td class="text-center">{{ familias.enderecoChefeFamilia }}</td>
+            <td class="text-center icons-td">
+              <a href="{% url 'Detalhes Familia' familias.pk %}" class="details">
+                <span class="material-icons">
+                  visibility
+                </span>
+              </a>
+              <a href="{% url 'Editar Familia' familias.pk %}" class="edit">
+                <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
+              </a>
+              {% if user.is_superuser %}
+              <a href="{% url 'Excluir Familia' familias.pk %}" class="delete" id="deletarFamilia" data-toggle="modal"
+                data-target="#deleteCascade">
+                <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
+              </a>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% include "includes/pagination.html" %}
+      
+
     </div>
-  {% endif %}
-  {% include "includes/pagination.html" %}
+  </div>
+{% endif %}
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="/assets/script.js"></script>
 
   <script>
 
@@ -89,4 +128,4 @@
     }
 
   </script>
-{% endblock %}
+  {% endblock %}
