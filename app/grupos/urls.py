@@ -8,7 +8,7 @@ from grupos import views
 #CRUD ENTIDADE
 urlpatterns = [
     path('listaEntidades/', views.listaEntidades.as_view(), name='Lista de Entidades'),
-    path('detalhesEntidade/<int:pk>/', views.detalhesEntidade.as_view(), name='Detalhes Entidade'),
+    path('detalhesEntidade/<int:pk>/', views.detalhesEntidade, name='Detalhes Entidade'),
     path('cadastroEntidade/', views.cadastroEntidade, name='Cadastro de Entidades'),
     path('cadastroEntidade/edit/<int:pk>/', views.editarEntidade, name='Editar Entidade'),
     path('cadastroEntidade/delete/<int:pk>/', views.excluirEntidade, name='Excluir Entidade'),
@@ -17,7 +17,7 @@ urlpatterns = [
 #CRUD REPRESENTANTES
 urlpatterns += [
     path('listaRepresentante/', views.listaRepresentante.as_view(), name='Lista de Representantes'),
-    path('detalhesRepresentante/<int:pk>/', views.detalhesRepresentante.as_view(), name='Detalhes Representante'),
+    path('detalhesRepresentante/<int:pk>/', views.detalhesRepresentante, name='Detalhes Representante'),
     path('cadastroRepresentante/', views.cadastroRepresentante, name='Cadastro de Representantes'),
     path('cadastroRepresentante/edit/<int:pk>/', views.editarRepresentante, name='Editar Representante'),
     path('cadastroRepresentante/delete/<int:pk>/', views.excluirRepresentante, name='Excluir Representante'),
@@ -31,6 +31,7 @@ urlpatterns += [
     path('redefinirSenha/', views.redefinirSenha, name='Redefinir Senha'),
     path('redefinicaoSenhaCompleta/', views.redefinicaoSenhaCompleta, name='Redefinição de Senha Completa'),
     path('editarUsuario/<int:pk>/', views.editarUsuario, name='Editar Usuário'),
+    path('cadastrarUsuario/', views.cadastrarUsuario, name='Cadastrar Usuário'),
     path('primeiroLogin/', views.primeiroLogin, name='Primeiro Login'),
 ]
 

@@ -12,6 +12,20 @@
   <div class="limiter" >
     <div class="container-login100" >
       <div class="d-flex wrap-login100"  style="gap: 2rem;">
+
+        <!-- Exibe erros retornadas da view ou form, caso houver -->
+        {% if messages %}
+        <div class="form-group row w-100 ml-0 mb-0">
+        <ul class="messages p-0 text-center w-100" role="alert">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }} py-0 m-0" {% endif %}>{{ message }}</li>
+            {% if form.erros %}
+            <li class="alert alert-warning py-0 m-0">{{ form.non_field_errors }}</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+        </div>
+        {% endif %}
   
         <div class="login100-pic col-sm-4">
           <img src="{% static 'img/forms/Group-Icon.png' %}" alt="IMG">
@@ -51,7 +65,7 @@
             <div class="buttons col-md-8 pt-3 m-auto pb-2 justify-content-center" >
   
               <div class="container-login100-form-btn">
-                <a class="salvar-form-btn m-0" href="{% url 'Cadastro de Representantes' %}">
+                <a class="salvar-form-btn m-0" href="{% url 'Cadastrar Usuário' %}">
                   Adicionar novo usuário
                 </a>
               </div>
@@ -67,7 +81,7 @@
             <tr>
               <th class="text-center">ID</th>
               <th class="text-center">Usuário</th>
-              <th class="text-center">Papel</th>
+              <th class="text-center">Permissão</th>
               <th class="text-center">Situação</th>
               <th class="text-center">Ações</th>
             </tr>
@@ -81,7 +95,7 @@
               {% if usuarios.is_superuser %}
               <td class="text-center"> Administrador </td>
               {% else %}
-              <td class="text-center"> Representante </td>
+              <td class="text-center"> Usuário comum </td>
               {% endif %}
 
               {% if usuarios.is_active %}

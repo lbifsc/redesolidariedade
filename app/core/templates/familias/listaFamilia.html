@@ -75,9 +75,9 @@
         <thead>
           <tr>
             <th class="text-center">ID</th>
-            <th class="text-center">Nome do chefe de família</th>
+            <th class="text-left">Nome do chefe de família</th>
             <th class="text-center">CPF</th>
-            <th class="text-center">Endereço</th>
+            <th class="text-left">Endereço</th>
             <th class="text-center">Ações</th>
           </tr>
         </thead>
@@ -85,9 +85,9 @@
           {% for familias in familias_list %}
           <tr>
             <td class="text-center"> {{ familias.pk }} </td>
-            <td class="text-center"> {{ familias.nomeChefeFamilia }} </td>
+            <td class="text-left"> {{ familias.nomeChefeFamilia }} </td>
             <td class="text-center">{{ familias.cpfChefeFamilia }}</td>
-            <td class="text-center">{{ familias.enderecoChefeFamilia }}</td>
+            <td class="text-left">{{ familias.enderecoChefeFamilia }}</td>
             <td class="text-center icons-td">
               <a href="{% url 'Detalhes Familia' familias.pk %}" class="details">
                 <span class="material-icons">

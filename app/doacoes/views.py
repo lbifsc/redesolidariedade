@@ -95,7 +95,6 @@ class listaDoacao(LoginRequiredMixin, ListView):
 #DETALHAR
 @login_required
 def detalhesDoacao(request, pk):
-    template_name = 'doacoes/detalhesDoacao.html'
     movimento = Movimentos.objects.get(pk=pk)
     cpf_responsavel = checkForCpf(pk)
     movimentosItens = MovimentosItem.objects.get_queryset().filter(movimentos=pk)
@@ -104,7 +103,7 @@ def detalhesDoacao(request, pk):
         'movimentosItens': movimentosItens,
         'cpf_responsavel' : cpf_responsavel,
     }
-    return render(request, template_name, context)
+    return render(request, 'doacoes/detalhesDoacao.html', context)
 
 #CRIAR
 @login_required()

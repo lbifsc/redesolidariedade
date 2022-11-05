@@ -1,56 +1,47 @@
 {% extends 'generic/base.html' %}
 {% block title %}Família de {{ familia.nomeChefeFamilia }}{% endblock %}
-  {% block content %}
-    {% block styles %}
-    {% load static %}
-      <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
-      <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
-      <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    {% endblock %}
-    {% if user.is_authenticated %}
-    <div class="col">
-      <div class="table-wrapper" id="round">
-        <div class="table-title" id="round-top">
-            <div class="row">
-              <div class="col-sm-7">
-                <h2>Familia de {{ familia.nomeChefeFamilia }} </h2>
-              <div class="col-md-1 col-xs-1 col-sm-1"></div>
-              </div>
-          </div>
-
-          </div>
-          <div class="col-md-10 col-xs-10 col-sm-10">
-                <table class="table table-striped table-hover table-responsive-sm text-justify">
-                  <thead>
-                    <tr>
-                      <th class="text-center">Integrantes</th>
-                      <th class="text-center">CPF</th>
-                      <th class="text-center">Endereço</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th class="text-center">Responsavel: {{ familia.nomeChefeFamilia }}</th>
-                      <th class="text-center"> {{ familia.cpfChefeFamilia }}</th>
-                      <th class="text-center"> {{ familia.enderecoChefeFamilia }}</th>
-                    </tr>
-                    <br>
-                    {% if integrantesFamilia %}
-                    {% for integranteFamilia in integrantesFamilia %}
-                    <tr>
-                      <th class="text-center">Integrante({{ forloop.counter }}): {{ integranteFamilia }}</th>
-                      <th class="text-center"> {{ integranteFamilia.cpf }}</th>
-                      <th class="text-center">  </th>
-                    </tr>
-                    <br>
-                    {% endfor %}
-                    {% endif %}
-                </tbody>
-              </table>
-              <br>
-          </div>
-      </div>
-  </div>
-  {% endif %}
+{% block content %}
+{% block styles %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
 {% endblock %}
+
+<div class="limiter">
+  <div class="container-login100">
+    <div class="d-flex wrap-login100" style="gap: 2rem;">
+
+        <span class="login100-form-title pb-2">
+          Detalhes da família de {{ familia.nomeChefeFamilia }}
+        </span>
+
+
+      <table class="table table-striped table-light table-responsive-sm text-justify">
+        <thead>
+          <tr>
+            <th class="text-left col">Integrantes da família</th>
+            <th class="text-center col-3">CPF</th>
+            <th class="text-center col">Endereço</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left"><b>Responsável:</b> {{ familia.nomeChefeFamilia }}</td>
+            <td class="text-center"> {{ familia.cpfChefeFamilia }}</td>
+            <td class="text-left"> {{ familia.enderecoChefeFamilia }}</td>
+          </tr>
+          {% if integrantesFamilia %}
+          {% for integranteFamilia in integrantesFamilia %}
+          <tr>
+            <td class="text-left"><b>Integrante {{ forloop.counter }}:</b> {{ integranteFamilia }}</ttdh>
+            <td class="text-center"> {{ integranteFamilia.cpf }}</td>
+            <td class="text-left"> </td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+      
+    </div>
+  </div>
+
+  {% endblock %}
