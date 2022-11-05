@@ -42,7 +42,9 @@
       <!-- INICIO NAVBAR -->
       <nav class="bg-transparent ml-3 pl-0 pt-2 text-secondary d-flex">
         <i class="bx bx-menu toggle-sidebar text-secondary"> </i>
-        <div class="" style="font-size:13px;">Olá <b>{{user}}</b>!</div>
+        {% if user.is_authenticated %}
+          <div class="" style="font-size:13px;">Olá <b>{{user}}</b>!</div>
+        {% endif %}
       </nav>
       <!-- FIM NAVBAR -->
       
@@ -100,6 +102,7 @@
           <ul class="side-dropdown">
             <li><a href="{% url 'Cadastro de Entidades'%}">Cadastro de Entidades</a></li>
             <li><a href="{% url 'Cadastro de Representantes'%}">Cadastro de Representantes</a></li>
+            <li><a href="{% url 'Cadastrar Usuário'%}">Cadastro de Usuários</a></li>
             <li><a href="{% url 'Lista de Entidades'%}">Lista de Entidades</a></li>
             <li><a href="{% url 'Lista de Representantes'%}">Lista de Representantes</a></li>
             <li><a href="{% url 'Lista de Usuarios'%}">Lista de Usuários</a></li>
@@ -115,7 +118,7 @@
           <a href="{% url 'logout'%}"><i class="bx bx-log-out icon"></i> Sair</a>
         </li>
         {% else %}
-        <li class="divider" data-text="Administração">Administração</li>
+        <li class="divider" data-text="Faça login para continuar">Faça login para continuar</li>
         <li>
           <a href="{% url 'login'%}?next={{request.path}}"><i class="bx bx-edit icon"></i> Entrar</a>
         </li>
@@ -193,23 +196,36 @@
         <div class="modal-content rounded">
 
           <div class="modal-header">
-            <h5 class="modal-title" id="tituloModal">Confirmação de exclusão</h5>
+            <h5 class="modal-title w-100 text-center" id="tituloModal">Confirmação de exclusão</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
 
-          <div class="modal-body">
+          <div class="modal-body text-center">
               Você quer mesmo excluir {{ object }}?
           </div>
 
           <div class="modal-footer rounded-bottom">
-            <form method="post" action="" id="formDelete">
+            <form method="post" action="" id="formDelete" class="m-auto">
                 {% csrf_token %}
-                {% if user.is_authenticated %}
-                <button type="submit" onclick="atualizaActionFormDelete()" class="btn btn-danger rounded"><span class="glyphicon glyphicon-trash">Sim</span></button>
-                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Não</button>
-                {% endif %}
+                
+                <div class="d-flex m-0 ">
+
+                  <div class="container-login100-form-btn p-0">
+                    <button class="limpar-form-btn col-md-4 px-5 mx-auto" type="submit" onclick="atualizaActionFormDelete()">
+                       Sim 
+                    </button>
+                  </div>
+        
+                  <div class="container-login100-form-btn p-0">
+                    <button class="limpar-form-btn bg-secondary col-md-4 px-5 mx-auto" type="button" data-dismiss="modal">
+                      Não
+                    </button>
+                  </div>
+        
+                </div>
+              
             </form>
           </div>
 
@@ -223,24 +239,37 @@
         <div class="modal-content rounded">
 
           <div class="modal-header">
-            <h5 class="modal-title" id="tituloModal">Confirmação de exclusão</h5>
+            <h5 class="modal-title w-100 text-center" id="tituloModal">Confirmação de exclusão</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
 
-          <div class="modal-body">
+          <div class="modal-body text-center">
             Você quer mesmo deletar {{ object }}? <br>
             Esta ação irá remover todos os registros relacionados a este cadastro!
           </div>
 
-          <div class="modal-footer rounded-bottom">
-            <form method="post" action="" id="formDeleteCascade">
+          <div class="modal-footer rounded-bottom ">
+            <form method="post" action="" id="formDeleteCascade" class="m-auto">
                 {% csrf_token %}
-                {% if user.is_authenticated %}
-                <button type="submit" onclick="atualizaActionFormDeleteCascade()" class="btn btn-danger rounded" ><span class="glyphicon glyphicon-trash">Sim</span></button>
-                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Não</button>
-                {% endif %}
+
+                <div class="d-flex m-0 ">
+
+                  <div class="container-login100-form-btn p-0">
+                    <button class="limpar-form-btn col-md-4 px-5 mx-auto" type="submit" onclick="atualizaActionFormDeleteCascade()">
+                       Sim 
+                    </button>
+                  </div>
+        
+                  <div class="container-login100-form-btn p-0">
+                    <button class="limpar-form-btn bg-secondary col-md-4 px-5 mx-auto" type="button" data-dismiss="modal">
+                      Não
+                    </button>
+                  </div>
+        
+                </div>
+
             </form>
           </div>
 
@@ -254,23 +283,36 @@
         <div class="modal-content rounded">
 
           <div class="modal-header">
-            <h5 class="modal-title" id="tituloModal">Confirmação de inativação</h5>
+            <h5 class="modal-title w-100 text-center" id="tituloModal">Confirmação de inativação</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
 
-          <div class="modal-body">
+          <div class="modal-body text-center">
               Você quer mesmo inativar {{ object }}?
           </div>
 
           <div class="modal-footer rounded-bottom">
-            <form method="post" action="" id="formInativar">
+            <form method="post" action="" id="formInativar" class="m-auto">
                 {% csrf_token %}
-                {% if user.is_authenticated %}
-                <button type="submit" id="botaoConfirmaAlteracao" onclick="atualizaActionFormInativar()" class="btn btn-danger rounded"><span class="glyphicon glyphicon-trash">Sim</span></button>
-                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Não</button>
-                {% endif %}
+                
+                <div class="d-flex m-0 ">
+
+                  <div class="container-login100-form-btn p-0">
+                    <button class="limpar-form-btn col-md-4 px-5 mx-auto" id="botaoConfirmaAlteracao" onclick="atualizaActionFormInativar()" type="submit">
+                       Sim 
+                    </button>
+                  </div>
+        
+                  <div class="container-login100-form-btn p-0">
+                    <button class="limpar-form-btn bg-secondary col-md-4 px-5 mx-auto" type="button" data-dismiss="modal">
+                      Não
+                    </button>
+                  </div>
+        
+                </div>
+
             </form>
           </div>
 
@@ -284,23 +326,36 @@
         <div class="modal-content rounded">
 
           <div class="modal-header">
-            <h5 class="modal-title" id="tituloModal">Confirmação de reativação</h5>
+            <h5 class="modal-title w-100 text-center" id="tituloModal">Confirmação de reativação</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
 
-          <div class="modal-body">
+          <div class="modal-body text-center">
               Você quer mesmo reativar {{ object }}?
           </div>
 
           <div class="modal-footer rounded-bottom">
-            <form method="post" action="" id="formReativar">
+            <form method="post" action="" id="formReativar" class="m-auto">
                 {% csrf_token %}
-                {% if user.is_authenticated %}
-                <button type="submit" onclick="atualizaActionFormReativar()" class="btn btn-primary rounded"><span class="glyphicon glyphicon-trash">Sim</span></button>
-                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">Não</button>
-                {% endif %}
+                
+                <div class="d-flex m-0 ">
+
+                  <div class="container-login100-form-btn p-0">
+                    <button class="limpar-form-btn col-md-4 px-5 mx-auto" id="botaoConfirmaAlteracao" onclick="atualizaActionFormReativar()" type="submit">
+                       Sim 
+                    </button>
+                  </div>
+        
+                  <div class="container-login100-form-btn p-0">
+                    <button class="limpar-form-btn bg-secondary col-md-4 px-5 mx-auto" type="button" data-dismiss="modal">
+                      Não
+                    </button>
+                  </div>
+        
+                </div>
+
             </form>
           </div>
 

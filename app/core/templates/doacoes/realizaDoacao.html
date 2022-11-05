@@ -12,9 +12,6 @@
 <div class="limiter">
   <div class="container-login100">
     <div class="wrap-login100 w-100 justify-content-center">
-      <!-- <div class="login100-pic">
-        <img src="{% static 'img/forms/Family-Icon.png' %}" alt="IMG">
-      </div> -->
 
       <form class="login100-form-doacao mb-4" method="post" id="form">
         {% csrf_token %}
@@ -108,23 +105,23 @@
 
         <hr>
 
-        <h5 class="text-center">Últimas doações recebidas:</h5>
+        <h5 class="text-center pb-3">Últimas doações recebidas:</h5>
         <div>
           <table class="table table-striped table-hover table-responsive-sm text-justify">
           {% if doacoesAnteriores %}
             <thead>
               <tr>
-                <th class="text-center">Representante:</th>
-                <th class="text-center">Data:</th>
-                <th class="text-center">Justificativa:</th>
+                <th class="text-left">Representante</th>
+                <th class="text-left">Justificativa</th>
+                <th class="text-center col-4">Data</th>
               </tr>
             </thead>
             <tbody>
               {% for doacao in doacoesAnteriores %}
                 <tr>
-                  <td class="text-center"><a href="{% url 'Detalhes Doação' doacao.pk %}">{{ doacao.representante }}</a></td>
-                  <td class="text-center"><a href="{% url 'Detalhes Doação' doacao.pk %}">{{ doacao.data }}</a></td>
-                  <td class="text-center"><a href="{% url 'Detalhes Doação' doacao.pk %}">{{ doacao.justificativa }}</a></td>
+                  <td class="text-left"><a href="{% url 'Detalhes Doação' doacao.pk %}">{{ doacao.representante }}</a></td>
+                  <td class="text-left"><a href="{% url 'Detalhes Doação' doacao.pk %}">{{ doacao.justificativa }}</a></td>
+                  <td class="text-center col-4"><a href="{% url 'Detalhes Doação' doacao.pk %}">{{ doacao.data }}</a></td>
                 </tr>
               {% endfor %}
             </tbody>

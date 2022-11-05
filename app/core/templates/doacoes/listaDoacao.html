@@ -20,32 +20,10 @@
                 <span class="login100-form-title pb-4">
                     Doações realizadas
                 </span>
-                
-                <div class="d-flex pb-3">
-                    <div class="wrap-input100">
 
-                        <div class="col">
-                            <label>Data Inicial:</label>
-                            <input value="" class="form-control" name="data_inicial" type="date">
-                        </div>
-    
-                    </div>
-    
-                    <div class="wrap-input100">
-    
-                        <div class="col">
-                            <label>Data Final:</label>
-                            <input value="" class="form-control" name="data_final" type="date">
-                        </div>
-    
-                    </div>
-                </div>
-                
+                <div class="d-flex pb-1">
 
-                
-                <div class="wrap-input100 d-flex" >
-
-                    <form method="get" class="d-flex">
+                    <div class="wrap-input100 d-flex">
 
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
@@ -53,56 +31,98 @@
                         </span>
 
                         <input type="text" value name="search" class="input100 "
-                            placeholder="Busque pelo nome do chefe de família">
-                            
-                        <button class="salvar-form-btn col-3 ml-2" type="submit">
+                            placeholder="Busque pelo nome do chefe de família">    
+
+                    </div>
+
+                    
+                </div>
+
+
+                <form method="get">
+
+                    <div class="wrap-input100 d-flex">
+
+                            <div class="col pl-1">
+                                <label class="mb-0">Data Inicial:</label>
+                                <input value="" class="form-control" name="data_inicial" type="date">
+                            </div>
+    
+                            <div class="col pr-1">
+                                <label class="mb-0">Data Final:</label>
+                                <input value="" class="form-control" name="data_final" type="date">
+                            </div>
+    
+                        <button class="salvar-form-btn col-3 ml-2 mt-3" type="submit">
                             <i class="material-icons">manage_search</i>
                             Filtrar
                         </button>
-                    </form>
 
-                </div>
-                
-                
-                <!-- <div class="d-flex flex-row-reverse col-">
 
-                    <div class="container-login100-form-btn col-5 px-2">
-                        <a class="salvar-form-btn m-1 mx-0" href="{% url 'Cadastro de Doações'%}">
-                            Nova doação
-                        </a>
                     </div>
 
-                    <div class="container-login100-form-btn col-4 mr-1 px-2">
-                        <a class="limpar-form-btn bg-primary mt-1 mx-0" href="{% url 'listar_doacoes_relatorio' %}">
-                            Exibir tudo
-                        </a>
+
+                    <div class="d-flex col justify-content-between px-0 pt-1">
+
+                        <div class="container-login100-form-btn col-sm pt-0 px-0">
+                            <a class="salvar-form-btn mt-1 mx-0" href="{% url 'Cadastro de Doações' %}">
+                                Nova doação
+                            </a>
+                        </div>
+
+                        <div class="container-login100-form-btn col-sm pt-0 pl-2 pr-0">
+                            <a class="limpar-form-btn bg-primary mt-1 mx-0" href="{% url 'listar_doacoes_relatorio' %}">
+                                Exibir tudo
+                            </a>
+                        </div>
+
+                        <div class="container-login100-form-btn col-sm pr-0 pt-0 pr-0 pl-2">
+                            <button class="limpar-form-btn mt-1 mx-0" type="reset">
+                                Limpar filtros
+                            </button>
+                        </div>
+
+
+
                     </div>
 
-                    <button class="limpar-form-btn col-4 mt-4 ml-1 px-2" type="reset">
-                        <i class="material-icons m-0">manage_search</i>
-                        Filtrar
-                    </button>
 
-                </div> -->
+                </form>
 
-                
-            </form>
+                <table class="table table-striped table-hover table-responsive-sm text-justify">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Chefe de Família</th>
+                            <th class="text-center">Data da doação</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for movimentos in movimentos_list %}
+                        <tr>
+                            <td class="text-center">{{ movimentos.pk }}</td>
+                            <td class="text-center">{{ movimentos.idFamilia }}</td>
+                            <td class="text-center">{{ movimentos.data }}</td>
+                            <td class="text-center icons-td">
+                                <a href="{% url 'Detalhes Doação' movimentos.pk %}" class="details">
+                                    <span class="material-icons">
+                                        visibility
+                                    </span>
+                                </a>
+                                {% if user.is_superuser %}
+                                <a href="{% url 'Excluir Doação' movimentos.pk %}" class="delete" id="deletarDoacao"
+                                    data-toggle="modal" data-target="#deleteCascade">
+                                    <i class="material-icons" data-toggle="tooltip" title="Excluir">&#xE872;</i>
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
 
-            <table class="table table-striped table-hover table-responsive-sm text-justify">
-                <thead>
-                    <tr>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">ID Familia</th>
-                        <th class="text-center">Data</th>
-                        <th class="text-center">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-            
-            {% include "includes/pagination.html" %}
+                {% include "includes/pagination.html" %}
 
         </div>
 
@@ -116,10 +136,10 @@
 
 <script>
 
-  // Atualizando o action do form da confirmação de exclusão (no modal do base.html)
-  function atualizaActionFormDeleteCascade() {
-    document.getElementById('formDeleteCascade').action = document.getElementById('deletarDoacao').href;
-  }
+    // Atualizando o action do form da confirmação de exclusão (no modal do base.html)
+    function atualizaActionFormDeleteCascade() {
+        document.getElementById('formDeleteCascade').action = document.getElementById('deletarDoacao').href;
+    }
 
 </script>
 {% endblock %}

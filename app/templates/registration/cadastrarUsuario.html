@@ -1,0 +1,127 @@
+{% extends 'generic/base.html' %}
+{% load user_tags %}
+{% block title %}Cadastrar usuário{% endblock %}
+
+{% block content %}
+  {% load widget_tweaks %}
+  {% block styles %}
+    {% load user_tags %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/listas/listas.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
+    <link rel="icon" type="image/x-icon" href="{% static 'img/forms/User-Icon.png' %}">
+  {% endblock %}
+
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100 col-12">
+        <div class="login100-pic">
+          <img src="{% static 'img/forms/User-Icon.png' %}" alt="IMG">
+        </div>
+  
+        <form method="POST" action="{% url 'Cadastrar Usuário' %}" class="col">
+          {% csrf_token %}
+          
+          <span class="login100-form-title pb-4">
+            Cadastro de usuário
+          </span>
+
+          <!-- Exibe erros retornadas da view ou form, caso houver -->
+          {% if messages %}
+          <div class="form-group">
+            <ul class="messages p-0 text-center" role="alert">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
+                {% if form.erros %}
+                <li class="alert alert-warning p-0 m-0">{{ form.non_field_errors }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+  
+          <label for="usuario">Nome de usuário: <b class="text-danger h5">*</b></label>
+          <div class="wrap-input100">
+            <input class="input100" type="text" placeholder="Nome de usuário (usado para acesso)" name="usuario" id="usuario" required="true" autocomplete="off">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-user" aria-hidden="true"></i>
+            </span>
+          </div>
+  
+          <label for="primeiroNome">Primeiro nome:</label>
+          <div class="wrap-input100">
+            <input class="input100" type="text" placeholder="Primeiro nome" name="primeiroNome" id="primeiroNome" autocomplete="on" > 
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-address-card" aria-hidden="true"></i>
+            </span>
+          </div>
+  
+          <label for="sobrenome">Sobrenome:</label>
+          <div class="wrap-input100">
+            <input class="input100" type="text" placeholder="Sobrenome" name="sobrenome" id="sobrenome" autocomplete="on" > 
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-address-card" aria-hidden="true"></i>
+            </span>
+          </div>
+
+          <label for="email">E-mail:</label>
+          <div class="wrap-input100">
+            <input class="input100" placeholder="Insira seu e-mail" type="email" name="email" id="email" autocomplete="on" >
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-at" aria-hidden="true"></i>
+            </span>
+          </div>
+  
+          <label for="senha">Senha: <b class="text-danger h5">*</b></label>
+          <div class="wrap-input100">
+            <input class="input100" placeholder="Crie uma senha" type="password" minlength="4" name="senha" id="senha" autocomplete="off"  required> 
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-lock" aria-hidden="true"></i>
+            </span>
+          </div>
+  
+          <label for="senhaConfirmacao">Repita a senha: <b class="text-danger h5">*</b></label>
+          <div class="wrap-input100">
+            <input class="input100" placeholder="Insira novamente a senha criada" type="password" minlength="4" name="senhaConfirmacao" id="senhaConfirmacao" autocomplete="off" required > 
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-lock" aria-hidden="true"></i>
+            </span>
+          </div>
+
+          <hr>
+
+          <div class="row mb-3 pr-3 pl-3 d-flex ">
+            <div class="form-check form-switch col" data-toggle="tooltip" title="Marcar essa opção concederá todas as permissões ao usuário">
+              <input class="form-check-input" type="checkbox" name="usuarioAdministrador" id="usuarioAdministrador">
+              <label class="form-check-label" for="usuarioAdministrador">Usuário administrador</label>
+            </div>
+          </div>
+  
+          <div class="buttons m-auto">
+
+              <div class="container-login100-form-btn mt-1 ml-0">
+                <button class="salvar-form-btn m-auto col-10" type="submit">
+                  Salvar
+                </button>
+              </div>
+
+            </div>
+            
+  
+          </div>
+  
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

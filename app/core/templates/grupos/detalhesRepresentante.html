@@ -1,4 +1,5 @@
 {% extends 'generic/base.html' %}
+{% load widget_tweaks %}
 {% block title %}{{ representante.nome }}{% endblock %}
   {% block content %} {% block styles %}
   {% load static %}
@@ -7,26 +8,42 @@
       <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   {% endblock %}
-  {% if user.is_authenticated %}
-  <div class="col">
-    <div class="table-wrapper" id="round">
-      <div class="table-title" id="round-top">
-          <div class="row">
-            <div class="col-sm-7">
-                <h2>Representante: {{ representante.nome }}</h2>
-            <div class="col-md-10 col-xs-10 col-sm-10">
+
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="d-flex wrap-login100 justify-content-center w-75" style="gap: 2rem;">
+  
+        <span class="login100-form-title pb-1">
+          Detalhes do representante {{ representante.nome }}
+        </span>
+  
+        <div class="login100-form m-0">
+          {% for hidden_field in form.hidden_fields %}
+          {{ hidden_field }}
+          {% endfor %}
+  
+          {% for field in form.visible_fields %}
+          <div class="form-group">
+            {{ field.label_tag }}
+  
+            <div class="wrap-input100">
+              {% render_field field class="input100" disabled="true" %}
+  
+              <span class="focus-input100"></span>
+              <span class="symbol-input100">
+                <i class="fa {{ field.field.widget.attrs.icone }}" aria-hidden="true"></i>
+              </span>
             </div>
-            <div class="col-md-1 col-xs-1 col-sm-1"></div>
-            </div>
-         </div>
+  
+            {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+          </div>
+          {% endfor %}
+  
         </div>
-        <br>
-                    {% if representante.idEntidade %}<p><a href="{% url 'Detalhes Entidade' representante.idEntidade.pk %}">Entidade: {{ representante.idEntidade }}</a></p>{% endif %}
-                    <p>CPF: {{ representante.cpf }}</p>
-                    <p>Endereço: {{ representante.endereco }}</p>
-                    <p>Observação: {{ representante.observacao }}</p>
-                    <br>
+  
+      </div>
     </div>
-</div>
-{% endif %}
+
 {% endblock %}

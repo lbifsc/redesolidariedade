@@ -20,7 +20,7 @@
         </span>
 
         <label for="idFamilia">Família:</label>
-        <div class="wrap-input100">
+        <div class="wrap-input100" style=" z-index: 2;">
           <div id="autocomplete" class="autocomplete">
             <input class="autocomplete-input" name="idFamilia" id="familias" placeholder="Selecione a família do integrante" type="text" required/>
             <ul class="autocomplete-result-list"></ul>
@@ -120,14 +120,16 @@
     }
 
     function sendData() {
+
       if(validateInput()) {
         if(selectedFamily != "") {
           selectedFamily = selectedFamily.split("/")[0].trim()
-
+          
           familias.forEach((value) =>{
             if(String(value).split("/")[0].trim() == selectedFamily){
               familiasUserInput.value = selectedFamily
               familiasUserInput.disabled = false;
+              
               document.forms.familia.submit()
             }
           })
@@ -228,6 +230,7 @@
           selectedFamily = result;
 
           inputFamilia.disabled = true;
+
         }
     })
 

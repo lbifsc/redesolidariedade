@@ -22,7 +22,7 @@
           {% csrf_token %}
   
           <span class="login100-form-title pb-4">
-            Categorias cadastradas
+            Entidades cadastradas
           </span>
   
           <div class="wrap-input100">
@@ -69,7 +69,6 @@
               <th class="text-center">CNPJ</th>
               <th class="text-center">Nome</th>
               <th class="text-center">E-mail</th>
-              <th class="text-center">Endereço</th>
               <th class="text-center">Telefone</th>
               <th class="text-center">Ações</th>
             </tr>
@@ -81,9 +80,13 @@
               <td class="text-center">{{ entidade.cnpj}} </td>
               <td class="text-center">{{ entidade.nome}} </td>
               <td class="text-center">{{ entidade.email}} </td>
-              <td class="text-center">{{ entidade.endereco}} </td>
               <td class="text-center">{{ entidade.telefone}} </td>
               <td class="text-center icons-td">
+                <a href="{% url 'Detalhes Entidade' entidade.pk %}" class="details">
+                  <span class="material-icons">
+                    visibility
+                  </span>
+                </a>
                 <a href="{% url 'Editar Entidade' entidade.pk %}" class="edit">
                   <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
                 </a>

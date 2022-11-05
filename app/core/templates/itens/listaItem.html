@@ -75,8 +75,8 @@
         <thead>
           <tr>
             <th class="text-center">ID</th>
-            <th class="text-center">Descrição</th>
-            <th class="text-center">Categoria do item</th>
+            <th class="text-left">Descrição</th>
+            <th class="text-left">Categoria do item</th>
             <th class="text-center">Ações</th>
           </tr>
         </thead>
@@ -84,8 +84,8 @@
           {% for itens in itens_list %}
           <tr>
             <td class="text-center"> {{ itens.pk }} </td>
-            <td class="text-center"> {{ itens.descricao }} </td>
-            <td class="text-center">{{ itens.categoria }}</td>
+            <td class="text-left"> {{ itens.descricao }} </td>
+            <td class="text-left">{{ itens.categoria }}</td>
             <td class="text-center icons-td">
               <a href="{% url 'Editar Item' itens.pk %}" class="edit">
                 <i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i>
