@@ -7,7 +7,7 @@ from django_cpf_cnpj.fields import CNPJField, CPFField
 
 #MODEL FAMILIAS
 class Familia(models.Model):
-    nomeChefeFamilia = models.CharField(max_length=96)
+    nomeChefeFamilia = models.CharField(max_length=96, unique=True)
     cpfChefeFamilia = CPFField(masked=False)
     enderecoChefeFamilia = models.CharField(max_length=96)
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
@@ -18,7 +18,7 @@ class Familia(models.Model):
 #MODEL INTEGRANTES DE FAMILIA
 class IntegranteFamilia(models.Model):
     familia = models.ForeignKey(Familia, on_delete=models.CASCADE)
-    nome = models.CharField(max_length=96)
+    nome = models.CharField(max_length=96, unique = True)
     cpf = CPFField(masked=False)
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='data de cadastro')
 

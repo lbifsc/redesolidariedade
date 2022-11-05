@@ -1,30 +1,49 @@
-<h1 align="center">Rede de Solidariedade</h1>
-<p></p>
-<p></p>
-<p></p>
-<p align="center">Projeto de Extensão IFSC 2021/2 - Rede Solidariedade</p>
-<p></p>
-<p></p>
-<p></p>
-<h2 align="center">Para Rodar o Projeto:</h2>
-<p></p>
-<p></p>
-<p></p>
-<h4 align="center">1. certifique-se que está na raiz do repositorio [...]/redesolidariedade/"</h4>
-<h4 align="center">2. crie uma venv "python -m venv venv"</h4>
-<h4 align="center">3. ative a venv "venv\Scripts\activate"</h4>
-<h4 align="center">4. instale o pip "python -m pip install --upgrade pip"</h4>
-<h4 align="center">5. instale os requirements.txt "pip install -r requirements.txt"</h4>
-<h4 align="center">6. va para a pasta app "cd app" </h4>
-<h4 align="center">7. faça as migrations "python manage.py makemigrations"</h4>
-<h4 align="center">8. migre os dados "python manage.py migrate"</h4>
-<h4 align="center">9. crie um superuser "python manage.py createsuperuser"</h4>
-<h4 align="center">10 Você deve gerar uma secretkey para o arquivo .env, que por padrão vai estar vazia.</h4>
-<h4 align="center">11. rode o app "python manage.py runserver"</h4>
-<h4 align="center">12. acesse o <a href='http://127.0.0.1:8000/' target="_blank">Site</a></h4>
-<h4 align="center">13. faça login com a conta de administrador criada no passo 9 </h4>
-<h4 align="center">14. cadastre Entidade e depois um Representante </h4>
-<h4 align="center">15. faça login com o Representante criado, utilizando a senha "novousuario" e troque a senha </h4>
-<h4 align="center">16. cadastre Categorias e Itens </h4>
-<h4 align="center">17. cadastre Famílias e Integrantes </h4>
-<h4 align="center">18. faça Doações </h4>
+## Rede de Solidariedade
+
+Projeto de Extensão IFSC 2021/2 - Rede Solidariedade
+
+## Para Rodar o Projeto:
+
+certifique-se que está na raiz do repositorio "[...]/redesolidariedade/"
+
+1 - Crie e rode uma venv
+```bash
+  python -m venv venv
+  venv/scripts/activate
+```
+
+2 - Instale o pip e os requirements
+```bash
+  python -m pip install --upgrade pip
+  pip install -r requirements.txt
+```
+
+3 - Inicialize o banco de dados e os arquivos estáticos
+```bash
+  cd app
+  python manage.py makemigrations
+  python manage.py migrate
+  python manage.py collectstatic
+```
+
+4 - Crie uma secret key para o arquivo .env
+```bash
+  SECRET_KEY = "coloque a secret key aqui"
+```
+
+5 - Crie um Super-Usuário e rode o projeto
+```bash
+  python manage.py createsuperuser
+  python manage.py runserver
+```
+
+6 - Faça login com o usuário criado e cadastre uma Entidade e um Representante no módulo de grupos
+
+7 - Atribua ao usuário do representante o papel de administrador atravez do módulo de grupos
+
+8 - Acesse o django admin ( 127.0.0.1/admin ) e exclua o usuário criado em terminal
+
+9 - agora é só logar com o usuario do representante. Por padrão o usuário é o nome do representante Ex.: "Joao Pedro" e a senha inicial é "novousuario"
+
+Agora é só utilizar o sistema! Cadastre categorias e itens, famílias, integrantes famíliares e realize doações!
+

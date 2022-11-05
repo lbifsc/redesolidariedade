@@ -102,8 +102,12 @@ def cadastroIntegranteFamilia(request):
                 nome = request.POST.get('nomeIntegrante'),
                 cpf = re.sub('[^0-9]', '', request.POST.get('cpfIntegrante'))
             )
-            novoIntegrante.save()
-            return redirect('Lista de Familias')
+            try:
+                IntegranteFamilia.objects.get(nome=novoIntegrante.nome)
+                return redirect('Detalhes Familia', pk=novoIntegrante.familia.pk)
+            except:
+                novoIntegrante.save()
+                return redirect('Detalhes Familia', pk=novoIntegrante.familia.pk)
         else:
             return redirect('Detalhes Familia', pk=cpf.familia.pk)
     return render(request,'familias/cadastroIntegranteFamiliar.html')

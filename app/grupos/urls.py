@@ -31,7 +31,6 @@ urlpatterns += [
     path('redefinirSenha/', views.redefinirSenha, name='Redefinir Senha'),
     path('redefinicaoSenhaCompleta/', views.redefinicaoSenhaCompleta, name='Redefinição de Senha Completa'),
     path('editarUsuario/<int:pk>/', views.editarUsuario, name='Editar Usuário'),
-    path('cadastrarUsuario/', views.cadastrarUsuario, name='Cadastrar Usuário'),
     path('primeiroLogin/', views.primeiroLogin, name='Primeiro Login'),
 ]
 
